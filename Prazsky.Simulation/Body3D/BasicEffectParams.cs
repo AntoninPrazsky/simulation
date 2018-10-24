@@ -4,7 +4,7 @@ namespace Prazsky.Simulation
 {
     public class BasicEffectParams
     {
-        public BasicEffectParams(Vector3 ambientLightColor, Vector3 specularColor, float specularPower, Vector3 emmisiveColor, DirectionalLight directionalLight0, DirectionalLight directionalLight1, DirectionalLight directionalLight2, Fog fog)
+        public BasicEffectParams(Vector3 ambientLightColor, Vector3 specularColor, float specularPower, Vector3 emmisiveColor, DirectionalLightParams directionalLight0, DirectionalLightParams directionalLight1, DirectionalLightParams directionalLight2, FogParams fog)
         {
             AmbientLightColor = ambientLightColor;
             SpecularColor = specularColor;
@@ -21,16 +21,16 @@ namespace Prazsky.Simulation
         public float SpecularPower { get; set; }
         public Vector3 EmmisiveColor { get; set; }
 
-        public DirectionalLight DirectionalLight0 { get; set; }
-        public DirectionalLight DirectionalLight1 { get; set; }
-        public DirectionalLight DirectionalLight2 { get; set; }
+        public DirectionalLightParams DirectionalLight0 { get; set; }
+        public DirectionalLightParams DirectionalLight1 { get; set; }
+        public DirectionalLightParams DirectionalLight2 { get; set; }
 
-        public Fog Fog { get; set; }
+        public FogParams Fog { get; set; }
     }
 
-    public class DirectionalLight
+    public class DirectionalLightParams
     {
-        public DirectionalLight(Vector3 direction, Vector3 diffuseColor, Vector3 specularColor)
+        public DirectionalLightParams(Vector3 direction, Vector3 diffuseColor, Vector3 specularColor)
         {
             Direction = direction;
             DiffuseColor = diffuseColor;
@@ -42,9 +42,9 @@ namespace Prazsky.Simulation
         public Vector3 SpecularColor { get; set; }
     }
 
-    public class Fog
+    public class FogParams
     {
-        public Fog(Vector3 fogColor, float fogStart, float fogEnd)
+        public FogParams(Vector3 fogColor, float fogStart, float fogEnd)
         {
             FogColor = fogColor;
             FogStart = fogStart;

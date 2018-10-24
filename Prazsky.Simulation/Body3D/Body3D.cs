@@ -8,28 +8,24 @@ namespace Prazsky.Simulation
 {
     public class Body3D
     {
-        public Body Body2D;
+        public Body Body2D { get; }
+
         private Model _model3D;
         private ICamera _camera;
 
         private Matrix _world = Matrix.Identity;
         private Vector3 _position3D = Vector3.Zero;
-        private float _positionZ;
-
         private BoundingSphere _boundingSphere;
 
         #region Způsoby vykreslování a grafické efekty
 
-        private bool _enableDefaultLighting = true;
-        private bool _preferPerPixelLighting = true;
+        public bool EnableDefaultLighting { set; get; } = true;
+        public bool PreferPerPixelLighting { set; get; } = true;
 
-        public bool EnableDefaultLighting { set => _enableDefaultLighting = value; get => _enableDefaultLighting; }
-        public bool PreferPerPixelLighting { set => _preferPerPixelLighting = value; get => _preferPerPixelLighting; }
-                
 
         #endregion Způsoby vykreslování a grafické efekty
 
-        public float PositionZ { set => _positionZ = value; get => _positionZ; }
+        public float PositionZ { set; get; }
 
         public BoundingSphere BoundingSphere { set => value = _boundingSphere; get => _boundingSphere; }
 
@@ -53,7 +49,7 @@ namespace Prazsky.Simulation
             _model3D = model3D;
             Body2D = physicalBody2D;
             _camera = camera;
-            _positionZ = positionZ;
+            PositionZ = positionZ;
 
             _boundingSphere = Geometry.GetBoundingSphere(_model3D);
             
@@ -71,8 +67,8 @@ namespace Prazsky.Simulation
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    if (_enableDefaultLighting) effect.EnableDefaultLighting();
-                    effect.PreferPerPixelLighting = _preferPerPixelLighting;
+                    if (EnableDefaultLighting) effect.EnableDefaultLighting();
+                    effect.PreferPerPixelLighting = PreferPerPixelLighting;
 
                     if (BasicEffectParams != null)
                     {
@@ -139,7 +135,7 @@ namespace Prazsky.Simulation
         private void Update3DPosition()
         {
             //Pozice modelu v trojrozměrném světě na základě pozice z dvourozměrné fyzikální simulace
-            _position3D = new Vector3(Body2D.Position.X, Body2D.Position.Y, _positionZ);
+            _position3D = new Vector3(Body2D.Position.X, Body2D.Position.Y, PositionZ);
             _world = Matrix.CreateRotationZ(Body2D.Rotation) * Matrix.CreateTranslation(_position3D);
 
 
