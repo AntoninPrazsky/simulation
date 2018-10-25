@@ -43,7 +43,7 @@ namespace Prazsky.Simulation
         /// <param name="model3D">Trojrozměrný model pro vykreslování</param>
         /// <param name="physicalBody2D">Dvourozměrná fyzikální reprezenttace modelu pro fyzikální simulaci</param>
         /// <param name="camera">Kamera, která drží matici pohledu a projekce</param>
-        /// <param name="positionZ">Pozice na ose Z</param>
+        /// <param name="positionZ">Pozice modelu na ose Z</param>
         public Body3D(Model model3D, Body physicalBody2D, ICamera camera, float positionZ = 0f)
         {
             _model3D = model3D;

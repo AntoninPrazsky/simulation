@@ -6,6 +6,10 @@ using System.IO;
 
 namespace Prazsky.Render
 {
+    /// <summary>
+    /// Poskytuje metody pro vykreslení ortogonální projekce trojrozměrného modelu.
+    /// Výsledek může být (<see cref="Texture2D"/>) nebo export do souboru ve formátu PNG.
+    /// </summary>
     public static class BitmapCreator
     {
         private const int BITMAP_SCALE = 100;
@@ -13,7 +17,7 @@ namespace Prazsky.Render
         private const int MAX_BITMAP_WIDTH = 4096;
         private const int MAX_BITMAP_HEIGHT = 4096;
 
-        //Tyto hodnoty by bylo možné individuálně spočítat pro každý model, ale pro ortogonální projekci kolmou k ose Z (ke kameře) to nemá smysl
+        //Tyto hodnoty by bylo možné individuálně spočítat pro každý model, ale pro ortogonální projekci kolmou k ose Z (ke kameře) to zatím nemá smysl
         private const float CAMERA_Z_POSITION = 10f;
         private const float Z_NEAR_PLANE = 1f;
         private const float Z_FAR_PLANE = 100f;
