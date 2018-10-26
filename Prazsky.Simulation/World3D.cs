@@ -69,27 +69,27 @@ namespace Prazsky.Simulation
             World2D.Step(timeStep);
         }
 
-        public void Draw(GameTime gameTime)
+        public void Draw()
         {
             _boundingFrustum = new BoundingFrustum(Camera3D.View * Camera3D.Projection);
 
             if (_body3Ds.Count > 0)
             { 
-                foreach (Body3D b in _body3Ds)
+                foreach (Body3D body in _body3Ds)
                 {
-                    if (_boundingFrustum.Contains(b.BoundingSphere) != ContainmentType.Disjoint)
+                    if (_boundingFrustum.Contains(body.BoundingSphere) != ContainmentType.Disjoint)
                     {
                         if (_disableSimulationWhenOutOfBoundingFrustum)
                         {
-                            b.EnableSimulation();
+                            body.EnableSimulation();
                         }
-                        b.Draw();
+                        body.Draw();
                     }
                     else
                     {
                         if (_disableSimulationWhenOutOfBoundingFrustum)
                         {
-                            b.DisableSimulation();
+                            body.DisableSimulation();
                         }
                     }
 
@@ -97,7 +97,7 @@ namespace Prazsky.Simulation
                     if (false)
                     { 
                         _debugDraw.Begin(Camera3D.View, Camera3D.Projection);
-                        _debugDraw.DrawWireSphere(b.BoundingSphere, Color.Blue);
+                        _debugDraw.DrawWireSphere(body.BoundingSphere, Color.Blue);
                         _debugDraw.DrawWireFrustum(_boundingFrustum, Color.Green);
                         _debugDraw.End();
                     }

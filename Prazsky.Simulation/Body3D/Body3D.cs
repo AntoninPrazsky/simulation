@@ -10,20 +10,8 @@ namespace Prazsky.Simulation
     {
         public Body Body2D { get; }
 
-        private Model _model3D;
-        private ICamera _camera;
-
-        private Matrix _world = Matrix.Identity;
-        private Vector3 _position3D = Vector3.Zero;
-        private BoundingSphere _boundingSphere;
-
-        #region Způsoby vykreslování a grafické efekty
-
         public bool EnableDefaultLighting { set; get; } = true;
         public bool PreferPerPixelLighting { set; get; } = true;
-
-
-        #endregion Způsoby vykreslování a grafické efekty
 
         public float PositionZ { set; get; }
 
@@ -34,6 +22,14 @@ namespace Prazsky.Simulation
         public int DrawOrder => throw new NotImplementedException();
 
         public bool Visible => throw new NotImplementedException();
+
+        private Model _model3D;
+        private ICamera _camera;
+
+        private Matrix _world = Matrix.Identity;
+        private Vector3 _position3D = Vector3.Zero;
+        private BoundingSphere _boundingSphere;
+
 
         public BasicEffectParams BasicEffectParams { get; set; }
 
