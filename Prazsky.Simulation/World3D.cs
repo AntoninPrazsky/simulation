@@ -1,54 +1,60 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Prazsky.Render;
 using Prazsky.Simulation.Camera;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Prazsky.Simulation
 {
+    /// <summary>
+    /// Představuje trojrozměrný svět, ve kterém probíhá dvourozměrná fyzikální simulace.
+    /// </summary>
     public class World3D
     {
-        #region Parametry pro fyzikální engine
+        #region Parametry pro fyzikální knihovnu
 
-        //Vícevláknové výpočty fyzikálního enginu
+        //Parametry vícevláknových výpočtů fyzikální knihovny (promyslet, jestli někdo bude potřebovat toto nastavení měnit)
         private const int VELOCITY_CONSTRAINTS_MULTITHREAD_THRESHOLD = 256;
         private const int POSITION_CONSTRAINTS_MULTITHREAD_THRESHOLD = 256;
         private const int COLLIDE_MULTITHREAD_THRESHOLD = 256;
 
-        //Minimální obnovovací frekvence simulace
-        private const float MINIMUM_SOLVER_ITERATIONS = 1f / 30f; //30 Hz
+        //Výchozí minimální obnovovací frekvence simulace (30 Hz)
+        private const float DEFAULT_MINIMUM_SOLVER_ITERATIONS = 1f / 30f;
 
-        #endregion
-
-        private List<Body3D> _body3Ds = new List<Body3D>();
-
-        public event EventHandler<EventArgs> DrawOrderChanged;
-        public event EventHandler<EventArgs> VisibleChanged;
-
-        public World World2D;
-        
-        public ICamera Camera3D;
+        #endregion Parametry pro fyzikální knihovnu
 
         private BoundingFrustum _boundingFrustum;
+        private List<Body3D> _body3Ds = new List<Body3D>();
 
-        private bool _disableSimulationWhenOutOfBoundingFrustum = true;
-        public bool DisableSimulationWhenOutOfBoundingFrustum { get => _disableSimulationWhenOutOfBoundingFrustum; set => _disableSimulationWhenOutOfBoundingFrustum = value; }
-        
-        #region FORDEBUG
+        /// <summary>
+        /// Deaktivace fyzikální simulace, pokud je trojrozměrné těleso mimo promítací kužel.
+        /// </summary>
+        public bool DisableSimulationWhenOutOfBoundingFrustum { get; set; } = true;
 
-        DebugDraw _debugDraw;
+        /// <summary>
+        /// Minimální obnovovací frekvence simulace.
+        /// </summary>
+        public float MinimumSolverIterations { get; set; } = DEFAULT_MINIMUM_SOLVER_ITERATIONS;
 
-        #endregion
+        /// <summary>
+        /// Dvourozměrný fyzikální svět fyzikální knihovny.
+        /// </summary>
+        public World World2D;
 
-        public World3D(Vector2 gravity)
+        /// <summary>
+        /// Trojrozměrná kamera, která trojrozměrný svět pozoruje.
+        /// </summary>
+        public ICamera Camera3D;
+
+        /// <summary>
+        /// Konstruktor trojrozměrného světa.
+        /// </summary>
+        /// <param name="gravity">Výchozí gravitace pro dvourozměrný fyzikální svět.</param>
+        /// <param name="camera">Výchozí kamera, která trojrozměrný svět pozoruje.</param>
+        public World3D(Vector2 gravity, ICamera camera)
         {
-            Camera3D = null;
+            Camera3D = camera;
             World2D = new World(gravity);
 
             World2D.ContactManager.VelocityConstraintsMultithreadThreshold = VELOCITY_CONSTRAINTS_MULTITHREAD_THRESHOLD;
@@ -56,59 +62,51 @@ namespace Prazsky.Simulation
             World2D.ContactManager.CollideMultithreadThreshold = POSITION_CONSTRAINTS_MULTITHREAD_THRESHOLD;
         }
 
-        public void LoadContent(GraphicsDevice graphicsDevice)
-        {
-            #region FORDEBUG
-            _debugDraw = new DebugDraw(graphicsDevice);
-            #endregion FORDEBUG
-        }
-
+        /// <summary>
+        /// Provede jeden krok fyzikální simulace ve dvourozměrném fyzikálním světě (<see cref="World"/>).
+        /// Krok není nikdy menší než hodnota udaná parametrem <see cref="MinimumSolverIterations"/>.
+        /// </summary>
+        /// <param name="gameTime">Herní čas.</param>
         public void Update(GameTime gameTime)
         {
-            float timeStep = Math.Min((float)gameTime.ElapsedGameTime.TotalSeconds, MINIMUM_SOLVER_ITERATIONS);
+            float timeStep = Math.Min((float)gameTime.ElapsedGameTime.TotalSeconds, MinimumSolverIterations);
             World2D.Step(timeStep);
         }
 
+        /// <summary>
+        /// Vykreslí jeden snímek trojrozměrného světa.
+        /// </summary>
         public void Draw()
         {
             _boundingFrustum = new BoundingFrustum(Camera3D.View * Camera3D.Projection);
 
             if (_body3Ds.Count > 0)
-            { 
-                foreach (Body3D body in _body3Ds)
+            {
+                foreach (Body3D body3D in _body3Ds)
                 {
-                    if (_boundingFrustum.Contains(body.BoundingSphere) != ContainmentType.Disjoint)
+                    body3D.Update3DPosition();
+
+                    if (_boundingFrustum.Contains(body3D.BoundingSphere) != ContainmentType.Disjoint)
                     {
-                        if (_disableSimulationWhenOutOfBoundingFrustum)
-                        {
-                            body.EnableSimulation();
-                        }
-                        body.Draw();
+                        //Těleso je uvnitř promítacího kuželu, potom se vždy simuluje a vykresluje
+                        body3D.EnableSimulation();
+                        body3D.Draw();
                     }
                     else
                     {
-                        if (_disableSimulationWhenOutOfBoundingFrustum)
-                        {
-                            body.DisableSimulation();
-                        }
+                        //Těleso není uvnitř promítacího kuželu
+                        //Chce uživatel v této situaci neprovádět simulaci?
+                        if (DisableSimulationWhenOutOfBoundingFrustum) body3D.DisableSimulation();
                     }
-
-                    #region FORDEBUG
-                    if (false)
-                    { 
-                        _debugDraw.Begin(Camera3D.View, Camera3D.Projection);
-                        _debugDraw.DrawWireSphere(body.BoundingSphere, Color.Blue);
-                        _debugDraw.DrawWireFrustum(_boundingFrustum, Color.Green);
-                        _debugDraw.End();
-                    }
-                    #endregion
-
-
-
                 }
             }
         }
 
+        /// <summary>
+        /// Přidá trojrozměrný simulovatelný objekt do trojrozměrného světa.
+        /// </summary>
+        /// <param name="body3D">Trojrozměrný simulovatelný objekt.</param>
+        /// <returns>Vrací <code>true</code>, pokud se přidání podařilo, a <code>false</code>, pokud se přidání nepodařilo.</returns>
         public bool AddBody3D(Body3D body3D)
         {
             if (_body3Ds.Contains(body3D)) return false;
@@ -117,7 +115,11 @@ namespace Prazsky.Simulation
             return true;
         }
 
-        
+        /// <summary>
+        /// Odebere trojrozměrný simulovatelný objekt z trojrozměrného světa.
+        /// </summary>
+        /// <param name="body3D">Trojrozměrný simulovatelný objekt, který má být odebrán.</param>
+        /// <returns>Vrací <code>true</code>, pokud se odebrání podařilo, a <code>false</code>, pokud se odebrání nepodařilo.</returns>
         public bool RemoveBody3D(Body3D body3D)
         {
             if (!_body3Ds.Contains(body3D)) return false;
@@ -159,6 +161,5 @@ namespace Prazsky.Simulation
         {
             return GetWorld2DCoordinatesFromScreen(new Vector2(screenCoordinates.X, screenCoordinates.Y), viewport);
         }
-        
     }
 }

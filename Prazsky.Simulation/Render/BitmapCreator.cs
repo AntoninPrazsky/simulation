@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Prazsky.Simulation;
+using System;
 using System.IO;
 
 namespace Prazsky.Render
@@ -12,12 +12,13 @@ namespace Prazsky.Render
     /// </summary>
     public static class BitmapCreator
     {
-        private const int BITMAP_SCALE = 100;
+        private const int DEFAULT_BITMAP_SCALE = 100;
 
+        //Tyto hodnoty jsou dány možnostmi použitého grafického zařízení (a platformou, na které kód běží), zjistit, jestli je lze jednoduše zjistit z této třídy
         private const int MAX_BITMAP_WIDTH = 4096;
         private const int MAX_BITMAP_HEIGHT = 4096;
 
-        //Tyto hodnoty by bylo možné individuálně spočítat pro každý model, ale pro ortogonální projekci kolmou k ose Z (ke kameře) to zatím nemá smysl
+        //Tyto hodnoty by bylo možné individuálně spočítat pro každý model (jde o ortogonální projekci kolmou k ose Z - ke kameře), promyslet, jestli by to mělo smysl
         private const float CAMERA_Z_POSITION = 10f;
         private const float Z_NEAR_PLANE = 1f;
         private const float Z_FAR_PLANE = 100f;
@@ -29,7 +30,7 @@ namespace Prazsky.Render
         /// <param name="model">Trojrozměný model k vykreslení.</param>
         /// <param name="bitmapScale">Poměr modelu vůči jeho bitmapové reprezentaci. Výchozí hodnota 100 znamená, že 1 jednotka modelu odpovídá 100 pixelům bitmapy.</param>
         /// <returns>Vrací ortogonální projekci trojrozměného modelu v podobě bitmapy typu <see cref="Texture2D"/>.</returns>
-        public static Texture2D CreateBitmap(GraphicsDevice graphicsDevice, Model model, int bitmapScale = BITMAP_SCALE)
+        public static Texture2D CreateBitmap(GraphicsDevice graphicsDevice, Model model, int bitmapScale = DEFAULT_BITMAP_SCALE)
         {
             SizeFloat modelSize = CalculateModelSize(model);
             SizeInt renderSize = CalculateBitmapSize(modelSize, bitmapScale);
@@ -58,7 +59,7 @@ namespace Prazsky.Render
         /// <param name="model">Trojrozměný model k vykreslení.</param>
         /// <param name="filePath">Kompletní cesta k finálnímu souboru (například "C:\image.png" pro systém Windows).</param>
         /// <param name="bitmapScale">Poměr modelu vůči jeho bitmapové reprezentaci. Výchozí hodnota 100 znamená, že 1 jednotka modelu odpovídá 100 pixelům bitmapy.</param>
-        public static void RenderBitmapAsPNG(GraphicsDevice graphicsDevice, Model model, string filePath, int bitmapScale = BITMAP_SCALE)
+        public static void RenderBitmapAsPNG(GraphicsDevice graphicsDevice, Model model, string filePath, int bitmapScale = DEFAULT_BITMAP_SCALE)
         {
             Texture2D bitmap = CreateBitmap(graphicsDevice, model, bitmapScale);
             Stream stream = File.Create(filePath);
@@ -72,7 +73,7 @@ namespace Prazsky.Render
             BoundingBox box = Geometry.GetBoundingBox(model);
 
             SizeFloat calculatedSize;
-            
+
             calculatedSize.X = box.GetCorners()[2].X * 2;
             calculatedSize.Y = Math.Abs(box.GetCorners()[2].Y) * 2;
 
@@ -119,6 +120,5 @@ namespace Prazsky.Render
             public int X;
             public int Y;
         }
-
     }
 }

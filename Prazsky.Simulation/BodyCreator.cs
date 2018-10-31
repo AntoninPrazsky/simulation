@@ -8,39 +8,43 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Prazsky.Simulation
 {
+    /// <summary>
+    /// Slouží pro vytvoření simulovatelného dvourozměrného tělesa typu <see cref="Body"/> pro knihovnu <see cref="tainicom.Aether.Physics2D"/> na základě tvaru nalezeného v poskytnuté bitmapě.
+    /// Těleso je poté zařazeno do dvourozměrného fyzikálního světa (<see cref="World"/>).
+    /// </summary>
     public static class BodyCreator
     {
-        private const float REDUCE_VERTICES_DISTANCE = 1f;
-        private const float GRAPHICS_TO_SIMULATION_RATIO = 1f / 100f;
-        private const float DENSITY = 1f;
-        private const float ROTATION = 0f;
+        private const float DEFAULT_REDUCE_VERTICES_DISTANCE = 1f;
+        private const float DEFAULT_GRAPHICS_TO_SIMULATION_RATIO = 1f / 100f;
+        private const float DEFAULT_DENSITY = 1f;
+        private const float DEFAULT_ROTATION = 0f;
 
         private const TriangulationAlgorithm TRIANGULATION_ALGORITHM = TriangulationAlgorithm.Bayazit;
         private const BodyType BODY_TYPE = BodyType.Dynamic;
 
         /// <summary>
-        /// Vrátí objekt typu Body pro provádění dvourozměrných simulací na základě tvaru nalezeného v dané bitmapě
+        /// Vrátí objekt typu <see cref="Body"/> pro provádění dvourozměrných simulací na základě tvaru nalezeného v dané bitmapě.
         /// </summary>
-        /// <param name="polygonTexture">Bitmapa pro nalezení tvaru tělesa</param>
-        /// <param name="world">Objekt typu World fyzikálního enginu, do kterého má být vytvořené těleso zařazeno</param>
-        /// <param name="density">Hustota tělesa (počet kilogramů na metr čtvereční)</param>
-        /// <param name="position">Výchozí pozice tělesa v simulovaném světě</param>
-        /// <param name="rotation">Výchozí rotace tělesa v simulovaném světě</param>
-        /// <param name="bodyType">Typ tělesa (statické, kinematické nebo dynamické)</param>
-        /// <param name="reduceVerticesDistance">Vzdálenost mezi vrcholy nalezeného tvaru, které mají být sloučeny (zjednodušení tvaru)</param>
-        /// <param name="triangulationAlgorithm">Algoritmus pro rozdělení tvaru na množství menších konvexních polygonů</param>
-        /// <param name="graphicsToSimulationRatio">Poměr mezi grafickým zobrazením a simulovaným fyzikálním světem</param>
+        /// <param name="polygonTexture">Bitmapa pro nalezení tvaru tělesa.</param>
+        /// <param name="world">Objekt typu <see cref="World"/> fyzikální knihovny představující dvourozměrný svět, do kterého má být vytvořené těleso zařazeno.</param>
+        /// <param name="density">Hustota tělesa (počet kilogramů na metr čtvereční).</param>
+        /// <param name="position">Výchozí pozice tělesa v simulovaném světě.</param>
+        /// <param name="rotation">Výchozí rotace tělesa v simulovaném světě.</param>
+        /// <param name="bodyType">Typ tělesa (statické, kinematické nebo dynamické).</param>
+        /// <param name="reduceVerticesDistance">Vzdálenost mezi vrcholy nalezeného tvaru, které mají být sloučeny (zjednodušení tvaru).</param>
+        /// <param name="triangulationAlgorithm">Algoritmus pro rozdělení tvaru na množství menších konvexních polygonů.</param>
+        /// <param name="graphicsToSimulationRatio">Poměr mezi grafickým zobrazením a simulovaným fyzikálním světem.</param>
         /// <returns></returns>
         public static Body CreatePolygonBody(
             Texture2D polygonTexture,
             World world,
-            float density = DENSITY,
+            float density = DEFAULT_DENSITY,
             Vector2 position = new Vector2(),
-            float rotation = ROTATION,
+            float rotation = DEFAULT_ROTATION,
             BodyType bodyType = BODY_TYPE,
-            float reduceVerticesDistance = REDUCE_VERTICES_DISTANCE,
+            float reduceVerticesDistance = DEFAULT_REDUCE_VERTICES_DISTANCE,
             TriangulationAlgorithm triangulationAlgorithm = TRIANGULATION_ALGORITHM,
-            float graphicsToSimulationRatio = GRAPHICS_TO_SIMULATION_RATIO)
+            float graphicsToSimulationRatio = DEFAULT_GRAPHICS_TO_SIMULATION_RATIO)
         {
             //Pole pro data bitmapové textury
             uint[] data = new uint[polygonTexture.Width * polygonTexture.Height];

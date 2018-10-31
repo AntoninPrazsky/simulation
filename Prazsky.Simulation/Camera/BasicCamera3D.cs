@@ -8,10 +8,10 @@ namespace Prazsky.Simulation.Camera
     /// </summary>
     public class BasicCamera3D : ICamera
     {
-        private const float FAR_PLANE_DISTANCE = 500f;
-        private const float MOVE_SPEED = 0.01f;
-        private const float NEAR_PLANE_DISTANCE = 0.01f;
-        private const float ROTATION_SPEED = 0.001f;
+        private const float DEFAULT_FAR_PLANE_DISTANCE = 500f;
+        private const float DEFAULT_MOVE_SPEED = 0.01f;
+        private const float DEFAULT_NEAR_PLANE_DISTANCE = 0.01f;
+        private const float DEFAULT_ROTATION_SPEED = 0.001f;
         private Vector3 _defaultTarget = new Vector3(0, 0, -1);
         private Vector3 _defaultUp = Vector3.Up;
         private float _rotationX = 0f;
@@ -25,8 +25,8 @@ namespace Prazsky.Simulation.Camera
         /// <param name="fieldOfView">Zorné pole kamery.</param>
         public BasicCamera3D(Vector3 position, float aspectRatio, float fieldOfView = MathHelper.PiOver4)
         {
-            _position = position;
-            _aspectRatio = aspectRatio;
+            Position = position;
+            AspectRatio = aspectRatio;
             _fieldOfView = fieldOfView;
 
             Recalculate();
@@ -36,11 +36,11 @@ namespace Prazsky.Simulation.Camera
         /// Inkrement nebo dekrement pro pohyb kamery po osách X, Y a Z vyjádřený trojrozměrným vektorem.
         /// </summary>
         /// <param name="shift">Složky X, Y a Z vektoru vyjadřují inkrement nebo dekrement pohybu po odpovídajících osách (běžně -1f až 1f).</param>
-        /// <param name="gameTime"></param>
+        /// <param name="gameTime">Herní čas.</param>
         public void Move(Vector3 shift, GameTime gameTime)
         {
             //Pohyb kamery ve směru, kterým se dívá
-            _position += _moveSpeed * Vector3.Transform(shift, GetCameraRotation()) * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            Position += MoveSpeed * Vector3.Transform(shift, GetCameraRotation()) * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             Recalculate();
         }
 
@@ -63,8 +63,8 @@ namespace Prazsky.Simulation.Camera
         /// <param name="gameTime">Herní čas.</param>
         public void Rotate(Vector2 rotation, GameTime gameTime)
         {
-            _rotationX += _rotationSpeed * rotation.X * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            _rotationY += _rotationSpeed * rotation.Y * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            _rotationX += RotationSpeed * rotation.X * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            _rotationY += RotationSpeed * rotation.Y * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             //Hodnoty rotace by teoreticky mohly dosáhnout System.Single.MaxValue nebo System.Single.MinValue
             if (_rotationX >= MathHelper.TwoPi || _rotationX <= -MathHelper.TwoPi) _rotationX = 0f;
@@ -95,29 +95,21 @@ namespace Prazsky.Simulation.Camera
             Matrix rotation = GetCameraRotation();
 
             //Přepočítání bodu, do kterého se kamera dívá, na základě rotace kamery
-            _target = _position + Vector3.Transform(_defaultTarget, rotation);
+            Target = Position + Vector3.Transform(_defaultTarget, rotation);
 
             //Přepočítání vektoru směřujícího relativně vzhůru od kamery
             _up = Vector3.Transform(_defaultUp, rotation);
 
             //Přepočítání matice pohledu a projekce
-            _view = Matrix.CreateLookAt(_position, _target, _up);
-            _projection = Matrix.CreatePerspectiveFieldOfView(_fieldOfView, _aspectRatio, _nearPlane, _farPlane);
+            View = Matrix.CreateLookAt(Position, Target, _up);
+            Projection = Matrix.CreatePerspectiveFieldOfView(_fieldOfView, AspectRatio, _nearPlane, _farPlane);
         }
 
         #region Členové ICamera
 
-        private float _farPlane = FAR_PLANE_DISTANCE;
-        private float _nearPlane = NEAR_PLANE_DISTANCE;
-        private Vector3 _position;
-
-        private Matrix _projection;
-
-        private Vector3 _target = Vector3.Zero;
-
+        private float _farPlane = DEFAULT_FAR_PLANE_DISTANCE;
+        private float _nearPlane = DEFAULT_NEAR_PLANE_DISTANCE;
         private Vector3 _up = Vector3.Up;
-
-        private Matrix _view;
 
         /// <summary>
         /// Vzdálenost zadní ořezové plochy od pozice kamery. Objekty za touto plochou se nezobrazují.
@@ -149,43 +141,43 @@ namespace Prazsky.Simulation.Camera
         /// <summary>
         /// Pozice kamery v trojrozměrném světě.
         /// </summary>
-        public Vector3 Position { get => _position; set => _position = value; }
+        public Vector3 Position { get; set; }
 
         /// <summary>
         /// Matice projekce.
         /// </summary>
-        public Matrix Projection { get => _projection; }
+        public Matrix Projection { get; private set; }
 
         /// <summary>
         /// Bod v trojrozměrném prostoru, do kterého se kamera dívá.
         /// </summary>
-        public Vector3 Target { get => _target; }
+        public Vector3 Target { get; private set; } = Vector3.Zero;
 
         /// <summary>
         /// Vektor udávající směr nahoru relativně ke kameře.
         /// </summary>
-        public Vector3 Up { get => _target; }
+        public Vector3 Up { get => Target; }
 
         /// <summary>
         /// Matice pohledu.
         /// </summary>
-        public Matrix View { get => _view; }
+        public Matrix View { get; private set; }
 
         #endregion Členové ICamera
 
         #region Parametry pro perspektivní a pohyblivou kameru
 
-        private float _aspectRatio;
         private float _fieldOfView = MathHelper.PiOver4;
-
-        private float _moveSpeed = MOVE_SPEED;
-
-        private float _rotationSpeed = ROTATION_SPEED;
 
         /// <summary>
         /// Poměr stran zobrazení.
         /// </summary>
-        public float AspectRatio { get => _aspectRatio; set => _aspectRatio = value; }
+        public float AspectRatio { get; set; }
+
+        /// <summary>
+        /// Vzdálenost zadní ořezové plochy.
+        /// </summary>
+        public float FarPlaneDistance { get; set; } = DEFAULT_FAR_PLANE_DISTANCE;
 
         /// <summary>
         /// Zorné pole kamery. Musí být větší než 0 a menší než π (0° - 180°). Jiné hodnoty jsou oříznuty do tohoto intervalu.
@@ -195,12 +187,17 @@ namespace Prazsky.Simulation.Camera
         /// <summary>
         /// Relativní rychlost inkrementálního pohybu kamery.
         /// </summary>
-        public float MoveSpeed { get => _moveSpeed; set => _moveSpeed = value; }
+        public float MoveSpeed { get; set; } = DEFAULT_MOVE_SPEED;
+
+        /// <summary>
+        /// Vzdálenost přední ořezové plochy.
+        /// </summary>
+        public float NearPlaneDistance { get; set; } = DEFAULT_NEAR_PLANE_DISTANCE;
 
         /// <summary>
         /// Relativní rychlost inkrementální rotace kamery.
         /// </summary>
-        public float RotationSpeed { get => _rotationSpeed; set => _rotationSpeed = value; }
+        public float RotationSpeed { get; set; } = DEFAULT_ROTATION_SPEED;
 
         #endregion Parametry pro perspektivní a pohyblivou kameru
     }
