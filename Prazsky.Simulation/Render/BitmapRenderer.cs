@@ -10,7 +10,7 @@ namespace Prazsky.Render
     /// Poskytuje metody pro vykreslení ortogonální projekce trojrozměrného modelu.
     /// Výsledek může být (<see cref="Texture2D"/>) nebo export do souboru ve formátu PNG.
     /// </summary>
-    public static class BitmapCreator
+    public static class BitmapRenderer
     {
         private const int DEFAULT_BITMAP_SCALE = 100;
 
@@ -30,7 +30,7 @@ namespace Prazsky.Render
         /// <param name="model">Trojrozměný model k vykreslení.</param>
         /// <param name="bitmapScale">Poměr modelu vůči jeho bitmapové reprezentaci. Výchozí hodnota 100 znamená, že 1 jednotka modelu odpovídá 100 pixelům bitmapy.</param>
         /// <returns>Vrací ortogonální projekci trojrozměného modelu v podobě bitmapy typu <see cref="Texture2D"/>.</returns>
-        public static Texture2D CreateBitmap(GraphicsDevice graphicsDevice, Model model, int bitmapScale = DEFAULT_BITMAP_SCALE)
+        public static Texture2D RenderOrthographic(GraphicsDevice graphicsDevice, Model model, int bitmapScale = DEFAULT_BITMAP_SCALE)
         {
             SizeFloat modelSize = CalculateModelSize(model);
             SizeInt renderSize = CalculateBitmapSize(modelSize, bitmapScale);
@@ -53,15 +53,15 @@ namespace Prazsky.Render
         }
 
         /// <summary>
-        /// Vykreslí ortogonální projekci modelu využitím metody <see cref="CreateBitmap(GraphicsDevice, Model, int)"/> a zapíše ji do souboru ve formátu PNG.
+        /// Vykreslí ortogonální projekci modelu využitím metody <see cref="RenderOrthographic(GraphicsDevice, Model, int)"/> a zapíše ji do souboru ve formátu PNG.
         /// </summary>
         /// <param name="graphicsDevice">Grafické zařízení, které má být použito k vykreslení modelu.</param>
         /// <param name="model">Trojrozměný model k vykreslení.</param>
         /// <param name="filePath">Kompletní cesta k finálnímu souboru (například "C:\image.png" pro systém Windows).</param>
         /// <param name="bitmapScale">Poměr modelu vůči jeho bitmapové reprezentaci. Výchozí hodnota 100 znamená, že 1 jednotka modelu odpovídá 100 pixelům bitmapy.</param>
-        public static void RenderBitmapAsPNG(GraphicsDevice graphicsDevice, Model model, string filePath, int bitmapScale = DEFAULT_BITMAP_SCALE)
+        public static void RenderOrthographicAsPNG(GraphicsDevice graphicsDevice, Model model, string filePath, int bitmapScale = DEFAULT_BITMAP_SCALE)
         {
-            Texture2D bitmap = CreateBitmap(graphicsDevice, model, bitmapScale);
+            Texture2D bitmap = RenderOrthographic(graphicsDevice, model, bitmapScale);
             Stream stream = File.Create(filePath);
             bitmap.SaveAsPng(stream, bitmap.Width, bitmap.Height);
             stream.Dispose();

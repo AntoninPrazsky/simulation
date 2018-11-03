@@ -32,6 +32,14 @@ namespace Prazsky.Simulation
         /// </summary>
         public bool DisableSimulationWhenOutOfBoundingFrustum { get; set; } = true;
 
+        /*
+        /// <summary>
+        /// Uspání těles mimo promítací kužel funkcionalitou fyzikální knihovny <see cref="Body.Awake"/>.
+        /// TODO: Promyslet, jestli má tato vlastnost smysl, uživatel může chtít používat Body.Awake k jiným účelům.
+        /// </summary>
+        public bool SleepWhenOutOfBoundingFrustum { get; set; } = true;
+        */
+
         /// <summary>
         /// Minimální obnovovací frekvence simulace.
         /// </summary>
@@ -90,7 +98,7 @@ namespace Prazsky.Simulation
                     {
                         //Těleso je uvnitř promítacího kuželu, potom se vždy simuluje a vykresluje
                         body3D.EnableSimulation();
-                        body3D.Draw();
+                        body3D.Draw(Camera3D);
                     }
                     else
                     {
@@ -106,7 +114,7 @@ namespace Prazsky.Simulation
         /// Přidá trojrozměrný simulovatelný objekt do trojrozměrného světa.
         /// </summary>
         /// <param name="body3D">Trojrozměrný simulovatelný objekt.</param>
-        /// <returns>Vrací <code>true</code>, pokud se přidání podařilo, a <code>false</code>, pokud se přidání nepodařilo.</returns>
+        /// <returns>Vrací <code>true</code>, pokud se přidání podařilo, a <code>false</code>, pokud již stejný objekt byl přidán.</returns>
         public bool AddBody3D(Body3D body3D)
         {
             if (_body3Ds.Contains(body3D)) return false;
@@ -119,7 +127,7 @@ namespace Prazsky.Simulation
         /// Odebere trojrozměrný simulovatelný objekt z trojrozměrného světa.
         /// </summary>
         /// <param name="body3D">Trojrozměrný simulovatelný objekt, který má být odebrán.</param>
-        /// <returns>Vrací <code>true</code>, pokud se odebrání podařilo, a <code>false</code>, pokud se odebrání nepodařilo.</returns>
+        /// <returns>Vrací <code>true</code>, pokud se odebrání podařilo, a <code>false</code>, pokud odebíraný objekt neexistuje.</returns>
         public bool RemoveBody3D(Body3D body3D)
         {
             if (!_body3Ds.Contains(body3D)) return false;

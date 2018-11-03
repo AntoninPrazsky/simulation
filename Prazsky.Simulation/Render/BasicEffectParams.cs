@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Prazsky.Simulation
+namespace Prazsky.Render
 {
     /// <summary>
     /// Představuje parametry světelných efektů pro třídu <see cref="Microsoft.Xna.Framework.Graphics.BasicEffect"/>.

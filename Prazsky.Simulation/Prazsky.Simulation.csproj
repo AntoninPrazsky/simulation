@@ -49,14 +49,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Body3D\Body3D.cs" />
-    <Compile Include="Body3D\BasicEffectParams.cs" />
+    <Compile Include="Body3D.cs" />
+    <Compile Include="Body3DCreator.cs" />
+    <Compile Include="Factories\Body3DFactory.cs" />
+    <Compile Include="Render\BasicEffectParams.cs" />
     <Compile Include="BodyCreator.cs" />
     <Compile Include="Camera\BasicCamera3D.cs" />
     <Compile Include="Camera\ICamera.cs" />
     <Compile Include="Geometry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Render\BitmapCreator.cs" />
+    <Compile Include="Render\BitmapRenderer.cs" />
+    <Compile Include="Render\ModelRenderer.cs" />
     <Compile Include="World3D.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
