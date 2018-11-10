@@ -114,8 +114,8 @@ namespace Prazsky.Render
         /// Parametry efektu mlhy.
         /// </summary>
         /// <param name="fogColor">Barva mlhy.</param>
-        /// <param name="fogStart">Začátek mlhy v trojrozměrném světě jako vzdálenost od kamery (<see cref="Camera.ICamera"/>). Objekty před touto vzdáleností jsou plně viditelné.</param>
-        /// <param name="fogEnd">Konec mlhy v trojrozměrném světě jako vzdálenost od kamery (<see cref="Camera.ICamera"/>). Objekty za touto vzdáleností jsou zcela neviditelné.</param>
+        /// <param name="fogStart">Začátek mlhy v trojrozměrném světě jako vzdálenost od kamery (<see cref="Simulation.Camera.ICamera"/>). Objekty před touto vzdáleností jsou plně viditelné.</param>
+        /// <param name="fogEnd">Konec mlhy v trojrozměrném světě jako vzdálenost od kamery (<see cref="Simulation.Camera.ICamera"/>). Objekty za touto vzdáleností jsou zcela neviditelné.</param>
         public FogParams(Vector3 fogColor, float fogStart, float fogEnd)
         {
             FogColor = fogColor;
@@ -129,12 +129,12 @@ namespace Prazsky.Render
         public Vector3 FogColor { get; set; }
 
         /// <summary>
-        /// Začátek mlhy v trojrozměrném světě jako vzdálenost od kamery (<see cref="Camera.ICamera"/>). Objekty před touto vzdáleností jsou plně viditelné.
+        /// Začátek mlhy v trojrozměrném světě jako vzdálenost od kamery (<see cref="Simulation.Camera.ICamera"/>). Objekty před touto vzdáleností jsou plně viditelné.
         /// </summary>
         public float FogStart { get; set; }
 
         /// <summary>
-        /// Konec mlhy v trojrozměrném světě jako vzdálenost od kamery (<see cref="Camera.ICamera"/>). Objekty za touto vzdáleností jsou zcela neviditelné.
+        /// Konec mlhy v trojrozměrném světě jako vzdálenost od kamery (<see cref="Simulation.Camera.ICamera"/>). Objekty za touto vzdáleností jsou zcela neviditelné.
         /// </summary>
         public float FogEnd { get; set; }
     }

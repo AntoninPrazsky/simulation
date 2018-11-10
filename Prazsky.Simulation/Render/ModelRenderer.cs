@@ -27,7 +27,7 @@ namespace Prazsky.Render
                 {
                     effect.PreferPerPixelLighting = preferPerPixelLighting;
 
-                    if (enableDefaultLighting)
+                    if (enableDefaultLighting && basicEffectParams == null)
                     {
                         effect.EnableDefaultLighting();
                     }

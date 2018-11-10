@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using tainicom.Aether.Physics2D.Common;
 using tainicom.Aether.Physics2D.Common.Decomposition;
@@ -14,13 +15,35 @@ namespace Prazsky.Simulation
     /// </summary>
     public static class BodyCreator
     {
-        private const float DEFAULT_REDUCE_VERTICES_DISTANCE = 1f;
-        private const float DEFAULT_GRAPHICS_TO_SIMULATION_RATIO = 1f / 100f;
-        private const float DEFAULT_DENSITY = 1f;
-        private const float DEFAULT_ROTATION = 0f;
+        /// <summary>
+        /// Výchozí vzdálenost mezi vrcholy nalezeného tvaru, které mají být sloučeny (pro zjednodušení tvaru).
+        /// </summary>
+        public const float DEFAULT_REDUCE_VERTICES_DISTANCE = 1f;
 
-        private const TriangulationAlgorithm TRIANGULATION_ALGORITHM = TriangulationAlgorithm.Bayazit;
-        private const BodyType BODY_TYPE = BodyType.Dynamic;
+        /// <summary>
+        /// Výchozí poměr mezi grafickým zobrazením a simulovaným fyzikálním světem.
+        /// </summary>
+        public const float DEFAULT_GRAPHICS_TO_SIMULATION_RATIO = 1f / 100f;
+
+        /// <summary>
+        /// Výchozí hustota tělesa (počet kilogramů na metr čtvereční).
+        /// </summary>
+        public const float DEFAULT_DENSITY = 1f;
+
+        /// <summary>
+        /// Výchozí rotace tělesa v simulovaném světě.
+        /// </summary>
+        public const float DEFAULT_ROTATION = 0f;
+
+        /// <summary>
+        /// Výchozí algoritmus pro rozdělení tvaru na množství menších konvexních polygonů.
+        /// </summary>
+        public const TriangulationAlgorithm DEFAULT_TRIANGULATION_ALGORITHM = TriangulationAlgorithm.Bayazit;
+
+        /// <summary>
+        /// Výchozí typ tělesa (statické, kinematické nebo dynamické).
+        /// </summary>
+        public const BodyType DEFAULT_BODY_TYPE = BodyType.Dynamic;
 
         /// <summary>
         /// Vrátí objekt typu <see cref="Body"/> pro provádění dvourozměrných simulací na základě tvaru nalezeného v dané bitmapě.
@@ -39,11 +62,51 @@ namespace Prazsky.Simulation
             Texture2D orthographicRender,
             World world,
             Vector2 position = new Vector2(),
-            BodyType bodyType = BODY_TYPE,
+            BodyType bodyType = DEFAULT_BODY_TYPE,
             float density = DEFAULT_DENSITY,
             float rotation = DEFAULT_ROTATION,
             float reduceVerticesDistance = DEFAULT_REDUCE_VERTICES_DISTANCE,
-            TriangulationAlgorithm triangulationAlgorithm = TRIANGULATION_ALGORITHM,
+            TriangulationAlgorithm triangulationAlgorithm = DEFAULT_TRIANGULATION_ALGORITHM,
+            float graphicsToSimulationRatio = DEFAULT_GRAPHICS_TO_SIMULATION_RATIO)
+        {
+            List<Vertices> verticesList = CreateVerticesForBody(orthographicRender, reduceVerticesDistance, triangulationAlgorithm, graphicsToSimulationRatio);
+
+            return (world.CreateCompoundPolygon(verticesList, density, position, rotation, bodyType));
+        }
+
+        /// <summary>
+        /// Vytvoří fyzikální těleso (<see cref="Body"/>) na základě vrcholů (<see cref="Vertices"/>).
+        /// </summary>
+        /// <param name="verticesList">List vrcholů pro nalezení tvaru.</param>
+        /// <param name="world">Objekt typu <see cref="World"/> fyzikální knihovny představující dvourozměrný svět, do kterého má být vytvořené těleso zařazeno.</param>
+        /// <param name="position">Výchozí pozice tělesa v simulovaném světě.</param>
+        /// <param name="bodyType">Typ tělesa (statické, kinematické nebo dynamické).</param>
+        /// <param name="density">Hustota tělesa (počet kilogramů na metr čtvereční).</param>
+        /// <param name="rotation">Výchozí rotace tělesa v simulovaném světě.</param>
+        /// <returns></returns>
+        public static Body CreateBodyFromVertices(
+            List<Vertices> verticesList,
+            World world,
+            Vector2 position = new Vector2(),
+            BodyType bodyType = DEFAULT_BODY_TYPE,
+            float density = DEFAULT_DENSITY,
+            float rotation = DEFAULT_ROTATION)
+        {
+            return (world.CreateCompoundPolygon(verticesList, density, position, rotation, bodyType));
+        }
+
+        /// <summary>
+        /// Vrátí list vrholů pro sestavení tvaru (složeného mnohoúhelníku) na základě ortogonální projekce trojrozměrného modelu.
+        /// Provedení této metody je relativně paměťově a výpočetně náročné.
+        /// </summary>
+        /// <param name="orthographicRender">Bitmapa pro nalezení vrcholů.</param>
+        /// <param name="reduceVerticesDistance">Vzdálenost mezi vrcholy nalezeného tvaru, které mají být sloučeny (zjednodušení tvaru).</param>
+        /// <param name="triangulationAlgorithm">Algoritmus pro rozdělení tvaru na množství menších konvexních polygonů.</param>
+        /// <param name="graphicsToSimulationRatio">Poměr mezi grafickým zobrazením a simulovaným fyzikálním světem.</param>
+        /// <returns></returns>
+        public static List<Vertices> CreateVerticesForBody(Texture2D orthographicRender,
+            float reduceVerticesDistance = DEFAULT_REDUCE_VERTICES_DISTANCE,
+            TriangulationAlgorithm triangulationAlgorithm = DEFAULT_TRIANGULATION_ALGORITHM,
             float graphicsToSimulationRatio = DEFAULT_GRAPHICS_TO_SIMULATION_RATIO)
         {
             //Pole pro data bitmapové textury
@@ -64,18 +127,29 @@ namespace Prazsky.Simulation
             //Snížení počtu nalezených vrcholů (zjednodušení)
             textureVertices = SimplifyTools.ReduceByDistance(textureVertices, reduceVerticesDistance);
 
-            //Konkávní polygon je nutné rozdělit na množství menších konvexních polygonů s využitím preferovaného algoritmu
-            List<Vertices> list = Triangulate.ConvexPartition(textureVertices, triangulationAlgorithm);
+            List<Vertices> verticesList = new List<Vertices>();
+
+            try
+            {
+                //Konkávní polygon je nutné rozdělit na množství menších konvexních polygonů s využitím preferovaného algoritmu
+                verticesList = Triangulate.ConvexPartition(textureVertices, triangulationAlgorithm);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Intersecting Constraints")
+                    throw new ArgumentException("Tvar se nepodařilo rozdělit na konvexní polygony, zkuste snížit parametr udávající vzdálenost vrcholů pro sloučení nebo použijte jiný algoritmus pro rozdělení.",
+                        "reduceVerticesDistance, triangulationAlgorithm", ex);
+            }
 
             //Změna velikost polygonu
             Vector2 vertScale = new Vector2(graphicsToSimulationRatio);
-            foreach (Vertices vertices in list)
+            foreach (Vertices vertices in verticesList)
             {
                 vertices.Scale(new Vector2(1f, -1f));
                 vertices.Scale(vertScale);
             }
 
-            return (world.CreateCompoundPolygon(list, density, position, rotation, bodyType));
+            return verticesList;
         }
     }
 }

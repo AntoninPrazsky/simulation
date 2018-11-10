@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Prazsky.Simulation.Camera;
 using tainicom.Aether.Physics2D.Dynamics;
 using Prazsky.Render;
+using Prazsky.Tools;
 
 namespace Prazsky.Simulation
 {
@@ -15,6 +16,7 @@ namespace Prazsky.Simulation
         private Matrix _world = Matrix.Identity;
         private Vector3 _position3D = Vector3.Zero;
         private BoundingSphere _boundingSphere;
+        private BoundingBox _boundingBox;
         private bool _simEnabled = true;
         private bool _asleep = false;
         private Matrix[] _transformation;
@@ -49,9 +51,14 @@ namespace Prazsky.Simulation
         public BasicEffectParams BasicEffectParams { get; set; }
 
         /// <summary>
-        /// Opsaná sféra trojrozměrného modelu.
+        /// Opsaná sféra trojrozměrného modelu. Pohybuje se v trojrozměrném světě společně s objektem.
         /// </summary>
         public BoundingSphere BoundingSphere { get => _boundingSphere; }
+
+        /// <summary>
+        /// Opsaný kvádr typu AABB (axis-aligned bounding box) trojrozměrného modelu. Nepohybuje se společně s objektem.
+        /// </summary>
+        public BoundingBox BoundingBox { get => _boundingBox; }
 
         /// <summary>
         /// Pozice trojrozměrného modelu na ose Z.
@@ -70,7 +77,9 @@ namespace Prazsky.Simulation
             Body2D = physicalBody2D;
             PositionZ = positionZ;
 
-            _boundingSphere = Geometry.GetBoundingSphere(_model3D);
+            _boundingBox = Geometry.GetBoundingBox(_model3D);
+            _boundingSphere = new BoundingSphere(Vector3.Zero, Vector3.Distance(Vector3.Zero, _boundingBox.Max));
+
             DefaultBodyType = Body2D.BodyType;
 
             _transformation = new Matrix[_model3D.Bones.Count];
@@ -81,6 +90,7 @@ namespace Prazsky.Simulation
         /// Vykreslí jeden snímek trojrozměrného modelu na odpovídající pozici a s odpovídající rotací na základě dvourozměrné fyzikální simulace.
         /// Aplikuje buď vychozí efekt osvětlení, pokud je povolen parametrem <see cref="EnableDefaultLighting"/>, nebo efekt definovaný parametrem <see cref="BasicEffectParams"/>, nebo žádný efekt.
         /// </summary>
+        /// <param name="camera">Kamera, která má být k vykreslení modelu použita.</param>
         public void Draw(ICamera camera)
         {
             ModelRenderer.Render(_model3D, _transformation, ref camera, ref _world, BasicEffectParams, EnableDefaultLighting, PreferPerPixelLighting);

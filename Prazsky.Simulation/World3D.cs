@@ -30,7 +30,7 @@ namespace Prazsky.Simulation
         /// <summary>
         /// Deaktivace fyzikální simulace, pokud je trojrozměrné těleso mimo promítací kužel.
         /// </summary>
-        public bool DisableSimulationWhenOutOfBoundingFrustum { get; set; } = true;
+        public bool DisableSimulationWhenOutOfBoundingFrustum { get; set; } = false;
 
         /*
         /// <summary>

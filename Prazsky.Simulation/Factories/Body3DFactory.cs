@@ -13,7 +13,13 @@ namespace Prazsky.Simulation.Factories
 {
     public static class Body3DFactory
     {
-        public static Body3D CreateBody3D(Model model, World world2D, GraphicsDevice graphicsDevice, Vector2 position = new Vector2(), BodyType bodyType = BodyType.Dynamic, BasicEffectParams basicEffectParams = null)
+        public static Body3D CreateBody3D(
+            Model model, 
+            World world2D, 
+            GraphicsDevice graphicsDevice, 
+            Vector2 position = new Vector2(), 
+            BodyType bodyType = BodyType.Dynamic, 
+            BasicEffectParams basicEffectParams = null)
         {
             Texture2D orthoRender = BitmapRenderer.RenderOrthographic(graphicsDevice, model);
             Body body2D = BodyCreator.CreatePolygonBody(orthoRender, world2D, position, bodyType);

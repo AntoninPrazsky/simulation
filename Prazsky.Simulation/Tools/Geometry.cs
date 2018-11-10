@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Prazsky.Simulation
+namespace Prazsky.Tools
 {
     /// <summary>
     /// Poskytuje metody pro výpočet geometrických objektů (<see cref="BoundingBox"/>, <see cref="BoundingSphere"/>) na základě trojrozměrného modelu (<see cref="Model"/>).
     /// </summary>
-    internal static class Geometry
+    public static class Geometry
     {
         /// <summary>
         /// Vrátí opsaný kvádr typu AABB (axis-aligned bounding box) daného modelu.
