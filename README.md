@@ -14,4 +14,4 @@ The library is under the [Microsoft Public License (MS-PL)](https://opensource.o
 ![Screenshot](Documentation//screenshot.png)
 
 ## Notes
-* All comments in source code are currently written in Czech.
+* All comments in source code are currently written in Czech as well as [documentation](https://simulation.winphonew.eu).
