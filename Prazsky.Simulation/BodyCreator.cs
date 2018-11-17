@@ -51,7 +51,7 @@ namespace Prazsky.Simulation
         /// <param name="orthographicRender">Bitmapa pro nalezení tvaru tělesa.</param>
         /// <param name="world">Objekt typu <see cref="World"/> fyzikální knihovny představující dvourozměrný svět, do kterého má být vytvořené těleso zařazeno.</param>
         /// <param name="position">Výchozí pozice tělesa v simulovaném světě.</param>
-        /// <param name="bodyType">Typ tělesa (statické, kinematické nebo dynamické).</param>
+        /// <param name="bodyType">Typ simulovaného tělesa (statické, kinematické nebo dynamické).</param>
         /// <param name="density">Hustota tělesa (počet kilogramů na metr čtvereční).</param>
         /// <param name="rotation">Výchozí rotace tělesa v simulovaném světě.</param>
         /// <param name="reduceVerticesDistance">Vzdálenost mezi vrcholy nalezeného tvaru, které mají být sloučeny (zjednodušení tvaru).</param>
@@ -80,7 +80,7 @@ namespace Prazsky.Simulation
         /// <param name="verticesList">List vrcholů pro nalezení tvaru.</param>
         /// <param name="world">Objekt typu <see cref="World"/> fyzikální knihovny představující dvourozměrný svět, do kterého má být vytvořené těleso zařazeno.</param>
         /// <param name="position">Výchozí pozice tělesa v simulovaném světě.</param>
-        /// <param name="bodyType">Typ tělesa (statické, kinematické nebo dynamické).</param>
+        /// <param name="bodyType">Typ simulovaného tělesa (statické, kinematické nebo dynamické).</param>
         /// <param name="density">Hustota tělesa (počet kilogramů na metr čtvereční).</param>
         /// <param name="rotation">Výchozí rotace tělesa v simulovaném světě.</param>
         /// <returns></returns>

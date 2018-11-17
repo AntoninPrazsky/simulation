@@ -6,9 +6,6 @@ using tainicom.Aether.Physics2D.Common;
 using tainicom.Aether.Physics2D.Common.Decomposition;
 using tainicom.Aether.Physics2D.Dynamics;
 
-/// <summary>
-/// Obsahuje experimentální funkce knihovny.
-/// </summary>
 namespace Prazsky.Simulation.Experimental
 {
     /// <summary>
@@ -79,11 +76,12 @@ namespace Prazsky.Simulation.Experimental
         /// <param name="center">Souřadnice středu řady.</param>
         /// <param name="bodyType">Typ vytvořených objektů řady (statické, kinematické nebo dynamické).</param>
         /// <param name = "basicEffectParams" > Parametry pro třídu<see cref= "BasicEffect" />.</ param >
-        public void BuildRow(Model model, World3D world3D, int count, Vector2 center = new Vector2(), BodyType bodyType = BodyType.Static, BasicEffectParams basicEffectParams = null)
+        public void BuildRow(Model model, World3D world3D, int count, Vector2 center = new Vector2(), BodyType bodyType = BodyType.Static, BasicEffectParams basicEffectParams = null, Category category = Category.Cat31)
         {
             if (count <= 0) return;
 
             Body3D body3D = CreateBody3D(model, world3D.World2D, center, bodyType, basicEffectParams);
+            body3D.Body2D.SetCollisionCategories(category);
             world3D.AddBody3D(body3D);
 
             if (count == 1) return;
@@ -93,6 +91,7 @@ namespace Prazsky.Simulation.Experimental
             Vector2 position = new Vector2(center.X - xSize, center.Y);
 
             body3D = CreateBody3D(model, world3D.World2D, position, bodyType, basicEffectParams);
+            body3D.Body2D.SetCollisionCategories(category);
             world3D.AddBody3D(body3D);
 
             if (count == 2) return;
@@ -101,6 +100,7 @@ namespace Prazsky.Simulation.Experimental
             {
                 position = new Vector2(center.X - i * xSize, center.Y);
                 body3D = CreateBody3D(model, world3D.World2D, position, bodyType, basicEffectParams);
+                body3D.Body2D.SetCollisionCategories(category);
                 world3D.AddBody3D(body3D);
             }
 
@@ -108,6 +108,7 @@ namespace Prazsky.Simulation.Experimental
             {
                 position = new Vector2(center.X + i * xSize, center.Y);
                 body3D = CreateBody3D(model, world3D.World2D, position, bodyType, basicEffectParams);
+                body3D.Body2D.SetCollisionCategories(category);
                 world3D.AddBody3D(body3D);
             }
 
@@ -115,6 +116,7 @@ namespace Prazsky.Simulation.Experimental
             {
                 position = new Vector2(center.X + eachSide * xSize, center.Y);
                 body3D = CreateBody3D(model, world3D.World2D, position, bodyType, basicEffectParams);
+                body3D.Body2D.SetCollisionCategories(category);
                 world3D.AddBody3D(body3D);
             }
         }
