@@ -4,6 +4,7 @@ using Prazsky.Simulation.Camera;
 using System;
 using System.Collections.Generic;
 using tainicom.Aether.Physics2D.Dynamics;
+using tainicom.Aether.Physics2D.Dynamics.Joints;
 
 namespace Prazsky.Simulation
 {
@@ -16,6 +17,7 @@ namespace Prazsky.Simulation
 
         //Parametry vícevláknových výpočtů fyzikální knihovny (promyslet, jestli někdo bude potřebovat toto nastavení měnit)
         private const int VELOCITY_CONSTRAINTS_MULTITHREAD_THRESHOLD = 256;
+
         private const int POSITION_CONSTRAINTS_MULTITHREAD_THRESHOLD = 256;
         private const int COLLIDE_MULTITHREAD_THRESHOLD = 256;
 
@@ -168,6 +170,51 @@ namespace Prazsky.Simulation
         public Vector2 GetWorld2DCoordinatesFromScreen(Point screenCoordinates, Viewport viewport)
         {
             return GetWorld2DCoordinatesFromScreen(new Vector2(screenCoordinates.X, screenCoordinates.Y), viewport);
+        }
+
+        /// <summary>
+        /// Odebere všechny objekty ze simulovaného světa.
+        /// </summary>
+        public void Clear()
+        {
+            World2D.Clear();
+            _body3Ds.Clear();
+        }
+
+        private FixedMouseJoint _fixedMouseJoint = null;
+        private Fixture _foundFixture = null;
+
+        public void GrabBody(Point position, float force, Viewport viewport)
+        {
+            Vector2 positionWorld2D = GetWorld2DCoordinatesFromScreen(position, viewport);
+
+            if (_fixedMouseJoint != null)
+            {
+                _fixedMouseJoint.WorldAnchorB = positionWorld2D;
+                return;
+            }
+            else
+            {
+                _foundFixture = World2D.TestPoint(positionWorld2D);
+
+                if (_foundFixture != null)
+                {
+                    Body body = _foundFixture.Body;
+                    _fixedMouseJoint = new FixedMouseJoint(body, positionWorld2D);
+                    _fixedMouseJoint.MaxForce = 100f * body.Mass;
+                    World2D.Add(_fixedMouseJoint);
+                    body.Awake = true;
+                }
+            }
+        }
+
+        public void ReleaseGrabbedBody()
+        {
+            if (_fixedMouseJoint != null)
+            {
+                World2D.Remove(_fixedMouseJoint);
+                _fixedMouseJoint = null;
+            }
         }
     }
 }
