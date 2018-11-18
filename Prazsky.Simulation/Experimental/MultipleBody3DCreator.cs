@@ -6,10 +6,11 @@ using tainicom.Aether.Physics2D.Common;
 using tainicom.Aether.Physics2D.Common.Decomposition;
 using tainicom.Aether.Physics2D.Dynamics;
 
-namespace Prazsky.Simulation.Experimental
+namespace Prazsky.Simulation
 {
     /// <summary>
-    /// Slouží pro rychlé vytváření trojrozměrných objektů pro fyzikální simulaci.
+    /// Slouží pro rychlé vytváření trojrozměrných objektů pro fyzikální simulaci (eliminuje nutnost duplicitního
+    /// trasování bitmap).
     /// </summary>
     public class MultipleBody3DCreator
     {
@@ -75,7 +76,7 @@ namespace Prazsky.Simulation.Experimental
         /// <param name="count">Počet objektů tvořících řadu.</param>
         /// <param name="center">Souřadnice středu řady.</param>
         /// <param name="bodyType">Typ vytvořených objektů řady (statické, kinematické nebo dynamické).</param>
-        /// <param name = "basicEffectParams" > Parametry pro třídu<see cref= "BasicEffect" />.</ param >
+        /// <param name = "basicEffectParams"> Parametry pro třídu<see cref= "BasicEffect" />.</param>
         public void BuildRow(Model model, World3D world3D, int count, Vector2 center = new Vector2(), BodyType bodyType = BodyType.Static, BasicEffectParams basicEffectParams = null, Category category = Category.Cat31)
         {
             if (count <= 0) return;

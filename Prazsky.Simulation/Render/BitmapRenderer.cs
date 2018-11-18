@@ -14,11 +14,13 @@ namespace Prazsky.Render
     {
         private const int DEFAULT_BITMAP_SCALE = 100;
 
-        //Tyto hodnoty jsou dány možnostmi použitého grafického zařízení (a platformou, na které kód běží), zjistit, jestli je lze jednoduše zjistit z této třídy
+        //Tyto hodnoty jsou dány možnostmi použitého grafického zařízení (a platformou, na které kód běží), zjistit,
+        //jestli je lze jednoduše zjistit z této třídy
         private const int MAX_BITMAP_WIDTH = 4096;
         private const int MAX_BITMAP_HEIGHT = 4096;
 
-        //Tyto hodnoty by bylo možné individuálně spočítat pro každý model (jde o ortogonální projekci kolmou k ose Z - ke kameře), promyslet, jestli by to mělo smysl
+        //Tyto hodnoty by bylo možné individuálně spočítat pro každý model (jde o ortogonální projekci kolmou k
+        //ose Z - ke kameře), promyslet, jestli by to mělo smysl
         private const float CAMERA_Z_POSITION = 10f;
         private const float Z_NEAR_PLANE = 1f;
         private const float Z_FAR_PLANE = 100f;
@@ -28,14 +30,23 @@ namespace Prazsky.Render
         /// </summary>
         /// <param name="graphicsDevice">Grafické zařízení, které má být použito k vykreslení modelu.</param>
         /// <param name="model">Trojrozměný model k vykreslení.</param>
-        /// <param name="bitmapScale">Poměr modelu vůči jeho bitmapové reprezentaci. Výchozí hodnota 100 znamená, že 1 jednotka modelu odpovídá 100 pixelům bitmapy.</param>
-        /// <returns>Vrací ortogonální projekci trojrozměného modelu v podobě bitmapy typu <see cref="Texture2D"/>.</returns>
-        public static Texture2D RenderOrthographic(GraphicsDevice graphicsDevice, Model model, int bitmapScale = DEFAULT_BITMAP_SCALE)
+        /// <param name="bitmapScale">Poměr modelu vůči jeho bitmapové reprezentaci. Výchozí hodnota 100 znamená,
+        /// že 1 jednotka modelu odpovídá 100 pixelům bitmapy.</param>
+        /// <returns>Vrací ortogonální projekci trojrozměného modelu v podobě bitmapy.</returns>
+        public static Texture2D RenderOrthographic(
+            GraphicsDevice graphicsDevice,
+            Model model,
+            int bitmapScale = DEFAULT_BITMAP_SCALE)
         {
             SizeFloat modelSize = CalculateModelSize(model);
             SizeInt renderSize = CalculateBitmapSize(modelSize, bitmapScale);
 
-            RenderTarget2D renderTarget = new RenderTarget2D(graphicsDevice, renderSize.X, renderSize.Y, false, graphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth16);
+            RenderTarget2D renderTarget = new RenderTarget2D(
+                graphicsDevice,
+                renderSize.X,
+                renderSize.Y,
+                false,
+                graphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth16);
 
             Matrix world = Matrix.Identity;
             Matrix view = Matrix.CreateLookAt(new Vector3(0f, 0f, CAMERA_Z_POSITION), Vector3.Zero, Vector3.Up);
@@ -53,13 +64,20 @@ namespace Prazsky.Render
         }
 
         /// <summary>
-        /// Vykreslí ortogonální projekci modelu využitím metody <see cref="RenderOrthographic(GraphicsDevice, Model, int)"/> a zapíše ji do souboru ve formátu PNG.
+        /// Vykreslí ortogonální projekci modelu využitím metody 
+        /// <see cref="RenderOrthographic(GraphicsDevice, Model, int)"/> a zapíše ji do souboru ve formátu PNG.
         /// </summary>
         /// <param name="graphicsDevice">Grafické zařízení, které má být použito k vykreslení modelu.</param>
         /// <param name="model">Trojrozměný model k vykreslení.</param>
-        /// <param name="filePath">Kompletní cesta k finálnímu souboru (například "C:\image.png" pro systém Windows).</param>
-        /// <param name="bitmapScale">Poměr modelu vůči jeho bitmapové reprezentaci. Výchozí hodnota 100 znamená, že 1 jednotka modelu odpovídá 100 pixelům bitmapy.</param>
-        public static void RenderOrthographicAsPNG(GraphicsDevice graphicsDevice, Model model, string filePath, int bitmapScale = DEFAULT_BITMAP_SCALE)
+        /// <param name="filePath">Kompletní cesta k finálnímu souboru
+        /// (například "C:\image.png" pro systém Windows).</param>
+        /// <param name="bitmapScale">Poměr modelu vůči jeho bitmapové reprezentaci.
+        /// Výchozí hodnota 100 znamená, že 1 jednotka modelu odpovídá 100 pixelům bitmapy.</param>
+        public static void RenderOrthographicAsPNG(
+            GraphicsDevice graphicsDevice,
+            Model model,
+            string filePath,
+            int bitmapScale = DEFAULT_BITMAP_SCALE)
         {
             Texture2D bitmap = RenderOrthographic(graphicsDevice, model, bitmapScale);
             Stream stream = File.Create(filePath);
@@ -78,7 +96,8 @@ namespace Prazsky.Render
             calculatedSize.Y = Math.Abs(box.GetCorners()[2].Y) * 2;
 
             if (calculatedSize.X <= 0 || calculatedSize.Y <= 0)
-                throw new ArgumentException("Chyba při výpočtu velikosti modelu. Zkontrolujte model (jeho výška a šířka musí být větší než 0).", nameof(model));
+                throw new ArgumentException("Chyba při výpočtu velikosti modelu. Zkontrolujte model (jeho výška a " +
+                    "šířka musí být větší než 0).", nameof(model));
 
             return calculatedSize;
         }
@@ -92,7 +111,9 @@ namespace Prazsky.Render
 
             if (calculatedSize.X > MAX_BITMAP_WIDTH)
                 throw new ArgumentException(
-                    string.Format("Chyba při vytváření bitmapového podkladu. Šířka výsledného bitmapového podkladu ({0}) překračuje maximální povolenou hodnotu ({1}). Použijte menší model nebo snižte hodnotu parametru {2} ({3}).",
+                    string.Format("Chyba při vytváření bitmapového podkladu. Šířka výsledného bitmapového podkladu " +
+                    "({0}) překračuje maximální povolenou hodnotu ({1}). Použijte menší model nebo snižte hodnotu " +
+                    "parametru {2} ({3}).",
                     calculatedSize.X,
                     MAX_BITMAP_WIDTH,
                     nameof(bitmapScale),
@@ -100,7 +121,9 @@ namespace Prazsky.Render
 
             if (calculatedSize.Y > MAX_BITMAP_HEIGHT)
                 throw new ArgumentException(
-                    string.Format("Chyba při vytváření bitmapového podkladu. Výška výsledného bitmapového podkladu ({0}) překračuje maximální povolenou hodnotu ({1}). Použijte menší model nebo snižte hodnotu parametru {2} ({3}).",
+                    string.Format("Chyba při vytváření bitmapového podkladu. Výška výsledného bitmapového podkladu " +
+                    "({0}) překračuje maximální povolenou hodnotu ({1}). Použijte menší model nebo snižte hodnotu " +
+                    "parametru {2} ({3}).",
                     calculatedSize.Y,
                     MAX_BITMAP_WIDTH,
                     nameof(bitmapScale),

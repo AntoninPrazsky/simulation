@@ -15,7 +15,7 @@ namespace Prazsky.Simulation
     {
         #region Parametry pro fyzikální knihovnu
 
-        //Parametry vícevláknových výpočtů fyzikální knihovny (promyslet, jestli někdo bude potřebovat toto nastavení měnit)
+        //Parametry vícevláknových výpočtů fyzikální knihovny
         private const int VELOCITY_CONSTRAINTS_MULTITHREAD_THRESHOLD = 256;
 
         private const int POSITION_CONSTRAINTS_MULTITHREAD_THRESHOLD = 256;
@@ -116,7 +116,8 @@ namespace Prazsky.Simulation
         /// Přidá trojrozměrný simulovatelný objekt do trojrozměrného světa.
         /// </summary>
         /// <param name="body3D">Trojrozměrný simulovatelný objekt.</param>
-        /// <returns>Vrací <code>true</code>, pokud se přidání podařilo, a <code>false</code>, pokud již stejný objekt byl přidán.</returns>
+        /// <returns>Vrací <code>true</code>, pokud se přidání podařilo, a <code>false</code>, pokud již stejný objekt
+        /// byl přidán.</returns>
         public bool AddBody3D(Body3D body3D)
         {
             if (_body3Ds.Contains(body3D)) return false;
@@ -129,7 +130,8 @@ namespace Prazsky.Simulation
         /// Odebere trojrozměrný simulovatelný objekt z trojrozměrného světa.
         /// </summary>
         /// <param name="body3D">Trojrozměrný simulovatelný objekt, který má být odebrán.</param>
-        /// <returns>Vrací <code>true</code>, pokud se odebrání podařilo, a <code>false</code>, pokud odebíraný objekt neexistuje.</returns>
+        /// <returns>Vrací <code>true</code>, pokud se odebrání podařilo, a <code>false</code>, pokud odebíraný objekt
+        /// neexistuje.</returns>
         public bool RemoveBody3D(Body3D body3D)
         {
             if (!_body3Ds.Contains(body3D)) return false;
@@ -139,15 +141,18 @@ namespace Prazsky.Simulation
         }
 
         /// <summary>
-        /// Vrátí souřadnice bodu v dvourozměrném světě na základě souřadnic (<see cref="Vector2"/>) z dvourozměrné projekce trojrozměrného světa.
+        /// Vrátí souřadnice bodu v dvourozměrném světě na základě souřadnic (<see cref="Vector2"/>) z dvourozměrné
+        /// projekce trojrozměrného světa.
         /// </summary>
         /// <param name="screenCoordinates">Souřadnice na dvourozměrné projekci.</param>
         /// <param name="viewport">Dvourozměrné zobrazení trojrozměrného světa.</param>
         /// <returns></returns>
         public Vector2 GetWorld2DCoordinatesFromScreen(Vector2 screenCoordinates, Viewport viewport)
         {
-            Vector3 nearPoint = viewport.Unproject(new Vector3(screenCoordinates, 0f), Camera3D.Projection, Camera3D.View, Matrix.Identity);
-            Vector3 farPoint = viewport.Unproject(new Vector3(screenCoordinates, 1f), Camera3D.Projection, Camera3D.View, Matrix.Identity);
+            Vector3 nearPoint = viewport.Unproject(
+                new Vector3(screenCoordinates, 0f), Camera3D.Projection, Camera3D.View, Matrix.Identity);
+            Vector3 farPoint = viewport.Unproject(
+                new Vector3(screenCoordinates, 1f), Camera3D.Projection, Camera3D.View, Matrix.Identity);
 
             Vector3 direction = (farPoint - nearPoint);
             direction.Normalize();
@@ -162,7 +167,8 @@ namespace Prazsky.Simulation
         }
 
         /// <summary>
-        /// Vrátí souřadnice bodu v dvourozměrném světě na základě souřadnic (<see cref="Point"/>) z dvourozměrné projekce trojrozměrného světa.
+        /// Vrátí souřadnice bodu v dvourozměrném světě na základě souřadnic (<see cref="Point"/>) z dvourozměrné
+        /// projekce trojrozměrného světa.
         /// </summary>
         /// <param name="screenCoordinates">Souřadnice na dvourozměrné projekci.</param>
         /// <param name="viewport">Dvourozměrné zobrazení trojrozměrného světa.</param>
@@ -184,6 +190,12 @@ namespace Prazsky.Simulation
         private FixedMouseJoint _fixedMouseJoint = null;
         private Fixture _foundFixture = null;
 
+        /// <summary>
+        /// Zkusí uchopit těleso na dané pozici danou silou.
+        /// </summary>
+        /// <param name="position">Pozice k uchopení.</param>
+        /// <param name="force">Síla uchopení.</param>
+        /// <param name="viewport">Dvourozměrné zobrazení trojrozměrného světa.</param>
         public void GrabBody(Point position, float force, Viewport viewport)
         {
             Vector2 positionWorld2D = GetWorld2DCoordinatesFromScreen(position, viewport);
@@ -208,6 +220,9 @@ namespace Prazsky.Simulation
             }
         }
 
+        /// <summary>
+        /// Pustí uchopené těleso.
+        /// </summary>
         public void ReleaseGrabbedBody()
         {
             if (_fixedMouseJoint != null)

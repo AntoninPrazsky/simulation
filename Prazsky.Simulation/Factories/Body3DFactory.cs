@@ -1,12 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Prazsky.Render;
-using Prazsky.Simulation.Camera;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Prazsky.Simulation.Factories
@@ -17,21 +11,21 @@ namespace Prazsky.Simulation.Factories
     public static class Body3DFactory
     {
         /// <summary>
-        /// Vytváří objekty typu <see cref="Body3D"/>.
+        /// Vrátí objekt typu <see cref="Body3D"/>.
         /// </summary>
         /// <param name="model">Trojrozměrný model.</param>
-        /// <param name="world2D">Dvourozměrný svět, do kterého má být <see cref="Body3D"/> zařazeno.</param>
+        /// <param name="world2D">Dvourozměrný svět, do kterého má být těleso zařazeno.</param>
         /// <param name="graphicsDevice">Grafické zařízení.</param>
         /// <param name="position">Výchozí pozice objektu v dvourozměrném světě.</param>
         /// <param name="bodyType">Typ simulovaného tělesa (statické, kinematické nebo dynamické).</param>
         /// <param name="basicEffectParams">Parametry pro třídu <see cref="BasicEffect"/>.</param>
         /// <returns></returns>
         public static Body3D CreateBody3D(
-            Model model, 
-            World world2D, 
-            GraphicsDevice graphicsDevice, 
-            Vector2 position = new Vector2(), 
-            BodyType bodyType = BodyType.Dynamic, 
+            Model model,
+            World world2D,
+            GraphicsDevice graphicsDevice,
+            Vector2 position = new Vector2(),
+            BodyType bodyType = BodyType.Dynamic,
             BasicEffectParams basicEffectParams = null)
         {
             Texture2D orthoRender = BitmapRenderer.RenderOrthographic(graphicsDevice, model);
@@ -46,6 +40,16 @@ namespace Prazsky.Simulation.Factories
             return body3D;
         }
 
+        /// <summary>
+        /// Vrátí objekt typu <see cref="Body3D"/>.
+        /// </summary>
+        /// <param name="model">Trojrozměrný model.</param>
+        /// <param name="world2D">Dvourozměrný svět, do kterého má být těleso zařazeno.</param>
+        /// <param name="body">Dvourozměrné těleso.</param>
+        /// <param name="position">Výchozí pozice objektu v dvourozměrném světě.</param>
+        /// <param name="bodyType">Typ simulovaného tělesa (statické, kinematické nebo dynamické).</param>
+        /// <param name="basicEffectParams">Parametry pro třídu <see cref="BasicEffect"/>.</param>
+        /// <returns></returns>
         public static Body3D CreateBody3D(
             Model model,
             World world2D,

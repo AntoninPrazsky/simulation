@@ -32,7 +32,8 @@ namespace Prazsky.Simulation
         public BodyType DefaultBodyType { get; }
 
         /// <summary>
-        /// Aktivace nebo deaktivace defaultního tříbodového osvětelní trojrozměrného modelu, které je definováno frameworkem MonoGame.
+        /// Aktivace nebo deaktivace defaultního tříbodového osvětelní trojrozměrného modelu, které je definováno
+        /// frameworkem MonoGame.
         /// Skládá se z hlavního, doplňkového a zadního světla.
         /// https://blogs.msdn.microsoft.com/shawnhar/2007/04/09/the-standard-lighting-rig/
         /// </summary>
@@ -40,13 +41,16 @@ namespace Prazsky.Simulation
 
         /// <summary>
         /// Aktivace nebo deaktivace výpočtu osvětlení pro každý pixel při vykreslování.
-        /// Při deaktivaci nebo pokud grafické zařízení tento způsob nepodporuje, je osvětlení aplikováno na základě každého vrcholu modelu (vertex lighting).
+        /// Při deaktivaci nebo pokud grafické zařízení tento způsob nepodporuje, je osvětlení aplikováno na základě
+        /// každého vrcholu modelu (vertex lighting).
         /// </summary>
         public bool PreferPerPixelLighting { set; get; } = true;
 
         /// <summary>
-        /// Parametry třídy (<see cref="BasicEffect"/>) frameworku MonoGame pro vykreslování obsažené ve třídě (<see cref="Render.BasicEffectParams"/>).
-        /// Používá se, pokud se nepoužívá defaultní osvětlení aktivované parametrem (<see cref="EnableDefaultLighting"/>).
+        /// Parametry třídy (<see cref="BasicEffect"/>) frameworku MonoGame pro vykreslování obsažené ve třídě
+        /// (<see cref="Render.BasicEffectParams"/>).
+        /// Používá se, pokud se nepoužívá defaultní osvětlení aktivované parametrem
+        /// (<see cref="EnableDefaultLighting"/>).
         /// </summary>
         public BasicEffectParams BasicEffectParams { get; set; }
 
@@ -56,7 +60,8 @@ namespace Prazsky.Simulation
         public BoundingSphere BoundingSphere { get => _boundingSphere; }
 
         /// <summary>
-        /// Opsaný kvádr typu AABB (axis-aligned bounding box) trojrozměrného modelu. Nepohybuje se společně s objektem.
+        /// Opsaný kvádr typu AABB (axis-aligned bounding box) trojrozměrného modelu. Nepohybuje se společně s
+        /// objektem.
         /// </summary>
         public BoundingBox BoundingBox { get => _boundingBox; }
 
@@ -69,7 +74,8 @@ namespace Prazsky.Simulation
         /// Konstruktor trojrozměrného objektu s podporou dvourozměrné fyzikální simulace.
         /// </summary>
         /// <param name="model3D">Trojrozměrný model pro vykreslování.</param>
-        /// <param name="physicalBody2D">Dvourozměrná fyzikální reprezentace modelu pro fyzikální simulaci knihovnou.</param>
+        /// <param name="physicalBody2D">Dvourozměrná fyzikální reprezentace modelu pro fyzikální simulaci
+        /// knihovnou.</param>
         /// <param name="positionZ">Výchozí pozice modelu na ose Z.</param>
         public Body3D(Model model3D, Body physicalBody2D, float positionZ = 0f)
         {
@@ -87,13 +93,16 @@ namespace Prazsky.Simulation
         }
 
         /// <summary>
-        /// Vykreslí jeden snímek trojrozměrného modelu na odpovídající pozici a s odpovídající rotací na základě dvourozměrné fyzikální simulace.
-        /// Aplikuje buď vychozí efekt osvětlení, pokud je povolen parametrem <see cref="EnableDefaultLighting"/>, nebo efekt definovaný parametrem <see cref="BasicEffectParams"/>, nebo žádný efekt.
+        /// Vykreslí jeden snímek trojrozměrného modelu na odpovídající pozici a s odpovídající rotací na základě
+        /// dvourozměrné fyzikální simulace.
+        /// Aplikuje buď vychozí efekt osvětlení, pokud je povolen parametrem <see cref="EnableDefaultLighting"/>, nebo
+        /// efekt definovaný parametrem <see cref="BasicEffectParams"/>, nebo žádný efekt.
         /// </summary>
         /// <param name="camera">Kamera, která má být k vykreslení modelu použita.</param>
         public void Draw(ICamera camera)
         {
-            ModelRenderer.Render(_model3D, _transformation, ref camera, ref _world, BasicEffectParams, EnableDefaultLighting, PreferPerPixelLighting);
+            ModelRenderer.Render(_model3D, _transformation, ref camera, ref _world, BasicEffectParams,
+                EnableDefaultLighting, PreferPerPixelLighting);
         }
 
         /// <summary>
@@ -148,7 +157,8 @@ namespace Prazsky.Simulation
         }
 
         /// <summary>
-        /// Aktivuje fyzikální simulaci tělesa navrácením jeho <see cref="BodyType"/> na výchozí hodnotu (<see cref="DefaultBodyType"/>)
+        /// Aktivuje fyzikální simulaci tělesa navrácením jeho <see cref="BodyType"/> na výchozí hodnotu 
+        /// (<see cref="DefaultBodyType"/>)
         /// Nemá smysl pro tělesa typu <see cref="BodyType.Kinematic"/> nebo <see cref="BodyType.Static"/>.
         /// </summary>
         public void EnableSimulation()

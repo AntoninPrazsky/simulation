@@ -35,12 +35,15 @@ namespace Prazsky.Simulation.Camera
         /// <summary>
         /// Inkrement nebo dekrement pro pohyb kamery po osách X, Y a Z vyjádřený trojrozměrným vektorem.
         /// </summary>
-        /// <param name="shift">Složky X, Y a Z vektoru vyjadřují inkrement nebo dekrement pohybu po odpovídajících osách (běžně -1f až 1f).</param>
+        /// <param name="shift">Složky X, Y a Z vektoru vyjadřují inkrement nebo dekrement pohybu po odpovídajících
+        /// osách (běžně -1f až 1f).</param>
         /// <param name="gameTime">Herní čas.</param>
         public void Move(Vector3 shift, GameTime gameTime)
         {
             //Pohyb kamery ve směru, kterým se dívá
-            Position += MoveSpeed * Vector3.Transform(shift, GetCameraRotation()) * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            Position += MoveSpeed * 
+                Vector3.Transform(shift, GetCameraRotation()) * 
+                (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             Recalculate();
         }
 
@@ -59,7 +62,8 @@ namespace Prazsky.Simulation.Camera
         /// <summary>
         /// Inkrement nebo dekrement pro rotaci kamery okolo os X a Y vyjádřený dvourozměrným vektorem.
         /// </summary>
-        /// <param name="rotation">Složky X a Y vektoru vyjadřují inkrement nebo dekrement rotace okolo odpovídajících os (běžně -1f až 1f).</param>
+        /// <param name="rotation">Složky X a Y vektoru vyjadřují inkrement nebo dekrement rotace okolo odpovídajících
+        /// os (běžně -1f až 1f).</param>
         /// <param name="gameTime">Herní čas.</param>
         public void Rotate(Vector2 rotation, GameTime gameTime)
         {
@@ -119,7 +123,8 @@ namespace Prazsky.Simulation.Camera
             get => _farPlane;
             set
             {
-                if (value <= _nearPlane) throw new ArgumentException("Vzdálenost zadní ořezové plochy nemůže být menší nebo rovna vzdálenosti přední ořezové plochy.", "FarPlane");
+                if (value <= _nearPlane) throw new ArgumentException("Vzdálenost zadní ořezové plochy nemůže být " +
+                    "menší nebo rovna vzdálenosti přední ořezové plochy.", "FarPlane");
                 _farPlane = value;
             }
         }
@@ -132,8 +137,10 @@ namespace Prazsky.Simulation.Camera
             get => _nearPlane;
             set
             {
-                if (value >= _farPlane) throw new ArgumentException("Vzdálenost přední ořezové plochy nemůže být větší nebo rovna vzdálenosti zadní ořezové plochy.", "NearPlane");
-                if (value <= 0) throw new ArgumentException("Vzdálenost přední ořezové plochy nemůže být menší nebo rovna nule.", "NearPlane");
+                if (value >= _farPlane) throw new ArgumentException("Vzdálenost přední ořezové plochy nemůže být " +
+                    "větší nebo rovna vzdálenosti zadní ořezové plochy.", "NearPlane");
+                if (value <= 0) throw new ArgumentException("Vzdálenost přední ořezové plochy nemůže být menší nebo " +
+                    "rovna nule.", "NearPlane");
                 _nearPlane = value;
             }
         }
@@ -180,9 +187,11 @@ namespace Prazsky.Simulation.Camera
         public float FarPlaneDistance { get; set; } = DEFAULT_FAR_PLANE_DISTANCE;
 
         /// <summary>
-        /// Zorné pole kamery. Musí být větší než 0 a menší než π (0° - 180°). Jiné hodnoty jsou oříznuty do tohoto intervalu.
+        /// Zorné pole kamery. Musí být větší než 0 a menší než π (0° - 180°). Jiné hodnoty jsou oříznuty do tohoto
+        /// intervalu.
         /// </summary>
-        public float FieldOfView { get => _fieldOfView; set => _fieldOfView = MathHelper.Clamp(value, float.Epsilon, MathHelper.Pi); }
+        public float FieldOfView { get => _fieldOfView; set => _fieldOfView = MathHelper.Clamp(value, float.Epsilon,
+            MathHelper.Pi); }
 
         /// <summary>
         /// Relativní rychlost inkrementálního pohybu kamery.

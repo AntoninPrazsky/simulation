@@ -4,7 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Prazsky.Tools
 {
     /// <summary>
-    /// Poskytuje metody pro výpočet geometrických objektů (<see cref="BoundingBox"/>, <see cref="BoundingSphere"/>) na základě trojrozměrného modelu (<see cref="Model"/>).
+    /// Poskytuje metody pro výpočet geometrických objektů (<see cref="BoundingBox"/>, <see cref="BoundingSphere"/>) na
+    /// základě trojrozměrného modelu (<see cref="Model"/>).
     /// </summary>
     public static class Geometry
     {

@@ -10,7 +10,8 @@ using tainicom.Aether.Physics2D.Dynamics;
 namespace Prazsky.Simulation
 {
     /// <summary>
-    /// Slouží pro vytvoření simulovatelného dvourozměrného tělesa typu <see cref="Body"/> pro knihovnu <see cref="tainicom.Aether.Physics2D"/> na základě tvaru nalezeného v poskytnuté bitmapě.
+    /// Slouží pro vytvoření simulovatelného dvourozměrného tělesa typu <see cref="Body"/> pro knihovnu
+    /// <see cref="tainicom.Aether.Physics2D"/> na základě tvaru nalezeného v poskytnuté bitmapě.
     /// Těleso je poté zařazeno do dvourozměrného fyzikálního světa (<see cref="World"/>).
     /// </summary>
     public static class BodyCreator
@@ -46,18 +47,23 @@ namespace Prazsky.Simulation
         public const BodyType DEFAULT_BODY_TYPE = BodyType.Dynamic;
 
         /// <summary>
-        /// Vrátí objekt typu <see cref="Body"/> pro provádění dvourozměrných simulací na základě tvaru nalezeného v dané bitmapě.
+        /// Vrátí objekt typu <see cref="Body"/> pro provádění dvourozměrných simulací na základě tvaru nalezeného v
+        /// dané bitmapě.
         /// </summary>
         /// <param name="orthographicRender">Bitmapa pro nalezení tvaru tělesa.</param>
-        /// <param name="world">Objekt typu <see cref="World"/> fyzikální knihovny představující dvourozměrný svět, do kterého má být vytvořené těleso zařazeno.</param>
+        /// <param name="world">Objekt typu <see cref="World"/> fyzikální knihovny představující dvourozměrný svět, do
+        /// kterého má být vytvořené těleso zařazeno.</param>
         /// <param name="position">Výchozí pozice tělesa v simulovaném světě.</param>
         /// <param name="bodyType">Typ simulovaného tělesa (statické, kinematické nebo dynamické).</param>
         /// <param name="density">Hustota tělesa (počet kilogramů na metr čtvereční).</param>
         /// <param name="rotation">Výchozí rotace tělesa v simulovaném světě.</param>
-        /// <param name="reduceVerticesDistance">Vzdálenost mezi vrcholy nalezeného tvaru, které mají být sloučeny (zjednodušení tvaru).</param>
-        /// <param name="triangulationAlgorithm">Algoritmus pro rozdělení tvaru na množství menších konvexních polygonů.</param>
-        /// <param name="graphicsToSimulationRatio">Poměr mezi grafickým zobrazením a simulovaným fyzikálním světem.</param>
-        /// <returns></returns>
+        /// <param name="reduceVerticesDistance">Vzdálenost mezi vrcholy nalezeného tvaru, které mají být sloučeny
+        /// (zjednodušení tvaru).</param>
+        /// <param name="triangulationAlgorithm">Algoritmus pro rozdělení tvaru na množství menších konvexních
+        /// polygonů.</param>
+        /// <param name="graphicsToSimulationRatio">Poměr mezi grafickým zobrazením a simulovaným fyzikálním
+        /// světem.</param>
+        /// <returns>Dvourozměrný simulovatelný objekt.</returns>
         public static Body CreatePolygonBody(
             Texture2D orthographicRender,
             World world,
@@ -69,7 +75,8 @@ namespace Prazsky.Simulation
             TriangulationAlgorithm triangulationAlgorithm = DEFAULT_TRIANGULATION_ALGORITHM,
             float graphicsToSimulationRatio = DEFAULT_GRAPHICS_TO_SIMULATION_RATIO)
         {
-            List<Vertices> verticesList = CreateVerticesForBody(orthographicRender, reduceVerticesDistance, triangulationAlgorithm, graphicsToSimulationRatio);
+            List<Vertices> verticesList = CreateVerticesForBody(orthographicRender, reduceVerticesDistance,
+                triangulationAlgorithm, graphicsToSimulationRatio);
 
             return (world.CreateCompoundPolygon(verticesList, density, position, rotation, bodyType));
         }
@@ -78,7 +85,8 @@ namespace Prazsky.Simulation
         /// Vytvoří fyzikální těleso (<see cref="Body"/>) na základě vrcholů (<see cref="Vertices"/>).
         /// </summary>
         /// <param name="verticesList">List vrcholů pro nalezení tvaru.</param>
-        /// <param name="world">Objekt typu <see cref="World"/> fyzikální knihovny představující dvourozměrný svět, do kterého má být vytvořené těleso zařazeno.</param>
+        /// <param name="world">Objekt typu <see cref="World"/> fyzikální knihovny představující dvourozměrný svět, do
+        /// kterého má být vytvořené těleso zařazeno.</param>
         /// <param name="position">Výchozí pozice tělesa v simulovaném světě.</param>
         /// <param name="bodyType">Typ simulovaného tělesa (statické, kinematické nebo dynamické).</param>
         /// <param name="density">Hustota tělesa (počet kilogramů na metr čtvereční).</param>
@@ -96,13 +104,17 @@ namespace Prazsky.Simulation
         }
 
         /// <summary>
-        /// Vrátí list vrholů pro sestavení tvaru (složeného mnohoúhelníku) na základě ortogonální projekce trojrozměrného modelu.
+        /// Vrátí list vrholů pro sestavení tvaru (složeného mnohoúhelníku) na základě ortogonální projekce
+        /// trojrozměrného modelu.
         /// Provedení této metody je relativně paměťově a výpočetně náročné.
         /// </summary>
         /// <param name="orthographicRender">Bitmapa pro nalezení vrcholů.</param>
-        /// <param name="reduceVerticesDistance">Vzdálenost mezi vrcholy nalezeného tvaru, které mají být sloučeny (zjednodušení tvaru).</param>
-        /// <param name="triangulationAlgorithm">Algoritmus pro rozdělení tvaru na množství menších konvexních polygonů.</param>
-        /// <param name="graphicsToSimulationRatio">Poměr mezi grafickým zobrazením a simulovaným fyzikálním světem.</param>
+        /// <param name="reduceVerticesDistance">Vzdálenost mezi vrcholy nalezeného tvaru, které mají být sloučeny
+        /// (zjednodušení tvaru).</param>
+        /// <param name="triangulationAlgorithm">Algoritmus pro rozdělení tvaru na množství menších konvexních
+        /// polygonů.</param>
+        /// <param name="graphicsToSimulationRatio">Poměr mezi grafickým zobrazením a simulovaným fyzikálním
+        /// světem.</param>
         /// <returns></returns>
         public static List<Vertices> CreateVerticesForBody(Texture2D orthographicRender,
             float reduceVerticesDistance = DEFAULT_REDUCE_VERTICES_DISTANCE,
@@ -131,13 +143,16 @@ namespace Prazsky.Simulation
 
             try
             {
-                //Konkávní polygon je nutné rozdělit na množství menších konvexních polygonů s využitím preferovaného algoritmu
+                //Konkávní polygon je nutné rozdělit na množství menších konvexních polygonů s využitím preferovaného
+                //algoritmu
                 verticesList = Triangulate.ConvexPartition(textureVertices, triangulationAlgorithm);
             }
             catch (Exception ex)
             {
                 if (ex.Message == "Intersecting Constraints")
-                    throw new ArgumentException("Tvar se nepodařilo rozdělit na konvexní polygony, zkuste snížit parametr udávající vzdálenost vrcholů pro sloučení nebo použijte jiný algoritmus pro rozdělení.",
+                    throw new ArgumentException(
+                        "Tvar se nepodařilo rozdělit na konvexní polygony, zkuste snížit parametr udávající " +
+                        "vzdálenost vrcholů pro sloučení nebo použijte jiný algoritmus pro rozdělení.",
                         "reduceVerticesDistance, triangulationAlgorithm", ex);
             }
 

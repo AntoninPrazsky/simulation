@@ -17,9 +17,18 @@ namespace Prazsky.Render
         /// <param name="camera">Kamera, která se na výsledné vykreslení modelu dívá.</param>
         /// <param name="world">Matice světa, která se má použít k vykreslení.</param>
         /// <param name="basicEffectParams">Parametry pro třídu <see cref="BasicEffect"/>.</param>
-        /// <param name="enableDefaultLighting">Použití tříbodového osvětelní trojrozměrného modelu, které je definováno frameworkem MonoGame.</param>
-        /// <param name="preferPerPixelLighting">Výpočet osvětlení pro každý pixel, pokud je toto podporováno grafickým hardwarem.</param>
-        public static void Render(Model model, Matrix[] transformations, ref ICamera camera, ref Matrix world, BasicEffectParams basicEffectParams, bool enableDefaultLighting, bool preferPerPixelLighting)
+        /// <param name="enableDefaultLighting">Použití tříbodového osvětelní trojrozměrného modelu, které je
+        /// definováno frameworkem MonoGame.</param>
+        /// <param name="preferPerPixelLighting">Výpočet osvětlení pro každý pixel, pokud je toto podporováno grafickým
+        /// hardwarem.</param>
+        public static void Render(
+            Model model,
+            Matrix[] transformations,
+            ref ICamera camera,
+            ref Matrix world,
+            BasicEffectParams basicEffectParams,
+            bool enableDefaultLighting,
+            bool preferPerPixelLighting)
         {
             foreach (ModelMesh mesh in model.Meshes)
             {
@@ -39,35 +48,46 @@ namespace Prazsky.Render
 
                             #region Aplikace světelných parametrů, pokud jsou nastaveny
 
-                            if (basicEffectParams.AmbientLightColor != null) effect.AmbientLightColor = basicEffectParams.AmbientLightColor;
+                            if (basicEffectParams.AmbientLightColor != null)
+                                effect.AmbientLightColor = basicEffectParams.AmbientLightColor;
                             if (basicEffectParams.SpecularColor != null)
                             {
                                 effect.SpecularColor = basicEffectParams.SpecularColor;
                                 effect.SpecularPower = basicEffectParams.SpecularPower;
                             }
-                            if (basicEffectParams.EmmisiveColor != null) effect.EmissiveColor = basicEffectParams.EmmisiveColor;
+                            if (basicEffectParams.EmmisiveColor != null)
+                                effect.EmissiveColor = basicEffectParams.EmmisiveColor;
 
                             if (basicEffectParams.DirectionalLight0 != null)
                             {
-                                effect.DirectionalLight0.Direction = basicEffectParams.DirectionalLight0.Direction;
-                                effect.DirectionalLight0.DiffuseColor = basicEffectParams.DirectionalLight0.DiffuseColor;
-                                effect.DirectionalLight0.SpecularColor = basicEffectParams.DirectionalLight0.SpecularColor;
+                                effect.DirectionalLight0.Direction =
+                                    basicEffectParams.DirectionalLight0.Direction;
+                                effect.DirectionalLight0.DiffuseColor =
+                                    basicEffectParams.DirectionalLight0.DiffuseColor;
+                                effect.DirectionalLight0.SpecularColor =
+                                    basicEffectParams.DirectionalLight0.SpecularColor;
                                 effect.DirectionalLight0.Enabled = true;
                             }
 
                             if (basicEffectParams.DirectionalLight1 != null)
                             {
-                                effect.DirectionalLight1.Direction = basicEffectParams.DirectionalLight1.Direction;
-                                effect.DirectionalLight1.DiffuseColor = basicEffectParams.DirectionalLight1.DiffuseColor;
-                                effect.DirectionalLight1.SpecularColor = basicEffectParams.DirectionalLight1.SpecularColor;
+                                effect.DirectionalLight1.Direction =
+                                    basicEffectParams.DirectionalLight1.Direction;
+                                effect.DirectionalLight1.DiffuseColor =
+                                    basicEffectParams.DirectionalLight1.DiffuseColor;
+                                effect.DirectionalLight1.SpecularColor =
+                                    basicEffectParams.DirectionalLight1.SpecularColor;
                                 effect.DirectionalLight1.Enabled = true;
                             }
 
                             if (basicEffectParams.DirectionalLight2 != null)
                             {
-                                effect.DirectionalLight2.Direction = basicEffectParams.DirectionalLight2.Direction;
-                                effect.DirectionalLight2.DiffuseColor = basicEffectParams.DirectionalLight2.DiffuseColor;
-                                effect.DirectionalLight2.SpecularColor = basicEffectParams.DirectionalLight2.SpecularColor;
+                                effect.DirectionalLight2.Direction =
+                                    basicEffectParams.DirectionalLight2.Direction;
+                                effect.DirectionalLight2.DiffuseColor =
+                                    basicEffectParams.DirectionalLight2.DiffuseColor;
+                                effect.DirectionalLight2.SpecularColor =
+                                    basicEffectParams.DirectionalLight2.SpecularColor;
                                 effect.DirectionalLight2.Enabled = true;
                             }
 
