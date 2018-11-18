@@ -11,7 +11,7 @@ This library is dependent on the following resources:
 ## Licence
 The library is under the [Microsoft Public License (MS-PL)](https://opensource.org/licenses/MS-PL).
 
-![Screenshot](Documentation//screenshot.png)
+![Screenshot](Documentation//screenshot3.png)
 
 ## Notes
 * All comments in source code are currently written in Czech as well as [documentation](https://simulation.winphonew.eu).
