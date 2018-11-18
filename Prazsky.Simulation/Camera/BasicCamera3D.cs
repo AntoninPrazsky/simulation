@@ -182,11 +182,6 @@ namespace Prazsky.Simulation.Camera
         public float AspectRatio { get; set; }
 
         /// <summary>
-        /// Vzdálenost zadní ořezové plochy.
-        /// </summary>
-        public float FarPlaneDistance { get; set; } = DEFAULT_FAR_PLANE_DISTANCE;
-
-        /// <summary>
         /// Zorné pole kamery. Musí být větší než 0 a menší než π (0° - 180°). Jiné hodnoty jsou oříznuty do tohoto
         /// intervalu.
         /// </summary>
@@ -197,11 +192,6 @@ namespace Prazsky.Simulation.Camera
         /// Relativní rychlost inkrementálního pohybu kamery.
         /// </summary>
         public float MoveSpeed { get; set; } = DEFAULT_MOVE_SPEED;
-
-        /// <summary>
-        /// Vzdálenost přední ořezové plochy.
-        /// </summary>
-        public float NearPlaneDistance { get; set; } = DEFAULT_NEAR_PLANE_DISTANCE;
 
         /// <summary>
         /// Relativní rychlost inkrementální rotace kamery.
