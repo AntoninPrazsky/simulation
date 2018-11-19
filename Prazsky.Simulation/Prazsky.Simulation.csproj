@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Body3D.cs" />
-    <Compile Include="Experimental\MultipleBody3DCreator.cs" />
+    <Compile Include="MultipleBody3DCreator.cs" />
     <Compile Include="Factories\Body3DFactory.cs" />
     <Compile Include="Render\BasicEffectParams.cs" />
     <Compile Include="BodyCreator.cs" />
