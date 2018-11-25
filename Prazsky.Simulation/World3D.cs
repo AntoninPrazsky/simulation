@@ -213,7 +213,7 @@ namespace Prazsky.Simulation
                 {
                     Body body = _foundFixture.Body;
                     _fixedMouseJoint = new FixedMouseJoint(body, positionWorld2D);
-                    _fixedMouseJoint.MaxForce = 100f * body.Mass;
+                    _fixedMouseJoint.MaxForce = force * body.Mass;
                     World2D.Add(_fixedMouseJoint);
                     body.Awake = true;
                 }
