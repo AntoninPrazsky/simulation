@@ -8,6 +8,16 @@ namespace Prazsky.Simulation.Camera
     public interface ICamera
     {
         /// <summary>
+        /// Matice pohledu.
+        /// </summary>
+        Matrix View { get; }
+
+        /// <summary>
+        /// Matice projekce.
+        /// </summary>
+        Matrix Projection { get; }
+
+        /// <summary>
         /// Pozice kamery v trojrozměrném světě.
         /// </summary>
         Vector3 Position { get; }
@@ -21,16 +31,6 @@ namespace Prazsky.Simulation.Camera
         /// Vektor představující směr nahoru kamery.
         /// </summary>
         Vector3 Up { get; }
-
-        /// <summary>
-        /// Matice pohledu.
-        /// </summary>
-        Matrix View { get; }
-
-        /// <summary>
-        /// Matice projekce.
-        /// </summary>
-        Matrix Projection { get; }
 
         /// <summary>
         /// Přední ořezová plocha.

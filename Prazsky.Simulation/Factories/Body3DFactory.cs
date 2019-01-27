@@ -11,7 +11,8 @@ namespace Prazsky.Simulation.Factories
     public static class Body3DFactory
     {
         /// <summary>
-        /// Vrátí objekt typu <see cref="Body3D"/>.
+        /// Vrátí objekt typu <see cref="Body3D"/>. Tvar odpovídající dvourozměrné reprezentaci pro fyzikální simulaci
+        /// je nalezen podle ortogonální projekce zadaného trojrozměrného modelu.
         /// </summary>
         /// <param name="model">Trojrozměrný model.</param>
         /// <param name="world2D">Dvourozměrný svět, do kterého má být těleso zařazeno.</param>
@@ -19,7 +20,7 @@ namespace Prazsky.Simulation.Factories
         /// <param name="position">Výchozí pozice objektu v dvourozměrném světě.</param>
         /// <param name="bodyType">Typ simulovaného tělesa (statické, kinematické nebo dynamické).</param>
         /// <param name="basicEffectParams">Parametry pro třídu <see cref="BasicEffect"/>.</param>
-        /// <returns></returns>
+        /// <returns>Objekt typu <see cref="Body3D"/>.</returns>
         public static Body3D CreateBody3D(
             Model model,
             World world2D,
@@ -41,7 +42,7 @@ namespace Prazsky.Simulation.Factories
         }
 
         /// <summary>
-        /// Vrátí objekt typu <see cref="Body3D"/>.
+        /// Vrátí objekt typu <see cref="Body3D"/>. Tvar pro dvourozměrnou fyzikální simulaci je dán parametrem body.
         /// </summary>
         /// <param name="model">Trojrozměrný model.</param>
         /// <param name="world2D">Dvourozměrný svět, do kterého má být těleso zařazeno.</param>
@@ -49,7 +50,7 @@ namespace Prazsky.Simulation.Factories
         /// <param name="position">Výchozí pozice objektu v dvourozměrném světě.</param>
         /// <param name="bodyType">Typ simulovaného tělesa (statické, kinematické nebo dynamické).</param>
         /// <param name="basicEffectParams">Parametry pro třídu <see cref="BasicEffect"/>.</param>
-        /// <returns></returns>
+        /// <returns>Objekt typu <see cref="Body3D"/>.</returns>
         public static Body3D CreateBody3D(
             Model model,
             World world2D,

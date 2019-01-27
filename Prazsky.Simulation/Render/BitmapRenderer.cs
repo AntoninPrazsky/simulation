@@ -128,10 +128,10 @@ namespace Prazsky.Render
                     MAX_BITMAP_WIDTH,
                     nameof(bitmapScale),
                     bitmapScale));
-
+            
             return calculatedSize;
         }
-
+        
         private struct SizeFloat
         {
             public float X;
