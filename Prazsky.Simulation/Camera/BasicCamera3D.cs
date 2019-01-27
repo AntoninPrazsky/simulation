@@ -12,22 +12,25 @@ namespace Prazsky.Simulation.Camera
         private const float DEFAULT_MOVE_SPEED = 0.01f;
         private const float DEFAULT_NEAR_PLANE_DISTANCE = 0.01f;
         private const float DEFAULT_ROTATION_SPEED = 0.001f;
+        private const float DEFAULT_FIELD_OF_VIEW = MathHelper.PiOver4;
+
         private Vector3 _defaultTarget = new Vector3(0, 0, -1);
         private Vector3 _defaultUp = Vector3.Up;
         private float _rotationX = 0f;
         private float _rotationY = 0f;
+        private float _fieldOfView;
 
         /// <summary>
         /// Konstruktor základní perspektivní kamery.
         /// </summary>
-        /// <param name="position">Pozice kamery v trojrozměrném světě.</param>
-        /// <param name="aspectRatio">Poměr stran zobrazení.</param>
-        /// <param name="fieldOfView">Zorné pole kamery.</param>
-        public BasicCamera3D(Vector3 position, float aspectRatio, float fieldOfView = MathHelper.PiOver4)
+        /// <param name="position">Výchozí pozice kamery v trojrozměrném světě.</param>
+        /// <param name="aspectRatio">Poměr stran zobrazení (šířka ÷ délka).</param>
+        /// <param name="fieldOfView">Výchozí úhel zorného pole kamery v radiánech.</param>
+        public BasicCamera3D(Vector3 position, float aspectRatio, float fieldOfView = DEFAULT_FIELD_OF_VIEW)
         {
             Position = position;
             AspectRatio = aspectRatio;
-            _fieldOfView = fieldOfView;
+            FieldOfView = fieldOfView;
 
             Recalculate();
         }
@@ -41,8 +44,8 @@ namespace Prazsky.Simulation.Camera
         public void Move(Vector3 shift, GameTime gameTime)
         {
             //Pohyb kamery ve směru, kterým se dívá
-            Position += MoveSpeed * 
-                Vector3.Transform(shift, GetCameraRotation()) * 
+            Position += MoveSpeed *
+                Vector3.Transform(shift, GetCameraRotation()) *
                 (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             Recalculate();
         }
@@ -172,9 +175,7 @@ namespace Prazsky.Simulation.Camera
 
         #endregion Členové ICamera
 
-        #region Parametry pro perspektivní a pohyblivou kameru
-
-        private float _fieldOfView = MathHelper.PiOver4;
+        #region Vlastnosti perspektivní a pohyblivé kamery
 
         /// <summary>
         /// Poměr stran zobrazení.
@@ -185,8 +186,10 @@ namespace Prazsky.Simulation.Camera
         /// Zorné pole kamery. Musí být větší než 0 a menší než π (0° - 180°). Jiné hodnoty jsou oříznuty do tohoto
         /// intervalu.
         /// </summary>
-        public float FieldOfView { get => _fieldOfView; set => _fieldOfView = MathHelper.Clamp(value, float.Epsilon,
-            MathHelper.Pi); }
+        public float FieldOfView
+        {
+            get => _fieldOfView; set => _fieldOfView = MathHelper.Clamp(value, float.Epsilon, MathHelper.Pi);
+        }
 
         /// <summary>
         /// Relativní rychlost inkrementálního pohybu kamery.
@@ -198,6 +201,6 @@ namespace Prazsky.Simulation.Camera
         /// </summary>
         public float RotationSpeed { get; set; } = DEFAULT_ROTATION_SPEED;
 
-        #endregion Parametry pro perspektivní a pohyblivou kameru
+        #endregion Vlastnosti perspektivní a pohyblivé kamery
     }
 }
