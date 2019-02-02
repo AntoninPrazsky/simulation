@@ -11,6 +11,11 @@ namespace Prazsky.Simulation.Factories
     public static class Body3DFactory
     {
         /// <summary>
+        /// Výchozí typ tělesa.
+        /// </summary>
+        public const BodyType DEFAULT_BODY_TYPE = BodyType.Dynamic;
+
+        /// <summary>
         /// Vrátí objekt typu <see cref="Body3D"/>. Tvar odpovídající dvourozměrné reprezentaci pro fyzikální simulaci
         /// je nalezen podle ortogonální projekce zadaného trojrozměrného modelu.
         /// </summary>
@@ -26,19 +31,20 @@ namespace Prazsky.Simulation.Factories
             World world2D,
             GraphicsDevice graphicsDevice,
             Vector2 position = new Vector2(),
-            BodyType bodyType = BodyType.Dynamic,
+            BodyType bodyType = DEFAULT_BODY_TYPE,
             BasicEffectParams basicEffectParams = null)
         {
-            Texture2D orthoRender = BitmapRenderer.RenderOrthographic(graphicsDevice, model);
-            Body body2D = BodyCreator.CreatePolygonBody(orthoRender, world2D, position, bodyType);
-            orthoRender.Dispose();
-
-            Body3D body3D = new Body3D(model, body2D)
+            using (Texture2D orthoRender = BitmapRenderer.RenderOrthographic(graphicsDevice, model))
             {
-                BasicEffectParams = basicEffectParams
-            };
+                Body body2D = BodyCreator.CreatePolygonBody(orthoRender, world2D, position, bodyType);
 
-            return body3D;
+                Body3D body3D = new Body3D(model, body2D)
+                {
+                    BasicEffectParams = basicEffectParams
+                };
+
+                return body3D;
+            }
         }
 
         /// <summary>
@@ -56,7 +62,7 @@ namespace Prazsky.Simulation.Factories
             World world2D,
             Body body,
             Vector2 position = new Vector2(),
-            BodyType bodyType = BodyType.Dynamic,
+            BodyType bodyType = DEFAULT_BODY_TYPE,
             BasicEffectParams basicEffectParams = null)
         {
             body.Position = position;

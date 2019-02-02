@@ -10,7 +10,7 @@ namespace Prazsky.Render
     public static class ModelRenderer
     {
         /// <summary>
-        /// Vykreslí trojrozměrný model na základě dodaných parametrů.
+        /// Vykreslí trojrozměrný model na základě poskytnutých parametrů.
         /// </summary>
         /// <param name="model">Trojrozměrný model k vykreslení.</param>
         /// <param name="transformations">Transformace modelu.</param>

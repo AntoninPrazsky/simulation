@@ -42,9 +42,80 @@ namespace Prazsky.Simulation
         public const TriangulationAlgorithm DEFAULT_TRIANGULATION_ALGORITHM = TriangulationAlgorithm.Bayazit;
 
         /// <summary>
-        /// Výchozí typ tělesa (statické, kinematické nebo dynamické).
+        /// Výchozí typ tělesa.
         /// </summary>
         public const BodyType DEFAULT_BODY_TYPE = BodyType.Dynamic;
+
+        /// <summary>
+        /// Vrátí list vrholů pro sestavení tvaru (složeného mnohoúhelníku) na základě ortogonální projekce
+        /// trojrozměrného modelu. Provedení této metody je relativně paměťově a výpočetně náročné v závislosti na
+        /// velikosti zdrojové bitmapy a zvoleném algoritmu.
+        /// </summary>
+        /// <param name="orthographicRender">Bitmapa pro nalezení vrcholů.</param>
+        /// <param name="reduceVerticesDistance">Vzdálenost mezi vrcholy nalezeného tvaru, které mají být sloučeny
+        /// (zjednodušení tvaru).</param>
+        /// <param name="triangulationAlgorithm">Algoritmus pro rozdělení tvaru na množství menších konvexních
+        /// polygonů.</param>
+        /// <param name="graphicsToSimulationRatio">Poměr mezi grafickým zobrazením a simulovaným fyzikálním
+        /// světem.</param>
+        /// <returns></returns>
+        public static List<Vertices> CreateVerticesForBody(
+            Texture2D orthographicRender,
+            float reduceVerticesDistance = DEFAULT_REDUCE_VERTICES_DISTANCE,
+            TriangulationAlgorithm triangulationAlgorithm = DEFAULT_TRIANGULATION_ALGORITHM,
+            float graphicsToSimulationRatio = DEFAULT_GRAPHICS_TO_SIMULATION_RATIO)
+        {
+            //Pole pro data bitmapové textury
+            uint[] data = new uint[orthographicRender.Width * orthographicRender.Height];
+
+            //Přenesení dat textury do pole
+            orthographicRender.GetData(data);
+
+            //Nalezení vrcholů tvořících obrys tvaru v textuře
+            Vertices textureVertices = PolygonTools.CreatePolygon(data, orthographicRender.Width, false);
+
+            //Snížení počtu nalezených vrcholů (zjednodušení)
+            if (reduceVerticesDistance > 0)
+                textureVertices = SimplifyTools.ReduceByDistance(textureVertices, reduceVerticesDistance);
+
+            //Střed bitmapy
+            Vector2 center = new Vector2(-orthographicRender.Width / 2, -orthographicRender.Height / 2);
+
+            //Vystředění nalezených vrcholů
+            textureVertices.Translate(ref center);
+
+            List<Vertices> verticesList = new List<Vertices>();
+
+            if (!textureVertices.IsConvex())
+            {
+                try
+                {
+                    //Konkávní polygon je nutné rozdělit na množství menších konvexních polygonů s využitím
+                    //preferovaného algoritmu
+                    verticesList = Triangulate.ConvexPartition(textureVertices, triangulationAlgorithm);
+                }
+                catch (Exception ex)
+                {
+                    if (ex.Message == "Intersecting Constraints")
+                        throw new ArgumentException(
+                            "Tvar se nepodařilo rozdělit na konvexní polygony, zkuste změnit parametr udávající " +
+                            "vzdálenost vrcholů pro sloučení nebo použijte jiný algoritmus pro rozdělení.",
+                            "reduceVerticesDistance, triangulationAlgorithm", ex);
+                }
+            }
+            else
+                verticesList.Add(textureVertices);
+
+            //Změna velikost polygonu podle poměru ke grafickému zobrazení
+            Vector2 vertScale = new Vector2(graphicsToSimulationRatio);
+            foreach (Vertices vertices in verticesList)
+            {
+                vertices.Scale(new Vector2(1f, -1f));
+                vertices.Scale(vertScale);
+            }
+
+            return verticesList;
+        }
 
         /// <summary>
         /// Vrátí objekt typu <see cref="Body"/> pro provádění dvourozměrných simulací na základě tvaru nalezeného v
@@ -101,70 +172,6 @@ namespace Prazsky.Simulation
             float rotation = DEFAULT_ROTATION)
         {
             return (world.CreateCompoundPolygon(verticesList, density, position, rotation, bodyType));
-        }
-
-        /// <summary>
-        /// Vrátí list vrholů pro sestavení tvaru (složeného mnohoúhelníku) na základě ortogonální projekce
-        /// trojrozměrného modelu.
-        /// Provedení této metody je relativně paměťově a výpočetně náročné.
-        /// </summary>
-        /// <param name="orthographicRender">Bitmapa pro nalezení vrcholů.</param>
-        /// <param name="reduceVerticesDistance">Vzdálenost mezi vrcholy nalezeného tvaru, které mají být sloučeny
-        /// (zjednodušení tvaru).</param>
-        /// <param name="triangulationAlgorithm">Algoritmus pro rozdělení tvaru na množství menších konvexních
-        /// polygonů.</param>
-        /// <param name="graphicsToSimulationRatio">Poměr mezi grafickým zobrazením a simulovaným fyzikálním
-        /// světem.</param>
-        /// <returns></returns>
-        public static List<Vertices> CreateVerticesForBody(Texture2D orthographicRender,
-            float reduceVerticesDistance = DEFAULT_REDUCE_VERTICES_DISTANCE,
-            TriangulationAlgorithm triangulationAlgorithm = DEFAULT_TRIANGULATION_ALGORITHM,
-            float graphicsToSimulationRatio = DEFAULT_GRAPHICS_TO_SIMULATION_RATIO)
-        {
-            //Pole pro data bitmapové textury
-            uint[] data = new uint[orthographicRender.Width * orthographicRender.Height];
-
-            //Přenesení dat textury do pole
-            orthographicRender.GetData(data);
-
-            //Nalezení vrcholů tvořících obrys tvaru v textuře
-            Vertices textureVertices = PolygonTools.CreatePolygon(data, orthographicRender.Width, false);
-
-            //Střed bitmapy
-            Vector2 center = new Vector2(-orthographicRender.Width / 2, -orthographicRender.Height / 2);
-
-            //Vystředění nalezených vrcholů
-            textureVertices.Translate(ref center);
-
-            //Snížení počtu nalezených vrcholů (zjednodušení)
-            textureVertices = SimplifyTools.ReduceByDistance(textureVertices, reduceVerticesDistance);
-
-            List<Vertices> verticesList = new List<Vertices>();
-
-            try
-            {
-                //Konkávní polygon je nutné rozdělit na množství menších konvexních polygonů s využitím preferovaného
-                //algoritmu
-                verticesList = Triangulate.ConvexPartition(textureVertices, triangulationAlgorithm);
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message == "Intersecting Constraints")
-                    throw new ArgumentException(
-                        "Tvar se nepodařilo rozdělit na konvexní polygony, zkuste snížit parametr udávající " +
-                        "vzdálenost vrcholů pro sloučení nebo použijte jiný algoritmus pro rozdělení.",
-                        "reduceVerticesDistance, triangulationAlgorithm", ex);
-            }
-
-            //Změna velikost polygonu
-            Vector2 vertScale = new Vector2(graphicsToSimulationRatio);
-            foreach (Vertices vertices in verticesList)
-            {
-                vertices.Scale(new Vector2(1f, -1f));
-                vertices.Scale(vertScale);
-            }
-
-            return verticesList;
         }
     }
 }

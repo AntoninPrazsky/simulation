@@ -18,7 +18,11 @@ namespace Prazsky.Simulation.Camera
         private Vector3 _defaultUp = Vector3.Up;
         private float _rotationX = 0f;
         private float _rotationY = 0f;
+
         private float _fieldOfView;
+        private float _farPlane = DEFAULT_FAR_PLANE_DISTANCE;
+        private float _nearPlane = DEFAULT_NEAR_PLANE_DISTANCE;
+        private Vector3 _up = Vector3.Up;
 
         /// <summary>
         /// Konstruktor základní perspektivní kamery.
@@ -113,10 +117,6 @@ namespace Prazsky.Simulation.Camera
         }
 
         #region Členové ICamera
-
-        private float _farPlane = DEFAULT_FAR_PLANE_DISTANCE;
-        private float _nearPlane = DEFAULT_NEAR_PLANE_DISTANCE;
-        private Vector3 _up = Vector3.Up;
 
         /// <summary>
         /// Vzdálenost zadní ořezové plochy od pozice kamery. Objekty za touto plochou se nezobrazují.

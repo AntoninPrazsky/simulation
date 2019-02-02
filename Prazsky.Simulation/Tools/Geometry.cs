@@ -42,13 +42,23 @@ namespace Prazsky.Tools
         }
 
         /// <summary>
-        /// Vrátí sféru opsanou opsanému kvádru modelu.
+        /// Vrátí sféru opsanou opsanému kvádru modelu se středem v počátku.
         /// </summary>
         /// <param name="model">Model, který má být použit pro výpočet opsané sféry.</param>
-        /// <returns>Opsaná sféra zadaného modelu.</returns>
+        /// <returns>Opsaná sféra zadaného modelu se středem v počátku.</returns>
         public static BoundingSphere GetBoundingSphere(Model model)
         {
             return new BoundingSphere(Vector3.Zero, Vector3.Distance(Vector3.Zero, GetBoundingBox(model).Max));
+        }
+
+        /// <summary>
+        /// Vrátí sféru se středem v počátku a poloměrem odpovídajícím vzdálenosti od počátku k zadanému bodu.
+        /// </summary>
+        /// <param name="pointOnSurface">Bod v prostoru pro výpočet poloměru.</param>
+        /// <returns>Sféra se středem v počátku a vypočteným poloměrem.</returns>
+        public static BoundingSphere GetBoundingSphere(Vector3 pointOnSurface)
+        {
+            return new BoundingSphere(Vector3.Zero, Vector3.Distance(Vector3.Zero, pointOnSurface));
         }
     }
 }

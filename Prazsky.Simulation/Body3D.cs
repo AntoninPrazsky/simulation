@@ -84,7 +84,7 @@ namespace Prazsky.Simulation
             PositionZ = positionZ;
 
             _boundingBox = Geometry.GetBoundingBox(_model3D);
-            _boundingSphere = new BoundingSphere(Vector3.Zero, Vector3.Distance(Vector3.Zero, _boundingBox.Max));
+            _boundingSphere = Geometry.GetBoundingSphere(_boundingBox.Max);
 
             DefaultBodyType = Body2D.BodyType;
 
@@ -157,7 +157,7 @@ namespace Prazsky.Simulation
         }
 
         /// <summary>
-        /// Aktivuje fyzikální simulaci tělesa navrácením jeho <see cref="BodyType"/> na výchozí hodnotu 
+        /// Aktivuje fyzikální simulaci tělesa navrácením jeho <see cref="BodyType"/> na výchozí hodnotu.
         /// (<see cref="DefaultBodyType"/>)
         /// Nemá smysl pro tělesa typu <see cref="BodyType.Kinematic"/> nebo <see cref="BodyType.Static"/>.
         /// </summary>

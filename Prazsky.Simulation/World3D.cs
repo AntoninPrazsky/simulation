@@ -74,7 +74,7 @@ namespace Prazsky.Simulation
 
         /// <summary>
         /// Provede jeden krok fyzikální simulace ve dvourozměrném fyzikálním světě (<see cref="World"/>).
-        /// Krok není nikdy menší než hodnota udaná parametrem <see cref="MinimumSolverIterations"/>.
+        /// Krok není nikdy menší než hodnota udaná vlastností <see cref="MinimumSolverIterations"/>.
         /// </summary>
         /// <param name="gameTime">Herní čas.</param>
         public void Update(GameTime gameTime)
@@ -88,10 +88,10 @@ namespace Prazsky.Simulation
         /// </summary>
         public void Draw()
         {
-            _boundingFrustum = new BoundingFrustum(Camera3D.View * Camera3D.Projection);
-
             if (_body3Ds.Count > 0)
             {
+                _boundingFrustum = new BoundingFrustum(Camera3D.View * Camera3D.Projection);
+
                 foreach (Body3D body3D in _body3Ds)
                 {
                     body3D.Update3DPosition();
@@ -135,7 +135,7 @@ namespace Prazsky.Simulation
         public bool RemoveBody3D(Body3D body3D)
         {
             if (!_body3Ds.Contains(body3D)) return false;
-
+            //TODO: Odebrat odpovídající dvourozměrnou reprezentaci z this.World2D
             _body3Ds.Remove(body3D);
             return true;
         }
