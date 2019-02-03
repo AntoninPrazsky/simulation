@@ -21,6 +21,8 @@ namespace Prazsky.Render
 
         //Tyto hodnoty by bylo možné individuálně spočítat pro každý model (jde o ortogonální projekci kolmou k
         //ose Z - ke kameře), promyslet, jestli by to mělo smysl
+        //Výpočet na základě AABB modelu: Zadní ořezová plocha je zadní strana kvádru, přední ořezová plocha
+        //je přední strana kvádru, přičemž pozice kamery odpovídá vzdálenosti přední strany kvádru od počátku
         private const float CAMERA_Z_POSITION = 10f;
         private const float Z_NEAR_PLANE = 1f;
         private const float Z_FAR_PLANE = 100f;
@@ -46,7 +48,8 @@ namespace Prazsky.Render
                 renderSize.X,
                 renderSize.Y,
                 false,
-                graphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth16);
+                graphicsDevice.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth16);
 
             Matrix world = Matrix.Identity;
             Matrix view = Matrix.CreateLookAt(new Vector3(0f, 0f, CAMERA_Z_POSITION), Vector3.Zero, Vector3.Up);
@@ -92,8 +95,9 @@ namespace Prazsky.Render
 
             SizeFloat calculatedSize;
 
-            calculatedSize.X = box.GetCorners()[2].X * 2;
-            calculatedSize.Y = Math.Abs(box.GetCorners()[2].Y) * 2;
+            Vector3[] boxCorners = box.GetCorners();
+            calculatedSize.X = boxCorners[2].X * 2;
+            calculatedSize.Y = Math.Abs(boxCorners[2].Y) * 2;
 
             if (calculatedSize.X <= 0 || calculatedSize.Y <= 0)
                 throw new ArgumentException("Chyba při výpočtu velikosti modelu. Zkontrolujte model (jeho výška a " +

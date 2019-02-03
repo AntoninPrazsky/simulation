@@ -26,45 +26,55 @@ namespace Prazsky.Simulation
         public float GraphicsToSimulationRatio { get; set; } = BodyCreator.DEFAULT_GRAPHICS_TO_SIMULATION_RATIO;
         public float Density { get; set; } = BodyCreator.DEFAULT_DENSITY;
         public float Rotation { get; set; } = BodyCreator.DEFAULT_ROTATION;
-
         public TriangulationAlgorithm TriangulationAlgorithm { get; set; } = BodyCreator.DEFAULT_TRIANGULATION_ALGORITHM;
-        public BodyType BodyType { get; set; } = BodyCreator.DEFAULT_BODY_TYPE;
 
         public Body3D CreateBody3D(
             Model model,
             World world2D,
             Vector2 position = new Vector2(),
-            BodyType bodyType = BodyType.Dynamic,
+            BodyType bodyType = BodyCreator.DEFAULT_BODY_TYPE,
             BasicEffectParams basicEffectParams = null,
             float positionZ = 0f)
         {
             //Tento model ještě nebyl instancí této třídy zpracováván
             if (!_modelVerticesPairs.ContainsKey(model))
             {
-                Texture2D orthoRender = BitmapRenderer.RenderOrthographic(_graphicsDevice, model);
+                using (Texture2D orthoRender = BitmapRenderer.RenderOrthographic(_graphicsDevice, model))
+                {
+                    //Najít v bitmapě tvar je výpočetně náročné, proto se to stane pro každý model zpracovávaný touto
+                    //třídou jenom jednou
+                    List<Vertices> verticesList = BodyCreator.CreateVerticesForBody(
+                        orthoRender,
+                        ReduceVerticesDistance,
+                        TriangulationAlgorithm,
+                        GraphicsToSimulationRatio);
 
-                //Najít v bitmapě tvar je výpočetně náročné, proto se to stane pro každý model zpracovávaný touto třídou jenom jednou
-                List<Vertices> verticesList = BodyCreator.CreateVerticesForBody(
-                    orthoRender,
-                    ReduceVerticesDistance,
-                    TriangulationAlgorithm,
-                    GraphicsToSimulationRatio);
-
-                orthoRender.Dispose();
-
-                _modelVerticesPairs.Add(model, verticesList);
+                    _modelVerticesPairs.Add(model, verticesList);
+                }
             }
             return ConstructBody3D(model, world2D, position, bodyType, positionZ, basicEffectParams);
         }
 
-        private Body3D ConstructBody3D(Model model, World world2D, Vector2 position, BodyType bodyType, float positionZ, BasicEffectParams basicEffectParams)
+        private Body3D ConstructBody3D(
+            Model model,
+            World world2D,
+            Vector2 position,
+            BodyType bodyType,
+            float positionZ,
+            BasicEffectParams basicEffectParams)
         {
-            Body body = BodyCreator.CreateBodyFromVertices(_modelVerticesPairs[model], world2D, position, bodyType,
+            Body body = BodyCreator.CreateBodyFromVertices(
+                _modelVerticesPairs[model],
+                world2D,
+                position,
+                bodyType,
                 Density,
                 Rotation);
 
-            Body3D body3D = new Body3D(model, body, positionZ);
-            body3D.BasicEffectParams = basicEffectParams;
+            Body3D body3D = new Body3D(model, body, positionZ)
+            {
+                BasicEffectParams = basicEffectParams
+            };
             return body3D;
         }
 
@@ -77,7 +87,14 @@ namespace Prazsky.Simulation
         /// <param name="center">Souřadnice středu řady.</param>
         /// <param name="bodyType">Typ vytvořených objektů řady (statické, kinematické nebo dynamické).</param>
         /// <param name = "basicEffectParams"> Parametry pro třídu<see cref= "BasicEffect" />.</param>
-        public void BuildRow(Model model, World3D world3D, int count, Vector2 center = new Vector2(), BodyType bodyType = BodyType.Static, BasicEffectParams basicEffectParams = null, Category category = Category.Cat31)
+        public void BuildRow(
+            Model model,
+            World3D world3D,
+            int count,
+            Vector2 center = new Vector2(),
+            BodyType bodyType = BodyType.Static,
+            BasicEffectParams basicEffectParams = null,
+            Category category = Category.Cat31)
         {
             if (count <= 0) return;
 

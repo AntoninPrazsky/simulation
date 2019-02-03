@@ -16,6 +16,7 @@ namespace Prazsky.Tools
         /// <returns>Opsaný kvádr zadaného modelu.</returns>
         public static BoundingBox GetBoundingBox(Model model)
         {
+            //Budoucí minimální a maximální bod je inicializován s inverzní hodnotou pro pozdější snižování/zvyšování
             Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
@@ -23,16 +24,21 @@ namespace Prazsky.Tools
             {
                 foreach (ModelMeshPart meshPart in mesh.MeshParts)
                 {
+                    //Velikost pro uložení jednoho vrcholu části modelu
                     int vertexStride = meshPart.VertexBuffer.VertexDeclaration.VertexStride;
+                    //Celková velikost nutná pro uložení vrcholů
                     int vertexBufferSize = meshPart.NumVertices * vertexStride;
 
                     int vertexDataSize = vertexBufferSize / sizeof(float);
                     float[] vertexData = new float[vertexDataSize];
+                    //Získání všech vrcholů části modelu
                     meshPart.VertexBuffer.GetData(vertexData);
 
                     for (int i = 0; i < vertexDataSize; i += vertexStride / sizeof(float))
                     {
+                        //Souřadnice X, Y a Z jednoho vrcholu
                         Vector3 vertex = new Vector3(vertexData[i], vertexData[i + 1], vertexData[i + 2]);
+                        //Aktualizace minimálního a maximálního bodu
                         min = Vector3.Min(min, vertex);
                         max = Vector3.Max(max, vertex);
                     }

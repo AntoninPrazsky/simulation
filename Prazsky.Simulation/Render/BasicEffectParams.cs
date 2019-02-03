@@ -12,15 +12,21 @@ namespace Prazsky.Render
         /// </summary>
         /// <param name="ambientLightColor">Barva ambientního osvětlení.</param>
         /// <param name="specularColor">Barva odlesku.</param>
-        /// <param name="specularPower">Síla odlesku.</param>
+        /// <param name="specularPower">Intenzita odlesku.</param>
         /// <param name="emmisiveColor">Barva vyzařovaného světla.</param>
         /// <param name="directionalLight0">Parametry prvního směrového osvětlení.</param>
         /// <param name="directionalLight1">Parametry druhého směrového odvětlení.</param>
         /// <param name="directionalLight2">Parametry třetího směrového osvětlení.</param>
         /// <param name="fog">Parametry efektu mlhy.</param>
-        public BasicEffectParams(Vector3 ambientLightColor, Vector3 specularColor, float specularPower,
-            Vector3 emmisiveColor, DirectionalLightParams directionalLight0, DirectionalLightParams directionalLight1,
-            DirectionalLightParams directionalLight2, FogParams fog)
+        public BasicEffectParams(
+            Vector3 ambientLightColor,
+            Vector3 specularColor,
+            float specularPower,
+            Vector3 emmisiveColor,
+            DirectionalLightParams directionalLight0 = null,
+            DirectionalLightParams directionalLight1 = null,
+            DirectionalLightParams directionalLight2 = null,
+            FogParams fog = null)
         {
             AmbientLightColor = ambientLightColor;
             SpecularColor = specularColor;
@@ -43,7 +49,7 @@ namespace Prazsky.Render
         public Vector3 SpecularColor { get; set; }
 
         /// <summary>
-        /// Síla odlesku.
+        /// Intenzita odlesku.
         /// </summary>
         public float SpecularPower { get; set; }
 
