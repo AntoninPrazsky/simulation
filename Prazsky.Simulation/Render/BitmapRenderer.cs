@@ -19,14 +19,6 @@ namespace Prazsky.Render
         private const int MAX_BITMAP_WIDTH = 4096;
         private const int MAX_BITMAP_HEIGHT = 4096;
 
-        //Tyto hodnoty by bylo možné individuálně spočítat pro každý model (jde o ortogonální projekci kolmou k
-        //ose Z - ke kameře), promyslet, jestli by to mělo smysl
-        //Výpočet na základě AABB modelu: Zadní ořezová plocha je zadní strana kvádru, přední ořezová plocha
-        //je přední strana kvádru, přičemž pozice kamery odpovídá vzdálenosti přední strany kvádru od počátku
-        private const float CAMERA_Z_POSITION = 10f;
-        private const float Z_NEAR_PLANE = 1f;
-        private const float Z_FAR_PLANE = 100f;
-
         /// <summary>
         /// Vrátí ortogonální projekci modelu v podobě bitmapy (<see cref="Texture2D"/>).
         /// </summary>
@@ -40,7 +32,9 @@ namespace Prazsky.Render
             Model model,
             int bitmapScale = DEFAULT_BITMAP_SCALE)
         {
-            SizeFloat modelSize = CalculateModelSize(model);
+            BoundingBox box = Geometry.GetBoundingBox(model);
+
+            SizeFloat modelSize = CalculateModelSize(box);
             SizeInt renderSize = CalculateBitmapSize(modelSize, bitmapScale);
 
             RenderTarget2D renderTarget = new RenderTarget2D(
@@ -52,8 +46,15 @@ namespace Prazsky.Render
                 DepthFormat.Depth16);
 
             Matrix world = Matrix.Identity;
-            Matrix view = Matrix.CreateLookAt(new Vector3(0f, 0f, CAMERA_Z_POSITION), Vector3.Zero, Vector3.Up);
-            Matrix projection = Matrix.CreateOrthographic(modelSize.X, modelSize.Y, Z_NEAR_PLANE, Z_FAR_PLANE);
+
+            //Pozice kamery na ose Z odpovídá nejbližšímu bodu modelu
+            Vector3 cameraPosition = new Vector3(0f, 0f, Math.Abs(box.Min.Z));
+            Matrix view = Matrix.CreateLookAt(cameraPosition, Vector3.Zero, Vector3.Up);
+
+            //Přední ořezová plocha není vzdálena od kamery, zadní ořezová plocha odpovídá nejvzdálenějšímu bodu modelu
+            float nearPlane = 0f;
+            float farPlane = box.Max.Z * 2;
+            Matrix projection = Matrix.CreateOrthographic(modelSize.X, modelSize.Y, nearPlane, farPlane);
 
             graphicsDevice.SetRenderTarget(renderTarget);
             graphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
@@ -67,7 +68,7 @@ namespace Prazsky.Render
         }
 
         /// <summary>
-        /// Vykreslí ortogonální projekci modelu využitím metody 
+        /// Vykreslí ortogonální projekci modelu využitím metody
         /// <see cref="RenderOrthographic(GraphicsDevice, Model, int)"/> a zapíše ji do souboru ve formátu PNG.
         /// </summary>
         /// <param name="graphicsDevice">Grafické zařízení, které má být použito k vykreslení modelu.</param>
@@ -89,19 +90,17 @@ namespace Prazsky.Render
             bitmap.Dispose();
         }
 
-        private static SizeFloat CalculateModelSize(Model model)
+        private static SizeFloat CalculateModelSize(BoundingBox modelBoundingBox)
         {
-            BoundingBox box = Geometry.GetBoundingBox(model);
-
             SizeFloat calculatedSize;
 
-            Vector3[] boxCorners = box.GetCorners();
+            Vector3[] boxCorners = modelBoundingBox.GetCorners();
             calculatedSize.X = boxCorners[2].X * 2;
             calculatedSize.Y = Math.Abs(boxCorners[2].Y) * 2;
 
             if (calculatedSize.X <= 0 || calculatedSize.Y <= 0)
                 throw new ArgumentException("Chyba při výpočtu velikosti modelu. Zkontrolujte model (jeho výška a " +
-                    "šířka musí být větší než 0).", nameof(model));
+                    "šířka musí být větší než 0).", nameof(modelBoundingBox));
 
             return calculatedSize;
         }
@@ -132,10 +131,10 @@ namespace Prazsky.Render
                     MAX_BITMAP_WIDTH,
                     nameof(bitmapScale),
                     bitmapScale));
-            
+
             return calculatedSize;
         }
-        
+
         private struct SizeFloat
         {
             public float X;
