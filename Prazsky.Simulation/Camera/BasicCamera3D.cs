@@ -18,6 +18,7 @@ namespace Prazsky.Simulation.Camera
         private Vector3 _defaultUp = Vector3.Up;
         private float _rotationX = 0f;
         private float _rotationY = 0f;
+        private Vector3 _target;
 
         private float _fieldOfView;
         private float _farPlane = DEFAULT_FAR_PLANE_DISTANCE;
@@ -35,6 +36,7 @@ namespace Prazsky.Simulation.Camera
             Position = position;
             AspectRatio = aspectRatio;
             FieldOfView = fieldOfView;
+            _target = _defaultTarget;
 
             Recalculate();
         }
@@ -106,13 +108,18 @@ namespace Prazsky.Simulation.Camera
             Matrix rotation = GetCameraRotation();
 
             //Přepočítání bodu, do kterého se kamera dívá, na základě rotace kamery
-            Target = Position + Vector3.Transform(_defaultTarget, rotation);
+            _target = Position + Vector3.Transform(_defaultTarget, rotation);
 
             //Přepočítání vektoru směřujícího relativně vzhůru od kamery
             _up = Vector3.Transform(_defaultUp, rotation);
 
+            RecalculateViewProjection(_up);
+        }
+
+        private void RecalculateViewProjection(Vector3 upVector)
+        {
             //Přepočítání matice pohledu a projekce
-            View = Matrix.CreateLookAt(Position, Target, _up);
+            View = Matrix.CreateLookAt(Position, _target, upVector);
             Projection = Matrix.CreatePerspectiveFieldOfView(_fieldOfView, AspectRatio, _nearPlane, _farPlane);
         }
 
@@ -161,12 +168,27 @@ namespace Prazsky.Simulation.Camera
         /// <summary>
         /// Bod v trojrozměrném prostoru, do kterého se kamera dívá.
         /// </summary>
-        public Vector3 Target { get; private set; } = Vector3.Zero;
+        public Vector3 Target
+        {
+            get => _target;
+            set
+            {
+                _target = value;
+                RecalculateViewProjection(_defaultUp);
+
+                //Směrový vektor
+                Vector3 d = _target - Position;
+
+                //d.Z / |d| (absolutní hodnota směrového vektoru)
+                _rotationX = (float)Math.Asin(d.Z / Math.Sqrt(Math.Pow(d.X, 2) + Math.Pow(d.Y, 2) + Math.Pow(d.Z, 2)));
+                _rotationY = (float)Math.Atan2(d.Y, d.Z);
+            }
+        }
 
         /// <summary>
         /// Vektor udávající směr nahoru relativně ke kameře.
         /// </summary>
-        public Vector3 Up { get => Target; }
+        public Vector3 Up { get => _up; }
 
         /// <summary>
         /// Matice pohledu.
