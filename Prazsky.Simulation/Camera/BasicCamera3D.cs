@@ -176,6 +176,7 @@ namespace Prazsky.Simulation.Camera
                 _target = value;
                 
                 Vector3 direction = Position - _target;
+                direction.Normalize();
                 _rotationX = (float)Math.Asin(-direction.Y);
                 _rotationY = (float)Math.Atan2(direction.X, direction.Z);
 
