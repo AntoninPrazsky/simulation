@@ -174,14 +174,12 @@ namespace Prazsky.Simulation.Camera
             set
             {
                 _target = value;
+                
+                Vector3 direction = Position - _target;
+                _rotationX = (float)Math.Asin(-direction.Y);
+                _rotationY = (float)Math.Atan2(direction.X, direction.Z);
+
                 RecalculateViewProjection(_defaultUp);
-
-                //Směrový vektor
-                Vector3 d = _target - Position;
-
-                //d.Z / |d| (absolutní hodnota směrového vektoru)
-                _rotationX = (float)Math.Asin(d.Z / Math.Sqrt(Math.Pow(d.X, 2) + Math.Pow(d.Y, 2) + Math.Pow(d.Z, 2)));
-                _rotationY = (float)Math.Atan2(d.Y, d.Z);
             }
         }
 
