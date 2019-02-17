@@ -30,6 +30,9 @@ namespace Demo.Scenes
 
         public override void Construct()
         {
+            Demo.Camera3D.Position = new Vector3(22.12281f, 0.4714419f, 5.708819f);
+            Demo.Camera3D.Target = new Vector3(21.21403f, 0.5188365f, 5.294256f);
+
             ConstructGround();
 
             Body3D body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/groundBlockLongLeft"), Demo.World3D.World2D, Demo.GraphicsDevice, new Vector2(-24.15f, 5.9f), BodyType.Static);

@@ -33,8 +33,10 @@ namespace Demo.Scenes
 
         private Model _rightShoulder;
         private Body[] _rightShoulders;
-        
+
         private Body _wheel;
+
+        private Body3D _mainBody;
 
         public TheoJansenWalkerScene(SimulationDemo demo) : base(demo)
         {
@@ -57,7 +59,9 @@ namespace Demo.Scenes
                 Fixture fixture = _chassis.CreateFixture(shape);
                 fixture.CollisionGroup = -1;
 
-                Demo.World3D.AddBody3D(new Body3D(_body, _chassis));
+                _mainBody = new Body3D(_body, _chassis);
+
+                Demo.World3D.AddBody3D(_mainBody);
             }
 
             {
@@ -76,11 +80,13 @@ namespace Demo.Scenes
             }
 
             {
-                _motorJoint = new RevoluteJoint(_wheel, _chassis, _wheel.GetLocalPoint(_chassis.Position), Vector2.Zero);
-                _motorJoint.CollideConnected = false;
-                _motorJoint.MotorSpeed = _motorSpeed;
-                _motorJoint.MaxMotorTorque = 4000f;
-                _motorJoint.MotorEnabled = true;
+                _motorJoint = new RevoluteJoint(_wheel, _chassis, _wheel.GetLocalPoint(_chassis.Position), Vector2.Zero)
+                {
+                    CollideConnected = false,
+                    MotorSpeed = _motorSpeed,
+                    MaxMotorTorque = 4000f,
+                    MotorEnabled = true
+                };
                 world.Add(_motorJoint);
             }
         }
@@ -242,11 +248,15 @@ namespace Demo.Scenes
         {
             if (DemoHelper.PressedOnce(Keys.Space, currentState, previousState)) Reverse();
 
+            Demo.Camera3D.Target = _mainBody.Position - new Vector3(0, 2f, 0f);
+
             base.Update(currentState, previousState);
         }
 
         public override void Construct()
         {
+            Demo.Camera3D.Position = new Vector3(-1.3f, 17.5f, 20.6f);
+
             ConstructGround(51);
 
             DebugView.AppendFlags(tainicom.Aether.Physics2D.Diagnostics.DebugViewFlags.Joint);

@@ -12,6 +12,7 @@ using Prazsky.Simulation;
 using Prazsky.Simulation.Camera;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Demo
@@ -68,8 +69,9 @@ namespace Demo
         #region Grafika
 
         //Velikost grafické plochy okna, pokud není použito celoobrazovkové zobrazení
-        private const int _windowWidth = 1280;
-        private const int _windowHeight = 720;
+        private const int _windowWidth = 1920;
+
+        private const int _windowHeight = 1080;
 
         private GraphicsDeviceManager _graphics;
         private bool _windowed;
@@ -166,7 +168,7 @@ namespace Demo
         private void _graphics_PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
         {
             //Obnovovací frekvence vykreslování
-            e.GraphicsDeviceInformation.PresentationParameters.PresentationInterval = PresentInterval.Default;
+            e.GraphicsDeviceInformation.PresentationParameters.PresentationInterval = PresentInterval.One;
 
             if (_preferHiDef && e.GraphicsDeviceInformation.Adapter.IsProfileSupported(GraphicsProfile.HiDef))
                 e.GraphicsDeviceInformation.GraphicsProfile = GraphicsProfile.HiDef;
@@ -180,6 +182,8 @@ namespace Demo
         /// <param name="gameTime">Herní čas.</param>
         private void CameraMovement(GameTime gameTime)
         {
+            Debug.WriteLine(Camera3D.Position.ToString() + " " + Camera3D.Target.ToString());
+
             #region kompletní ovládání kamery gamepadem
 
             if (_currentGamePadState.IsConnected)
@@ -334,7 +338,7 @@ namespace Demo
             _graphics.PreferredBackBufferHeight = windowed ? _windowHeight : GraphicsDevice.DisplayMode.Height;
             _graphics.IsFullScreen = !windowed;
 
-            _graphics.SynchronizeWithVerticalRetrace = false;
+            _graphics.SynchronizeWithVerticalRetrace = true;
             _graphics.PreferMultiSampling = _preferMultiSampling;
             _graphics.ApplyChanges();
 

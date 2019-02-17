@@ -59,7 +59,7 @@
 /build:Models/bridge.x
 
 #begin Models/chair.dae
-/importer:OpenAssetImporter
+/importer:FbxImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
 /processorParam:ColorKeyEnabled=True

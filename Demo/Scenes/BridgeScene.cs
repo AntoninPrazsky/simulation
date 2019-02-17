@@ -20,6 +20,9 @@ namespace Demo.Scenes
 
         public override void Construct()
         {
+            Demo.Camera3D.Position = new Vector3(15.04802f, 5.735241f, 0.8949657f);
+            Demo.Camera3D.Target = new Vector3(14.11598f, 5.409653f, 0.7359338f);
+
             HiddenBody = Demo.World3D.World2D.CreateBody(Vector2.Zero);
 
             Path bridgePath = new Path();
@@ -47,6 +50,7 @@ namespace Demo.Scenes
             body.SetRestitution(0.8f);
 
             Body3D body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/Balls/gold"), Demo.World3D.World2D, body, new Vector2(8f, 8f));
+
             Demo.World3D.AddBody3D(body3D);
             body.ApplyAngularImpulse(14f);
         }
