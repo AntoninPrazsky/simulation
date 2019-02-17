@@ -71,6 +71,11 @@ namespace Prazsky.Simulation
         public float PositionZ { set; get; }
 
         /// <summary>
+        /// Pozice trojrozměrného modelu v trojrozměrném světě.
+        /// </summary>
+        public Vector3 Position { get => _position3D; }
+
+        /// <summary>
         /// Konstruktor trojrozměrného objektu s podporou dvourozměrné fyzikální simulace.
         /// </summary>
         /// <param name="model3D">Trojrozměrný model pro vykreslování.</param>
