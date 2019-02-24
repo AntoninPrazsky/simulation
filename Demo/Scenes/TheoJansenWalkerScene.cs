@@ -23,7 +23,11 @@ namespace Demo.Scenes
         private Model _engine;
         private Model _leftLeg;
         private Body[] _leftLegs;
+
         private Model _leftShoulder;
+        private Model _leftShoulderCurtain;
+        private Model _leftShoulderCurtainFlip;
+
         private Body[] _leftShoulders;
         private RevoluteJoint _motorJoint;
         private float _motorSpeed;
@@ -32,6 +36,9 @@ namespace Demo.Scenes
         private Body[] _rightLegs;
 
         private Model _rightShoulder;
+        private Model _rightShoulderCurtain;
+        private Model _rightShoulderCurtainFlip;
+
         private Body[] _rightShoulders;
 
         private Body _wheel;
@@ -213,16 +220,22 @@ namespace Demo.Scenes
             CreateLeg(Demo.World3D.World2D, -1f, wheelAnchor, out _leftShoulders[2], out _leftLegs[2]);
             CreateLeg(Demo.World3D.World2D, 1f, wheelAnchor, out _rightShoulders[2], out _rightLegs[2]);
 
-            _leftShoulder = Demo.Content.Load<Model>("Models/Theo/leftShoulder");
-            _leftLeg = Demo.Content.Load<Model>("Models/Theo/leftLeg");
+            _leftShoulder = Demo.Content.Load<Model>("Models/TheoDesign/leftShoulder");
+            _leftShoulderCurtain = Demo.Content.Load<Model>("Models/TheoDesign/leftShoulderCurtain");
+            _leftShoulderCurtainFlip = Demo.Content.Load<Model>("Models/TheoDesign/leftShoulderCurtainFlip");
 
-            _rightShoulder = Demo.Content.Load<Model>("Models/Theo/rightShoulder");
-            _rightLeg = Demo.Content.Load<Model>("Models/Theo/rightLeg");
+            _leftLeg = Demo.Content.Load<Model>("Models/TheoDesign/leftLeg");
 
-            Demo.World3D.AddBody3D(new Body3D(_leftShoulder, _leftShoulders[0], -2f));
+            _rightShoulder = Demo.Content.Load<Model>("Models/TheoDesign/rightShoulder");
+            _rightShoulderCurtain = Demo.Content.Load<Model>("Models/TheoDesign/rightShoulderCurtain");
+            _rightShoulderCurtainFlip = Demo.Content.Load<Model>("Models/TheoDesign/rightShoulderCurtainFlip");
+
+            _rightLeg = Demo.Content.Load<Model>("Models/TheoDesign/rightLeg");
+
+            Demo.World3D.AddBody3D(new Body3D(_leftShoulderCurtainFlip, _leftShoulders[0], -2f));
             Demo.World3D.AddBody3D(new Body3D(_leftLeg, _leftLegs[0], -2f));
 
-            Demo.World3D.AddBody3D(new Body3D(_rightShoulder, _rightShoulders[0], -2f));
+            Demo.World3D.AddBody3D(new Body3D(_rightShoulderCurtainFlip, _rightShoulders[0], -2f));
             Demo.World3D.AddBody3D(new Body3D(_rightLeg, _rightLegs[0], -2f));
 
             Demo.World3D.AddBody3D(new Body3D(_leftShoulder, _leftShoulders[1], 0f));
@@ -231,10 +244,10 @@ namespace Demo.Scenes
             Demo.World3D.AddBody3D(new Body3D(_rightShoulder, _rightShoulders[1], 0f));
             Demo.World3D.AddBody3D(new Body3D(_rightLeg, _rightLegs[1], 0f));
 
-            Demo.World3D.AddBody3D(new Body3D(_leftShoulder, _leftShoulders[2], 2f));
+            Demo.World3D.AddBody3D(new Body3D(_leftShoulderCurtain, _leftShoulders[2], 2f));
             Demo.World3D.AddBody3D(new Body3D(_leftLeg, _leftLegs[2], 2f));
 
-            Demo.World3D.AddBody3D(new Body3D(_rightShoulder, _rightShoulders[2], 2f));
+            Demo.World3D.AddBody3D(new Body3D(_rightShoulderCurtain, _rightShoulders[2], 2f));
             Demo.World3D.AddBody3D(new Body3D(_rightLeg, _rightLegs[2], 2f));
         }
 
@@ -259,7 +272,7 @@ namespace Demo.Scenes
 
             ConstructGround(51);
 
-            DebugView.AppendFlags(tainicom.Aether.Physics2D.Diagnostics.DebugViewFlags.Joint);
+            //DebugView.AppendFlags(tainicom.Aether.Physics2D.Diagnostics.DebugViewFlags.Joint);
 
             Body3D body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/groundBlockLongLeft"), Demo.World3D.World2D, Demo.GraphicsDevice, new Vector2(-129.15f, 5.9f), BodyType.Static);
             Demo.World3D.AddBody3D(body3D);

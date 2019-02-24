@@ -93,6 +93,14 @@
     <None Include="Content\Models\groundBlockLong.x" />
     <None Include="Content\Models\groundBlockLongLeft.x" />
     <None Include="Content\Models\groundBlockLongRight.x" />
+    <None Include="Content\Models\TheoDesign\leftLeg.dae" />
+    <None Include="Content\Models\TheoDesign\leftShoulder.dae" />
+    <None Include="Content\Models\TheoDesign\leftShoulderCurtain.dae" />
+    <None Include="Content\Models\TheoDesign\leftShoulderCurtainFlip.dae" />
+    <None Include="Content\Models\TheoDesign\rightLeg.dae" />
+    <None Include="Content\Models\TheoDesign\rightShoulder.dae" />
+    <None Include="Content\Models\TheoDesign\rightShoulderCurtain.dae" />
+    <None Include="Content\Models\TheoDesign\rightShoulderCurtainFlip.dae" />
     <None Include="Content\Models\Theo\body.x" />
     <None Include="Content\Models\Theo\engine.dae" />
     <None Include="Content\Models\Theo\engine.x" />
