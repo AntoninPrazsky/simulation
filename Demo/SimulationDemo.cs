@@ -155,7 +155,7 @@ namespace Demo
 
             //Možnost uchopení tělesa myší
             GrabWorldObject();
-            DemoScenes[_currentDemo].Update(_currentKeyboardState, _previousKeyboardState);
+            DemoScenes[_currentDemo].Update(_currentKeyboardState, _previousKeyboardState, _currentGamePadState, _previousGamePadState);
 
             //Předchozí stav vstupních zařízení (pro další aktualizaci)
             _previousKeyboardState = _currentKeyboardState;

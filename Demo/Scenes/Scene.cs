@@ -38,31 +38,31 @@ namespace Demo.Scenes
 
         public abstract void Construct();
 
-        public virtual void Update(KeyboardState currentState, KeyboardState previousState)
+        public virtual void Update(KeyboardState currentKeyboardState, KeyboardState previousKeyboardState, GamePadState currentGamePadState, GamePadState previousGamePadState)
         {
             DebugView.UpdatePerformanceGraph(Demo.World3D.World2D.UpdateTime);
 
-            if (DemoHelper.PressedOnce(Keys.F1, currentState, previousState))
+            if (DemoHelper.PressedOnce(Keys.F1, currentKeyboardState, previousKeyboardState))
                 EnableOrDisableFlag(DebugViewFlags.Shape);
-            if (DemoHelper.PressedOnce(Keys.F2, currentState, previousState))
+            if (DemoHelper.PressedOnce(Keys.F2, currentKeyboardState, previousKeyboardState))
             {
                 EnableOrDisableFlag(DebugViewFlags.DebugPanel);
                 EnableOrDisableFlag(DebugViewFlags.PerformanceGraph);
             }
-            if (DemoHelper.PressedOnce(Keys.F3, currentState, previousState))
+            if (DemoHelper.PressedOnce(Keys.F3, currentKeyboardState, previousKeyboardState))
                 EnableOrDisableFlag(DebugViewFlags.Joint);
-            if (DemoHelper.PressedOnce(Keys.F4, currentState, previousState))
+            if (DemoHelper.PressedOnce(Keys.F4, currentKeyboardState, previousKeyboardState))
             {
                 EnableOrDisableFlag(DebugViewFlags.ContactPoints);
                 EnableOrDisableFlag(DebugViewFlags.ContactNormals);
             }
-            if (DemoHelper.PressedOnce(Keys.F5, currentState, previousState))
+            if (DemoHelper.PressedOnce(Keys.F5, currentKeyboardState, previousKeyboardState))
                 EnableOrDisableFlag(DebugViewFlags.PolygonPoints);
-            if (DemoHelper.PressedOnce(Keys.F6, currentState, previousState))
+            if (DemoHelper.PressedOnce(Keys.F6, currentKeyboardState, previousKeyboardState))
                 EnableOrDisableFlag(DebugViewFlags.Controllers);
-            if (DemoHelper.PressedOnce(Keys.F7, currentState, previousState))
+            if (DemoHelper.PressedOnce(Keys.F7, currentKeyboardState, previousKeyboardState))
                 EnableOrDisableFlag(DebugViewFlags.CenterOfMass);
-            if (DemoHelper.PressedOnce(Keys.F8, currentState, previousState))
+            if (DemoHelper.PressedOnce(Keys.F8, currentKeyboardState, previousKeyboardState))
                 EnableOrDisableFlag(DebugViewFlags.AABB);
         }
 

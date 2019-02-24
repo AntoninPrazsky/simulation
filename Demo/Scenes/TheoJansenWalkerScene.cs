@@ -45,6 +45,8 @@ namespace Demo.Scenes
 
         private Body3D _mainBody;
 
+        private bool _stareAt = true;
+
         public TheoJansenWalkerScene(SimulationDemo demo) : base(demo)
         {
         }
@@ -257,13 +259,15 @@ namespace Demo.Scenes
             _motorJoint.MotorSpeed = _motorSpeed;
         }
 
-        public override void Update(KeyboardState currentState, KeyboardState previousState)
+        public override void Update(KeyboardState currentKeyboardState, KeyboardState previousKeyboardState, GamePadState currentGamePadState, GamePadState previousGamePadState)
         {
-            if (DemoHelper.PressedOnce(Keys.Space, currentState, previousState)) Reverse();
+            if (DemoHelper.PressedOnce(Keys.Space, Buttons.A, currentKeyboardState, currentGamePadState, previousKeyboardState, previousGamePadState)) Reverse();
 
-            Demo.Camera3D.Target = _mainBody.Position - new Vector3(0, 2f, 0f);
+            if (DemoHelper.PressedOnce(Keys.Enter, Buttons.B, currentKeyboardState, currentGamePadState, previousKeyboardState, previousGamePadState)) _stareAt = !_stareAt;
 
-            base.Update(currentState, previousState);
+            if (_stareAt) Demo.Camera3D.Target = _mainBody.Position - new Vector3(0, 2f, 0f);
+
+            base.Update(currentKeyboardState, previousKeyboardState, currentGamePadState, previousGamePadState);
         }
 
         public override void Construct()
