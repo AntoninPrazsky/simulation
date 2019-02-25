@@ -36,7 +36,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <ApplicationIcon>demo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <Win32Resource>
+    </Win32Resource>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -75,9 +80,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
     <None Include="Content\DiagnosticsFont.xnb">
@@ -108,6 +110,9 @@
     <None Include="Content\Models\Theo\leftShoulder.x" />
     <None Include="Content\Models\Theo\rightLeg.x" />
     <None Include="Content\Models\Theo\rightShoulder.x" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="demo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
