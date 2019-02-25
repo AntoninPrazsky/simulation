@@ -3,6 +3,9 @@ Game library for performing two-dimensional physical simulations in games with t
 
 ![Screenshot](Documentation//screenshot2.png)
 
+## Version
+Current version: 0.2
+
 ## Dependencies
 This library is dependent on the following resources:
 * [MonoGame](https://github.com/MonoGame/MonoGame)
