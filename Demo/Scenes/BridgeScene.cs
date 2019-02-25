@@ -20,8 +20,8 @@ namespace Demo.Scenes
 
 		public override void Construct()
 		{
-			Demo.Camera3D.Position = new Vector3(15.04802f, 5.735241f, 0.8949657f);
-			Demo.Camera3D.Target = new Vector3(14.11598f, 5.409653f, 0.7359338f);
+			Demo.Camera3D.Position = new Vector3(16.36052f, 7.006462f, 1.119595f);
+			Demo.Camera3D.Target = new Vector3(15.43861f, 6.659885f, 0.9464932f);
 
 			HiddenBody = Demo.World3D.World2D.CreateBody(Vector2.Zero);
 
@@ -47,12 +47,12 @@ namespace Demo.Scenes
 
 			Body body = new Body();
 			body.CreateCircle(1f, 1f);
-			body.SetRestitution(0.8f);
+			body.SetRestitution(0.7f);
 
 			Body3D body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/Balls/gold"), Demo.World3D.World2D, body, new Vector2(8f, 8f));
 
 			Demo.World3D.AddBody3D(body3D);
-			body.ApplyAngularImpulse(14f);
+			body.ApplyAngularImpulse(5f);
 		}
 	}
 }
