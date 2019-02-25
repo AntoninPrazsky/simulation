@@ -9,7 +9,7 @@ namespace Demo
     /// </summary>
     public static class Program
     {
-        private static bool _windowed = false;
+        private static bool _windowed = true;
         private static bool _preferMultiSampling = true;
         private static bool _preferHiDef = true;
 

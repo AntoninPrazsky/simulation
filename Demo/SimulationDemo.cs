@@ -69,9 +69,8 @@ namespace Demo
         #region Grafika
 
         //Velikost grafické plochy okna, pokud není použito celoobrazovkové zobrazení
-        private const int _windowWidth = 1920;
-
-        private const int _windowHeight = 1080;
+        private const int _windowWidth = 1280;
+        private const int _windowHeight = 768;
 
         private GraphicsDeviceManager _graphics;
         private bool _windowed;
@@ -168,7 +167,7 @@ namespace Demo
         private void _graphics_PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
         {
             //Obnovovací frekvence vykreslování
-            e.GraphicsDeviceInformation.PresentationParameters.PresentationInterval = PresentInterval.One;
+            e.GraphicsDeviceInformation.PresentationParameters.PresentationInterval = PresentInterval.Default;
 
             if (_preferHiDef && e.GraphicsDeviceInformation.Adapter.IsProfileSupported(GraphicsProfile.HiDef))
                 e.GraphicsDeviceInformation.GraphicsProfile = GraphicsProfile.HiDef;
