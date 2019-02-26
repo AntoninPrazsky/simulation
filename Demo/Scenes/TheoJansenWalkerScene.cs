@@ -19,8 +19,8 @@ namespace Demo.Scenes
 
     internal class TheoJansenWalkerScene : Scene
     {
-        private static float MOTOR_SPEED = 2f;
-        private static float MAX_MOTOR_TORQUE = 4000f;
+        private static readonly float MOTOR_SPEED = 2f;
+        private static readonly float MAX_MOTOR_TORQUE = 4000f;
 
         private Model _body;
         private Body _chassis;
@@ -56,7 +56,7 @@ namespace Demo.Scenes
 
         public TheoJansenWalkerScene(SimulationDemo demo) : base(demo)
         {
-            _stareAtShift = new Vector3(0f, -0.5f, 0f);
+            _stareAtShift = new Vector3(0f, 1.5f, 0f);
         }
 
         private void CreateChassis(World world, Vector2 pivot)
@@ -276,7 +276,7 @@ namespace Demo.Scenes
         public override void Update(KeyboardState currentKeyboardState, KeyboardState previousKeyboardState, GamePadState currentGamePadState, GamePadState previousGamePadState)
         {
             if (DemoHelper.PressedOnce(Keys.Space, Buttons.A, currentKeyboardState, currentGamePadState, previousKeyboardState, previousGamePadState)) Reverse();
-            if (DemoHelper.PressedOnce(Keys.LeftShift, Buttons.X, currentKeyboardState, currentGamePadState, previousKeyboardState, previousGamePadState)) Reverse();
+            if (DemoHelper.PressedOnce(Keys.LeftControl, Buttons.X, currentKeyboardState, currentGamePadState, previousKeyboardState, previousGamePadState)) ToggleMotorSpeed();
 
             if (DemoHelper.PressedOnce(Keys.Enter, Buttons.B, currentKeyboardState, currentGamePadState, previousKeyboardState, previousGamePadState))
             {
@@ -302,7 +302,8 @@ namespace Demo.Scenes
         public override void Construct()
         {
             Demo.Camera3D.Position = new Vector3(-3.5f, 17f, 20.6f);
-            Demo.Camera3D.Target = new Vector3(8.4f, 5.8f, 16.3f);
+            Demo.Camera3D.Target = new Vector3(-9.430276f, 7.81207f, 0f);
+            _positionStart = Demo.Camera3D.Target;
 
             ConstructGround(51);
 
