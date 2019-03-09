@@ -67,7 +67,7 @@ namespace Demo.Scenes
                     Vertices = PolygonTools.CreateRectangle(2.5f, 1f)
                 };
 
-                _body = Demo.Content.Load<Model>("Models/Theo/body");
+                _body = Demo.Content.Load<Model>("Models/TheoDesign/bodyOrganic");
 
                 _chassis = world.CreateBody();
                 _chassis.BodyType = BodyType.Dynamic;
@@ -84,7 +84,7 @@ namespace Demo.Scenes
             {
                 CircleShape shape = new CircleShape(1.6f, 1f);
 
-                _engine = Demo.Content.Load<Model>("Models/Theo/engine");
+                _engine = Demo.Content.Load<Model>("Models/TheoDesign/engineLargeTwistedEnds");
 
                 _wheel = world.CreateBody();
                 _wheel.BodyType = BodyType.Dynamic;
