@@ -28,14 +28,25 @@ namespace Prazsky.Render
 		/// <param name="bitmapScale">Poměr modelu vůči jeho bitmapové reprezentaci. Výchozí hodnota 100 znamená,
 		/// že 1 jednotka modelu odpovídá 100 pixelům bitmapy.</param>
 		/// <returns>Vrací ortogonální projekci trojrozměného modelu v podobě bitmapy.</returns>
+		/// <param name="orthographicModelSize">Velikost modelu pro renderování. Pokud tento parametr není zadán,
+		/// vypočítá se.</param>
 		public static Texture2D RenderOrthographic(
 				GraphicsDevice graphicsDevice,
 				Model model,
-				int bitmapScale = DEFAULT_BITMAP_SCALE)
+				int bitmapScale = DEFAULT_BITMAP_SCALE,
+				Vector2 orthographicModelSize = new Vector2())
 		{
+			SizeFloat modelSize;
 			BoundingBox box = Geometry.GetBoundingBox(model);
 
-			SizeFloat modelSize = CalculateModelSize(box);
+			if (orthographicModelSize.X == 0f || orthographicModelSize.Y == 0f)
+				modelSize = CalculateModelSize(box);
+			else
+			{
+				modelSize.X = orthographicModelSize.X;
+				modelSize.Y = orthographicModelSize.Y;
+			}
+
 			SizeInt renderSize = CalculateBitmapSize(modelSize, bitmapScale);
 
 			RenderTarget2D renderTarget = new RenderTarget2D(
@@ -70,7 +81,7 @@ namespace Prazsky.Render
 
 		/// <summary>
 		/// Vykreslí ortogonální projekci modelu využitím metody
-		/// <see cref="RenderOrthographic(GraphicsDevice, Model, int)"/> a zapíše ji do souboru ve formátu PNG.
+		/// <see cref="RenderOrthographic(GraphicsDevice, Model, int, Vector2)"/> a zapíše ji do souboru ve formátu PNG.
 		/// </summary>
 		/// <param name="graphicsDevice">Grafické zařízení, které má být použito k vykreslení modelu.</param>
 		/// <param name="model">Trojrozměný model k vykreslení.</param>
@@ -95,9 +106,8 @@ namespace Prazsky.Render
 		{
 			SizeFloat calculatedSize;
 
-			Vector3[] boxCorners = modelBoundingBox.GetCorners();
-			calculatedSize.X = boxCorners[2].X * 2;
-			calculatedSize.Y = Math.Abs(boxCorners[2].Y) * 2;
+			calculatedSize.X = Math.Abs(modelBoundingBox.Max.X) + Math.Abs(modelBoundingBox.Min.X);
+			calculatedSize.Y = Math.Abs(modelBoundingBox.Max.Y) + Math.Abs(modelBoundingBox.Min.Y);
 
 			if (calculatedSize.X <= 0 || calculatedSize.Y <= 0)
 				throw new ArgumentException("Chyba při výpočtu velikosti modelu. Zkontrolujte model (jeho výška a " +
