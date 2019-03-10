@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Prazsky.Render;
+using tainicom.Aether.Physics2D.Common.Decomposition;
 using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Prazsky.Simulation.Factories
@@ -16,6 +17,11 @@ namespace Prazsky.Simulation.Factories
 		public const BodyType DEFAULT_BODY_TYPE = BodyType.Dynamic;
 
 		/// <summary>
+		/// Výchozí algoritmus pro rozdělení tvaru na množství menších konvexních polygonů.
+		/// </summary>
+		public const TriangulationAlgorithm DEFAULT_TRIANGULATION_ALGORITHM = TriangulationAlgorithm.Bayazit;
+
+		/// <summary>
 		/// Vrátí objekt typu <see cref="Body3D"/>. Tvar odpovídající dvourozměrné reprezentaci pro fyzikální simulaci
 		/// je nalezen podle ortogonální projekce zadaného trojrozměrného modelu.
 		/// </summary>
@@ -24,6 +30,8 @@ namespace Prazsky.Simulation.Factories
 		/// <param name="graphicsDevice">Grafické zařízení.</param>
 		/// <param name="position">Výchozí pozice objektu v dvourozměrném světě.</param>
 		/// <param name="bodyType">Typ simulovaného tělesa (statické, kinematické nebo dynamické).</param>
+		/// <param name="triangulationAlgorithm">Algoritmus pro rozdělení tvaru na množství menších konvexních
+		/// polygonů.</param>
 		/// <param name="basicEffectParams">Parametry pro třídu <see cref="BasicEffect"/>.</param>
 		/// <returns>Objekt typu <see cref="Body3D"/>.</returns>
 		public static Body3D CreateBody3D(
@@ -32,11 +40,13 @@ namespace Prazsky.Simulation.Factories
 				GraphicsDevice graphicsDevice,
 				Vector2 position = new Vector2(),
 				BodyType bodyType = DEFAULT_BODY_TYPE,
+				TriangulationAlgorithm triangulationAlgorithm = DEFAULT_TRIANGULATION_ALGORITHM,
 				BasicEffectParams basicEffectParams = null)
 		{
 			using (Texture2D orthoRender = BitmapRenderer.RenderOrthographic(graphicsDevice, model))
 			{
-				Body body2D = BodyCreator.CreatePolygonBody(orthoRender, world2D, position, bodyType);
+				Body body2D = BodyCreator.CreatePolygonBody(orthoRender, world2D, position, bodyType,
+					1f, 0f, 1f, triangulationAlgorithm);
 
 				Body3D body3D = new Body3D(model, body2D)
 				{
