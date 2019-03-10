@@ -12,7 +12,7 @@ namespace Prazsky.Render
 	/// </summary>
 	public static class BitmapRenderer
 	{
-		private const int DEFAULT_BITMAP_SCALE = 100;
+		public const int DEFAULT_BITMAP_SCALE = 100;
 
 		//Tyto hodnoty jsou dány možnostmi použitého grafického zařízení (a platformou, na které kód běží), zjistit,
 		//jestli je lze jednoduše zjistit z této třídy
