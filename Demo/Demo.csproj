@@ -92,9 +92,9 @@
     </None>
     <None Include="Content\Models\Balls\gold.x" />
     <None Include="Content\Models\bridge.x" />
-    <None Include="Content\Models\Bus\backWheels.3ds" />
+    <None Include="Content\Models\Bus\backWheels.x" />
     <None Include="Content\Models\Bus\body.3ds" />
-    <None Include="Content\Models\Bus\frontWheels.3ds" />
+    <None Include="Content\Models\Bus\frontWheels.x" />
     <None Include="Content\Models\chair.dae" />
     <None Include="Content\Models\groundBlockLong.x" />
     <None Include="Content\Models\groundBlockLongLeft.x" />

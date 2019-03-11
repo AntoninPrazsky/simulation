@@ -58,7 +58,7 @@
 /processorParam:TextureFormat=Compressed
 /build:Models/bridge.x
 
-#begin Models/Bus/backWheels.3ds
+#begin Models/Bus/backWheels.x
 /importer:FbxImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
@@ -75,7 +75,7 @@
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
-/build:Models/Bus/backWheels.3ds
+/build:Models/Bus/backWheels.x
 
 #begin Models/Bus/body.3ds
 /importer:FbxImporter
@@ -96,7 +96,7 @@
 /processorParam:TextureFormat=Compressed
 /build:Models/Bus/body.3ds
 
-#begin Models/Bus/frontWheels.3ds
+#begin Models/Bus/frontWheels.x
 /importer:FbxImporter
 /processor:ModelProcessor
 /processorParam:ColorKeyColor=0,0,0,0
@@ -113,7 +113,7 @@
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
-/build:Models/Bus/frontWheels.3ds
+/build:Models/Bus/frontWheels.x
 
 #begin Models/chair.dae
 /importer:FbxImporter
