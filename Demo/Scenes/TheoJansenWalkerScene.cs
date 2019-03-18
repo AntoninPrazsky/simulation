@@ -12,7 +12,7 @@ using tainicom.Aether.Physics2D.Dynamics.Joints;
 namespace Demo.Scenes
 {
 	/*
-	 * Original source Farseer Physics Engine:
+	 * Scene inspired by original source from Farseer Physics Engine demo:
 	 * Copyright (c) 2014 Ian Qvist, http://farseerphysics.codeplex.com
 	 * Microsoft Permissive License (Ms-PL) v1.1
 	 */
@@ -48,7 +48,7 @@ namespace Demo.Scenes
 
 		private Body _wheel;
 
-		private Body3D _mainBody;
+		private Body3D _mainBody3D;
 
 		private bool _stareAt = true;
 		private Vector3 _positionStart;
@@ -77,9 +77,9 @@ namespace Demo.Scenes
 				Fixture fixture = _chassis.CreateFixture(shape);
 				fixture.CollisionGroup = -1;
 
-				_mainBody = new Body3D(_body, _chassis);
+				_mainBody3D = new Body3D(_body, _chassis);
 
-				Demo.World3D.AddBody3D(_mainBody);
+				Demo.World3D.AddBody3D(_mainBody3D);
 			}
 
 			{
@@ -296,11 +296,11 @@ namespace Demo.Scenes
 			{
 				_sinValue += 0.005;
 
-				Demo.Camera3D.Target = Vector3.Lerp(_positionStart, _mainBody.Position - _stareAtShift, (float)Math.Sin(_sinValue));
+				Demo.Camera3D.Target = Vector3.Lerp(_positionStart, _mainBody3D.Position - _stareAtShift, (float)Math.Sin(_sinValue));
 			}
 			else if (_stareAt)
 			{
-				Demo.Camera3D.Target = _mainBody.Position - _stareAtShift;
+				Demo.Camera3D.Target = _mainBody3D.Position - _stareAtShift;
 			}
 
 			base.Update(currentKeyboardState, previousKeyboardState, currentGamePadState, previousGamePadState);

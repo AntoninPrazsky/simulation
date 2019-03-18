@@ -99,6 +99,10 @@
     <None Include="Content\Models\groundBlockLong.x" />
     <None Include="Content\Models\groundBlockLongLeft.x" />
     <None Include="Content\Models\groundBlockLongRight.x" />
+    <None Include="Content\Models\Ground\grass.x" />
+    <None Include="Content\Models\Ground\grassBend.x" />
+    <None Include="Content\Models\Ground\grassBendNegative.x" />
+    <None Include="Content\Models\Obstacles\ramp.x" />
     <None Include="Content\Models\TheoDesign\bodyOrganic.dae" />
     <None Include="Content\Models\TheoDesign\engineLargeTwistedEnds.dae" />
     <None Include="Content\Models\TheoDesign\leftLeg.dae" />
