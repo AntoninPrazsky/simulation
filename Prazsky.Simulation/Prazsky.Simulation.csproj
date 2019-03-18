@@ -50,9 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backdrop3D.cs" />
     <Compile Include="Body3D.cs" />
     <Compile Include="MultipleBody3DCreator.cs" />
     <Compile Include="Factories\Body3DFactory.cs" />
+    <Compile Include="Object3D.cs" />
     <Compile Include="Render\BasicEffectParams.cs" />
     <Compile Include="BodyCreator.cs" />
     <Compile Include="Camera\BasicCamera3D.cs" />

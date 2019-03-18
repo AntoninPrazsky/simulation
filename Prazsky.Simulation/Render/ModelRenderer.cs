@@ -25,7 +25,7 @@ namespace Prazsky.Render
 				Model model,
 				Matrix[] transformations,
 				ref ICamera camera,
-				ref Matrix world,
+				Matrix world,
 				BasicEffectParams basicEffectParams,
 				bool enableDefaultLighting,
 				bool preferPerPixelLighting)

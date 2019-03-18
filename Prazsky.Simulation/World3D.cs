@@ -28,6 +28,7 @@ namespace Prazsky.Simulation
 
 		private BoundingFrustum _boundingFrustum;
 		private List<Body3D> _body3Ds = new List<Body3D>();
+		private List<Backdrop3D> _backdrop3Ds = new List<Backdrop3D>();
 
 		/// <summary>
 		/// Deaktivace fyzikální simulace, pokud je trojrozměrné těleso mimo promítací kužel.
@@ -88,28 +89,34 @@ namespace Prazsky.Simulation
 		/// </summary>
 		public void Draw()
 		{
-			if (_body3Ds.Count > 0)
-			{
+			if (_body3Ds.Count > 0 || _backdrop3Ds.Count > 0)
 				_boundingFrustum = new BoundingFrustum(Camera3D.View * Camera3D.Projection);
 
-				foreach (Body3D body3D in _body3Ds)
+			if (_body3Ds.Count > 0)
+			{
+				for (int i = 0; i < _body3Ds.Count; i++)
 				{
-					body3D.Update3DPosition();
+					_body3Ds[i].Update3DPosition();
 
-					if (_boundingFrustum.Contains(body3D.BoundingSphere) != ContainmentType.Disjoint)
+					if (_boundingFrustum.Contains(_body3Ds[i].BoundingSphere) != ContainmentType.Disjoint)
 					{
 						//Těleso je uvnitř promítacího kuželu, potom se vždy simuluje a vykresluje
-						body3D.EnableSimulation();
-						body3D.Draw(Camera3D);
+						_body3Ds[i].EnableSimulation();
+						_body3Ds[i].Draw(Camera3D);
 					}
 					else
 					{
 						//Těleso není uvnitř promítacího kuželu
 						//Chce uživatel v této situaci neprovádět simulaci?
-						if (DisableSimulationWhenOutOfBoundingFrustum) body3D.DisableSimulation();
+						if (DisableSimulationWhenOutOfBoundingFrustum) _body3Ds[i].DisableSimulation();
 					}
 				}
 			}
+
+			if (_backdrop3Ds.Count > 0)
+				for (int i = 0; i < _backdrop3Ds.Count; i++)
+					if (_boundingFrustum.Contains(_backdrop3Ds[i].BoundingSphere) != ContainmentType.Disjoint)
+						_backdrop3Ds[i].Draw(Camera3D);
 		}
 
 		/// <summary>
@@ -126,6 +133,22 @@ namespace Prazsky.Simulation
 			return true;
 		}
 
+		public bool AddBackdrop3D(Backdrop3D backdrop3D)
+		{
+			if (_backdrop3Ds.Contains(backdrop3D)) return false;
+
+			_backdrop3Ds.Add(backdrop3D);
+			return true;
+		}
+
+		public bool RemoveBackdrop3D(Backdrop3D backdrop3D)
+		{
+			if (!_backdrop3Ds.Contains(backdrop3D)) return false;
+
+			_backdrop3Ds.Remove(backdrop3D);
+			return true;
+		}
+
 		/// <summary>
 		/// Odebere trojrozměrný simulovatelný objekt z trojrozměrného světa.
 		/// </summary>
@@ -135,8 +158,9 @@ namespace Prazsky.Simulation
 		public bool RemoveBody3D(Body3D body3D)
 		{
 			if (!_body3Ds.Contains(body3D)) return false;
-			//TODO: Odebrat odpovídající dvourozměrnou reprezentaci z this.World2D
+
 			_body3Ds.Remove(body3D);
+			World2D.Remove(body3D.Body2D);
 			return true;
 		}
 
@@ -185,6 +209,7 @@ namespace Prazsky.Simulation
 		{
 			World2D.Clear();
 			_body3Ds.Clear();
+			_backdrop3Ds.Clear();
 		}
 
 		private FixedMouseJoint _fixedMouseJoint = null;

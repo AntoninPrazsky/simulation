@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Prazsky.Render;
-using Prazsky.Simulation.Camera;
 using Prazsky.Tools;
 using tainicom.Aether.Physics2D.Dynamics;
 
@@ -10,16 +8,10 @@ namespace Prazsky.Simulation
 	/// <summary>
 	/// Představuje trojrozměrný objekt, který je simulovatelný.
 	/// </summary>
-	public class Body3D
+	public class Body3D : Object3D
 	{
-		private Model _model3D;
-		private Matrix _world = Matrix.Identity;
-		private Vector3 _position3D = Vector3.Zero;
-		private BoundingSphere _boundingSphere;
-		private BoundingBox _boundingBox;
 		private bool _simEnabled = true;
 		private bool _asleep = false;
-		private Matrix[] _transformation;
 
 		/// <summary>
 		/// Dvourozměrné těleso pro simulaci fyzikální knihovnou.
@@ -32,48 +24,9 @@ namespace Prazsky.Simulation
 		public BodyType DefaultBodyType { get; }
 
 		/// <summary>
-		/// Aktivace nebo deaktivace defaultního tříbodového osvětelní trojrozměrného modelu, které je definováno
-		/// frameworkem MonoGame.
-		/// Skládá se z hlavního, doplňkového a zadního světla.
-		/// https://blogs.msdn.microsoft.com/shawnhar/2007/04/09/the-standard-lighting-rig/
-		/// </summary>
-		public bool EnableDefaultLighting { set; get; } = true;
-
-		/// <summary>
-		/// Aktivace nebo deaktivace výpočtu osvětlení pro každý pixel při vykreslování.
-		/// Při deaktivaci nebo pokud grafické zařízení tento způsob nepodporuje, je osvětlení aplikováno na základě
-		/// každého vrcholu modelu (vertex lighting).
-		/// </summary>
-		public bool PreferPerPixelLighting { set; get; } = true;
-
-		/// <summary>
-		/// Parametry třídy (<see cref="BasicEffect"/>) frameworku MonoGame pro vykreslování obsažené ve třídě
-		/// (<see cref="Render.BasicEffectParams"/>).
-		/// Používá se, pokud se nepoužívá defaultní osvětlení aktivované parametrem
-		/// (<see cref="EnableDefaultLighting"/>).
-		/// </summary>
-		public BasicEffectParams BasicEffectParams { get; set; }
-
-		/// <summary>
-		/// Opsaná sféra trojrozměrného modelu. Pohybuje se v trojrozměrném světě společně s objektem.
-		/// </summary>
-		public BoundingSphere BoundingSphere { get => _boundingSphere; }
-
-		/// <summary>
-		/// Opsaný kvádr typu AABB (axis-aligned bounding box) trojrozměrného modelu. Nepohybuje se společně s
-		/// objektem.
-		/// </summary>
-		public BoundingBox BoundingBox { get => _boundingBox; }
-
-		/// <summary>
 		/// Pozice trojrozměrného modelu na ose Z.
 		/// </summary>
 		public float PositionZ { set; get; }
-
-		/// <summary>
-		/// Pozice trojrozměrného modelu v trojrozměrném světě.
-		/// </summary>
-		public Vector3 Position { get => _position3D; }
 
 		/// <summary>
 		/// Konstruktor trojrozměrného objektu s podporou dvourozměrné fyzikální simulace.
@@ -84,30 +37,17 @@ namespace Prazsky.Simulation
 		/// <param name="positionZ">Výchozí pozice modelu na ose Z.</param>
 		public Body3D(Model model3D, Body physicalBody2D, float positionZ = 0f)
 		{
-			_model3D = model3D;
+			Model = model3D;
 			Body2D = physicalBody2D;
 			PositionZ = positionZ;
 
-			_boundingBox = Geometry.GetBoundingBox(_model3D);
-			_boundingSphere = Geometry.GetBoundingSphere(_boundingBox.Max);
+			BoundingBox = Geometry.GetBoundingBox(Model);
+			BoundingSphere = Geometry.GetBoundingSphere(BoundingBox.Max);
 
 			DefaultBodyType = Body2D.BodyType;
 
-			_transformation = new Matrix[_model3D.Bones.Count];
-			_model3D.CopyAbsoluteBoneTransformsTo(_transformation);
-		}
-
-		/// <summary>
-		/// Vykreslí jeden snímek trojrozměrného modelu na odpovídající pozici a s odpovídající rotací na základě
-		/// dvourozměrné fyzikální simulace.
-		/// Aplikuje buď vychozí efekt osvětlení, pokud je povolen parametrem <see cref="EnableDefaultLighting"/>, nebo
-		/// efekt definovaný parametrem <see cref="BasicEffectParams"/>, nebo žádný efekt.
-		/// </summary>
-		/// <param name="camera">Kamera, která má být k vykreslení modelu použita.</param>
-		public void Draw(ICamera camera)
-		{
-			ModelRenderer.Render(_model3D, _transformation, ref camera, ref _world, BasicEffectParams,
-					EnableDefaultLighting, PreferPerPixelLighting);
+			Transformations = new Matrix[Model.Bones.Count];
+			Model.CopyAbsoluteBoneTransformsTo(Transformations);
 		}
 
 		/// <summary>
@@ -115,10 +55,10 @@ namespace Prazsky.Simulation
 		/// </summary>
 		public void Update3DPosition()
 		{
-			_position3D = new Vector3(Body2D.Position.X, Body2D.Position.Y, PositionZ);
-			_world = Matrix.CreateRotationZ(Body2D.Rotation) * Matrix.CreateTranslation(_position3D);
+			Position = new Vector3(Body2D.Position.X, Body2D.Position.Y, PositionZ);
+			World = Matrix.CreateRotationZ(Body2D.Rotation) * Matrix.CreateTranslation(Position);
 
-			_boundingSphere.Center = _position3D;
+			BoundingSphere = new BoundingSphere(Position, BoundingSphere.Radius);
 		}
 
 		/// <summary>
