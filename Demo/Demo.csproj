@@ -96,6 +96,7 @@
     <None Include="Content\Models\Bus\body.3ds" />
     <None Include="Content\Models\Bus\frontWheels.x" />
     <None Include="Content\Models\chair.dae" />
+    <None Include="Content\Models\Decorations\pole.x" />
     <None Include="Content\Models\groundBlockLong.x" />
     <None Include="Content\Models\groundBlockLongLeft.x" />
     <None Include="Content\Models\groundBlockLongRight.x" />
@@ -103,6 +104,18 @@
     <None Include="Content\Models\Ground\grassBend.x" />
     <None Include="Content\Models\Ground\grassBendNegative.x" />
     <None Include="Content\Models\Obstacles\ramp.x" />
+    <None Include="Content\Models\Obstacles\roadBlock.x" />
+    <None Include="Content\Models\Roads\roadCenter.x" />
+    <None Include="Content\Models\Roads\roadInco.x" />
+    <None Include="Content\Models\Roads\roadStopA.x" />
+    <None Include="Content\Models\Roads\roadStopA1.x" />
+    <None Include="Content\Models\Roads\roadStopA1End.x" />
+    <None Include="Content\Models\Roads\roadStopB.x" />
+    <None Include="Content\Models\Roads\roadStopB1.x" />
+    <None Include="Content\Models\Roads\roadStopB1End.x" />
+    <None Include="Content\Models\Roads\sideA.x" />
+    <None Include="Content\Models\Roads\sideB.x" />
+    <None Include="Content\Models\Skyes\skyGeoDome.dae" />
     <None Include="Content\Models\TheoDesign\bodyOrganic.dae" />
     <None Include="Content\Models\TheoDesign\engineLargeTwistedEnds.dae" />
     <None Include="Content\Models\TheoDesign\leftLeg.dae" />

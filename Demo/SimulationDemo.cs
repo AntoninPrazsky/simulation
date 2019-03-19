@@ -17,6 +17,7 @@ namespace Demo
 	public class SimulationDemo : Game
 	{
 		private int _currentDemo = 0;
+		private Model _skyModel;
 
 		/// <summary>
 		/// Konstruktor hlavní třídy testovacího projektu.
@@ -64,8 +65,7 @@ namespace Demo
 
 		//Velikost grafické plochy okna, pokud není použito celoobrazovkové zobrazení
 		private const int _windowWidth = 1280;
-
-		private const int _windowHeight = 768;
+		private const int _windowHeight = 720;
 
 		private GraphicsDeviceManager _graphics;
 		private bool _windowed;
@@ -79,6 +79,8 @@ namespace Demo
 			GraphicsDevice.Clear(Color.Bisque);
 			GraphicsDevice.BlendState = BlendState.Opaque;
 			GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
+			DrawSky();
 
 			World3D.Draw();
 			DemoScenes[_currentDemo].Draw();
@@ -106,6 +108,7 @@ namespace Demo
 
 		protected override void LoadContent()
 		{
+			_skyModel = Content.Load<Model>("Models/Skyes/skyGeoDome");
 		}
 
 		protected override void UnloadContent()
@@ -343,6 +346,37 @@ namespace Demo
 			_heightHalf = Window.ClientBounds.Height / 2;
 
 			CenterMouse();
+		}
+
+		private void DrawSky()
+		{
+			SamplerState ss = new SamplerState
+			{
+				AddressU = TextureAddressMode.Clamp,
+				AddressV = TextureAddressMode.Clamp
+			};
+			GraphicsDevice.SamplerStates[0] = ss;
+
+			DepthStencilState dss = new DepthStencilState { DepthBufferEnable = false };
+			GraphicsDevice.DepthStencilState = dss;
+
+			Matrix[] skyboxTransforms = new Matrix[_skyModel.Bones.Count];
+			_skyModel.CopyAbsoluteBoneTransformsTo(skyboxTransforms);
+			int i = 0;
+			foreach (ModelMesh mesh in _skyModel.Meshes)
+			{
+				foreach (BasicEffect effect in mesh.Effects)
+				{
+					Matrix worldMatrix = skyboxTransforms[mesh.ParentBone.Index] * Matrix.CreateTranslation(World3D.Camera3D.Position);
+					effect.World = skyboxTransforms[mesh.ParentBone.Index] * worldMatrix;
+					effect.View = World3D.Camera3D.View;
+					effect.Projection = World3D.Camera3D.Projection;
+				}
+				mesh.Draw();
+			}
+
+			dss = new DepthStencilState { DepthBufferEnable = true };
+			GraphicsDevice.DepthStencilState = dss;
 		}
 	}
 }
