@@ -64,8 +64,8 @@ namespace Demo
 		#region Grafika
 
 		//Velikost grafické plochy okna, pokud není použito celoobrazovkové zobrazení
-		private const int _windowWidth = 1280;
-		private const int _windowHeight = 720;
+		private const int _windowWidth = 1920;
+		private const int _windowHeight = 1080;
 
 		private GraphicsDeviceManager _graphics;
 		private bool _windowed;
