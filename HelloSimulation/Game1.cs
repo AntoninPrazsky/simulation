@@ -9,7 +9,7 @@ using tainicom.Aether.Physics2D.Dynamics;
 namespace HelloSimulation
 {
 	/// <summary>
-	/// This is a simple example of using Prazsky.Simulation library.
+	/// This is a simple example of using the Prazsky.Simulation library.
 	/// </summary>
 	public class Game1 : Game
 	{
