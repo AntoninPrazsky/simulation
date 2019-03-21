@@ -7,8 +7,6 @@ namespace Prazsky.Simulation
 {
 	public abstract class Object3D
 	{
-		private Vector3 _position3D = Vector3.Zero;
-
 		protected Matrix[] Transformations;
 
 		protected Matrix World { get; set; } = Matrix.Identity;
@@ -18,7 +16,7 @@ namespace Prazsky.Simulation
 		/// <summary>
 		/// Pozice trojrozměrného modelu v trojrozměrném světě.
 		/// </summary>
-		public Vector3 Position { get; set; }
+		public Vector3 Position { get; set; } = Vector3.Zero;
 
 		/// <summary>
 		/// Aktivace nebo deaktivace defaultního tříbodového osvětelní trojrozměrného modelu, které je definováno
