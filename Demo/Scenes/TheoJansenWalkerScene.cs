@@ -55,6 +55,8 @@ namespace Demo.Scenes
 		private double _sinValue = 0;
 		private Vector3 _stareAtShift;
 
+		private Model _backgroundWall;
+
 		public TheoJansenWalkerScene(SimulationDemo demo) : base(demo)
 		{
 			_stareAtShift = new Vector3(0f, 1.5f, 0f);
@@ -262,6 +264,23 @@ namespace Demo.Scenes
 			Demo.World3D.AddBody3D(new Body3D(_rightLeg, _rightLegs[2], 2f));
 		}
 
+		private void ConstructEnvironment()
+		{
+			int groundLength = 51;
+			ConstructGround(groundLength);
+
+			Body3D body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/groundBlockLongLeft"), Demo.World3D.World2D, Demo.GraphicsDevice, new Vector2(-129.15f, 5.9f), BodyType.Static);
+			Demo.World3D.AddBody3D(body3D);
+
+			body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/groundBlockLongRight"), Demo.World3D.World2D, Demo.GraphicsDevice, new Vector2(129.15f, 5.9f), BodyType.Static);
+			Demo.World3D.AddBody3D(body3D);
+
+			_backgroundWall = Demo.Content.Load<Model>("Models/Decorations/goldWall");
+
+			for (int i = -groundLength / 3; i < groundLength / 3; i++)
+				Demo.World3D.AddBackdrop3D(new Backdrop3D(_backgroundWall, new Vector3(i * 15f, 0f, -15f)));
+		}
+
 		private void Reverse()
 		{
 			_motorSpeed *= -1f;
@@ -312,14 +331,7 @@ namespace Demo.Scenes
 			Demo.Camera3D.Target = new Vector3(-9.430276f, 7.81207f, 0f);
 			_positionStart = Demo.Camera3D.Target;
 
-			ConstructGround(51);
-
-			Body3D body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/groundBlockLongLeft"), Demo.World3D.World2D, Demo.GraphicsDevice, new Vector2(-129.15f, 5.9f), BodyType.Static);
-			Demo.World3D.AddBody3D(body3D);
-
-			body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/groundBlockLongRight"), Demo.World3D.World2D, Demo.GraphicsDevice, new Vector2(129.15f, 5.9f), BodyType.Static);
-			Demo.World3D.AddBody3D(body3D);
-
+			ConstructEnvironment();
 			ConstructWalker();
 		}
 	}
