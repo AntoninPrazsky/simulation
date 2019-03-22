@@ -5,12 +5,24 @@ using Prazsky.Simulation.Camera;
 
 namespace Prazsky.Simulation
 {
+	/// <summary>
+	/// Abstraktní třída představující trojrozměrný objekt.
+	/// </summary>
 	public abstract class Object3D
 	{
+		/// <summary>
+		/// Matice transformací, které mají být aplikovány na model před jeho vykreslením.
+		/// </summary>
 		protected Matrix[] Transformations;
 
+		/// <summary>
+		/// Matice světa.
+		/// </summary>
 		protected Matrix World { get; set; } = Matrix.Identity;
 
+		/// <summary>
+		/// Trojrozměrný model.
+		/// </summary>
 		protected Model Model { get; set; }
 
 		/// <summary>

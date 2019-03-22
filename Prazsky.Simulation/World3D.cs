@@ -133,22 +133,6 @@ namespace Prazsky.Simulation
 			return true;
 		}
 
-		public bool AddBackdrop3D(Backdrop3D backdrop3D)
-		{
-			if (_backdrop3Ds.Contains(backdrop3D)) return false;
-
-			_backdrop3Ds.Add(backdrop3D);
-			return true;
-		}
-
-		public bool RemoveBackdrop3D(Backdrop3D backdrop3D)
-		{
-			if (!_backdrop3Ds.Contains(backdrop3D)) return false;
-
-			_backdrop3Ds.Remove(backdrop3D);
-			return true;
-		}
-
 		/// <summary>
 		/// Odebere trojrozměrný simulovatelný objekt z trojrozměrného světa.
 		/// </summary>
@@ -161,6 +145,34 @@ namespace Prazsky.Simulation
 
 			_body3Ds.Remove(body3D);
 			World2D.Remove(body3D.Body2D);
+			return true;
+		}
+
+		/// <summary>
+		/// Přidá trojrozměrný statický objekt do trojrozměrného světa.
+		/// </summary>
+		/// <param name="backdrop3D">Trojrozměrný statický objekt.</param>
+		/// <returns>Vrací <code>true</code>, pokud se přidání podařilo, a <code>false</code>, pokud již stejný objekt
+		/// byl přidán.</returns>
+		public bool AddBackdrop3D(Backdrop3D backdrop3D)
+		{
+			if (_backdrop3Ds.Contains(backdrop3D)) return false;
+
+			_backdrop3Ds.Add(backdrop3D);
+			return true;
+		}
+
+		/// <summary>
+		/// Odebere trojrozměrný statický objekt z trojrozměrného světa.
+		/// </summary>
+		/// <param name="backdrop3D">Trojrozměrný statický objekt k odebrání.</param>
+		/// <returns>Vrací <code>true</code>, pokud se odebrání podařilo, a <code>false</code>, pokud odebíraný objekt
+		/// neexistuje.</returns>
+		public bool RemoveBackdrop3D(Backdrop3D backdrop3D)
+		{
+			if (!_backdrop3Ds.Contains(backdrop3D)) return false;
+
+			_backdrop3Ds.Remove(backdrop3D);
 			return true;
 		}
 

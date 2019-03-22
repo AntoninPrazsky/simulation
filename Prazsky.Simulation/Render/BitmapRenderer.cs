@@ -12,6 +12,10 @@ namespace Prazsky.Render
 	/// </summary>
 	public static class BitmapRenderer
 	{
+		/// <summary>
+		/// Výchozí poměr mezi trojrozměrným modelem a jeho bitmapovou ortogonální projekcí. Hodnota 100 znamená, že
+		/// jedna jednotka trojrozměrného modelu odpovídá 100 pixelům bitmapy.
+		/// </summary>
 		public const int DEFAULT_BITMAP_SCALE = 100;
 
 		//Tyto hodnoty jsou dány možnostmi použitého grafického zařízení (a platformou, na které kód běží), zjistit,
