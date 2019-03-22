@@ -16,7 +16,7 @@ namespace Demo.Scenes
 		public Scene(SimulationDemo demo)
 		{
 			Demo = demo;
-			MultipleBody3DCreator = new MultipleBody3DCreator(Demo.GraphicsDevice);
+			MultipleBody3DCreator = new MultipleBody3DCreator(Demo.GraphicsDevice, Demo.World3D.World2D);
 			DebugView = null;
 
 			Load();

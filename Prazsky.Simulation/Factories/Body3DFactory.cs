@@ -18,7 +18,7 @@ namespace Prazsky.Simulation.Factories
 		/// <param name="model">Trojrozměrný model.</param>
 		/// <param name="world2D">Dvourozměrný svět, do kterého má být těleso zařazeno.</param>
 		/// <param name="graphicsDevice">Grafické zařízení.</param>
-		/// <param name="position">Výchozí pozice objektu v dvourozměrném světě.</param>
+		/// <param name="position">Výchozí pozice objektu ve dvojrozměrném světě.</param>
 		/// <param name="bodyType">Typ simulovaného tělesa (statické, kinematické nebo dynamické).</param>
 		/// <param name="orthographicModelSize">Velikost modelu pro renderování. Pokud tento parametr není zadán,
 		/// vypočítá se.</param>

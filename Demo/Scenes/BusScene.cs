@@ -131,23 +131,23 @@ namespace Demo.Scenes
 			float roadYShift = 0.19f;
 			int roadCount = 10;
 
-			MultipleBody3DCreator multipleBody3DCreator = new MultipleBody3DCreator(Demo.GraphicsDevice);
+			MultipleBody3DCreator multipleBody3DCreator = new MultipleBody3DCreator(Demo.GraphicsDevice, Demo.World3D.World2D);
 
-			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, Demo.World3D.World2D, new Vector2(-blockSize, 0f), BodyType.Static));
-			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, Demo.World3D.World2D, Vector2.Zero, BodyType.Static));
-			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, Demo.World3D.World2D, new Vector2(blockSize, 0f), BodyType.Static));
+			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(-blockSize, 0f), BodyType.Static));
+			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, Vector2.Zero, BodyType.Static));
+			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(blockSize, 0f), BodyType.Static));
 
-			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadInco, Demo.World3D.World2D, new Vector2(2 * blockSize, 0f), BodyType.Static));
-			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadInco, Demo.World3D.World2D, new Vector2(-2 * blockSize, 0f), BodyType.Static));
-
-			for (int i = 3; i < roadCount; i++)
-				Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, Demo.World3D.World2D, new Vector2(blockSize * i, 0f), BodyType.Static));
+			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadInco, new Vector2(2 * blockSize, 0f), BodyType.Static));
+			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadInco, new Vector2(-2 * blockSize, 0f), BodyType.Static));
 
 			for (int i = 3; i < roadCount; i++)
-				Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, Demo.World3D.World2D, new Vector2(blockSize * -i, 0f), BodyType.Static));
+				Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(blockSize * i, 0f), BodyType.Static));
 
-			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadBlock, Demo.World3D.World2D, new Vector2(blockSize * -(roadCount - 2), 2.6f), BodyType.Static));
-			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadBlock, Demo.World3D.World2D, new Vector2(blockSize * (roadCount - 2), 2.6f), BodyType.Static));
+			for (int i = 3; i < roadCount; i++)
+				Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(blockSize * -i, 0f), BodyType.Static));
+
+			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadBlock, new Vector2(blockSize * -(roadCount - 2), 2.6f), BodyType.Static));
+			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadBlock, new Vector2(blockSize * (roadCount - 2), 2.6f), BodyType.Static));
 
 			Demo.World3D.AddBackdrop3D(new Backdrop3D(_roadStopA, new Vector3(-blockSize, roadYShift, -blockSize)));
 			Demo.World3D.AddBackdrop3D(new Backdrop3D(_roadStopA, new Vector3(0f, roadYShift, -blockSize)));

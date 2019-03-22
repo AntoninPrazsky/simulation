@@ -65,6 +65,7 @@ namespace Demo
 
 		//Velikost grafické plochy okna, pokud není použito celoobrazovkové zobrazení
 		private const int _windowWidth = 1920;
+
 		private const int _windowHeight = 1080;
 
 		private GraphicsDeviceManager _graphics;
@@ -362,7 +363,7 @@ namespace Demo
 
 			Matrix[] skyboxTransforms = new Matrix[_skyModel.Bones.Count];
 			_skyModel.CopyAbsoluteBoneTransformsTo(skyboxTransforms);
-			int i = 0;
+
 			foreach (ModelMesh mesh in _skyModel.Meshes)
 			{
 				foreach (BasicEffect effect in mesh.Effects)

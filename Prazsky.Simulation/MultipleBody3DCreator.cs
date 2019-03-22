@@ -16,21 +16,58 @@ namespace Prazsky.Simulation
 	{
 		private GraphicsDevice _graphicsDevice;
 		private Dictionary<Model, List<Vertices>> _modelVerticesPairs = new Dictionary<Model, List<Vertices>>();
+		private World _world2D;
 
-		public MultipleBody3DCreator(GraphicsDevice graphicsDevice)
+		/// <summary>
+		/// Konstruktor třídy pro efektivní vytváření dvou a více trojrozměrných simulovatelných objektů založených na
+		/// stejném tvaru.
+		/// </summary>
+		/// <param name="graphicsDevice">Grafické zařízení.</param>
+		/// <param name="world2D">Dvourozměrný svět, do kterého mají být tělesa zařazována.</param>
+		public MultipleBody3DCreator(GraphicsDevice graphicsDevice, World world2D)
 		{
 			_graphicsDevice = graphicsDevice;
+			_world2D = world2D;
 		}
 
+		/// <summary>
+		/// Výchozí vzdálenost mezi vrcholy nalezeného tvaru, které mají být sloučeny (pro zjednodušení tvaru).
+		/// </summary>
 		public float ReduceVerticesDistance { get; set; } = BodyCreator.DEFAULT_REDUCE_VERTICES_DISTANCE;
-		public float GraphicsToSimulationRatio { get; set; } = BodyCreator.DEFAULT_GRAPHICS_TO_SIMULATION_RATIO;
-		public float Density { get; set; } = BodyCreator.DEFAULT_DENSITY;
-		public float Rotation { get; set; } = BodyCreator.DEFAULT_ROTATION;
-		public TriangulationAlgorithm TriangulationAlgorithm { get; set; } = BodyCreator.DEFAULT_TRIANGULATION_ALGORITHM;
 
+		/// <summary>
+		/// Výchozí poměr mezi grafickým zobrazením a simulovaným fyzikálním světem.
+		/// </summary>
+		public float GraphicsToSimulationRatio { get; set; } = BodyCreator.DEFAULT_GRAPHICS_TO_SIMULATION_RATIO;
+
+		/// <summary>
+		/// Výchozí hustota tělesa (počet kilogramů na metr čtvereční).
+		/// </summary>
+		public float Density { get; set; } = BodyCreator.DEFAULT_DENSITY;
+
+		/// <summary>
+		/// Výchozí rotace tělesa v simulovaném světě.
+		/// </summary>
+		public float Rotation { get; set; } = BodyCreator.DEFAULT_ROTATION;
+
+		/// <summary>
+		/// Výchozí algoritmus pro rozdělení tvaru na množství menších konvexních polygonů.
+		/// </summary>
+		public TriangulationAlgorithm TriangulationAlgorithm { get; set; } =
+			BodyCreator.DEFAULT_TRIANGULATION_ALGORITHM;
+
+		/// <summary>
+		/// Vytvoří objekt typu <see cref="Body3D"/> na základě zadaných parametrů. Byl-li již zadaný model
+		/// zpracováván, nedochází opětovně k výpočetně náročnému hledání dvojrozměrného tvaru.
+		/// </summary>
+		/// <param name="model">Trojrozměrný model.</param>
+		/// <param name="position">Výchozí pozice objektu ve dvojrozměrném světě.</param>
+		/// <param name="bodyType">Typ simulovaného tělesa (statické, kinematické nebo dynamické).</param>
+		/// <param name="basicEffectParams">>Parametry pro třídu <see cref="BasicEffect"/>.</param>
+		/// <param name="positionZ">Výchozí pozice na ose Z ve trojrozměrném světě.</param>
+		/// <returns></returns>
 		public Body3D CreateBody3D(
 				Model model,
-				World world2D,
 				Vector2 position = new Vector2(),
 				BodyType bodyType = BodyCreator.DEFAULT_BODY_TYPE,
 				BasicEffectParams basicEffectParams = null,
@@ -52,7 +89,7 @@ namespace Prazsky.Simulation
 					_modelVerticesPairs.Add(model, verticesList);
 				}
 			}
-			return ConstructBody3D(model, world2D, position, bodyType, positionZ, basicEffectParams);
+			return ConstructBody3D(model, _world2D, position, bodyType, positionZ, basicEffectParams);
 		}
 
 		private Body3D ConstructBody3D(
@@ -99,7 +136,7 @@ namespace Prazsky.Simulation
 		{
 			if (count <= 0) return;
 
-			Body3D body3D = CreateBody3D(model, world3D.World2D, center, bodyType, basicEffectParams);
+			Body3D body3D = CreateBody3D(model, center, bodyType, basicEffectParams);
 			body3D.Body2D.SetCollisionCategories(category);
 			world3D.AddBody3D(body3D);
 
@@ -109,7 +146,7 @@ namespace Prazsky.Simulation
 			int eachSide = count / 2;
 			Vector2 position = new Vector2(center.X - xSize, center.Y);
 
-			body3D = CreateBody3D(model, world3D.World2D, position, bodyType, basicEffectParams);
+			body3D = CreateBody3D(model, position, bodyType, basicEffectParams);
 			body3D.Body2D.SetCollisionCategories(category);
 			world3D.AddBody3D(body3D);
 
@@ -118,7 +155,7 @@ namespace Prazsky.Simulation
 			for (int i = 2; i <= eachSide; i++)
 			{
 				position = new Vector2(center.X - i * xSize, center.Y);
-				body3D = CreateBody3D(model, world3D.World2D, position, bodyType, basicEffectParams);
+				body3D = CreateBody3D(model, position, bodyType, basicEffectParams);
 				body3D.Body2D.SetCollisionCategories(category);
 				world3D.AddBody3D(body3D);
 			}
@@ -126,7 +163,7 @@ namespace Prazsky.Simulation
 			for (int i = 1; i < eachSide; i++)
 			{
 				position = new Vector2(center.X + i * xSize, center.Y);
-				body3D = CreateBody3D(model, world3D.World2D, position, bodyType, basicEffectParams);
+				body3D = CreateBody3D(model, position, bodyType, basicEffectParams);
 				body3D.Body2D.SetCollisionCategories(category);
 				world3D.AddBody3D(body3D);
 			}
@@ -134,7 +171,7 @@ namespace Prazsky.Simulation
 			if (count % 2 != 0)
 			{
 				position = new Vector2(center.X + eachSide * xSize, center.Y);
-				body3D = CreateBody3D(model, world3D.World2D, position, bodyType, basicEffectParams);
+				body3D = CreateBody3D(model, position, bodyType, basicEffectParams);
 				body3D.Body2D.SetCollisionCategories(category);
 				world3D.AddBody3D(body3D);
 			}
