@@ -8,8 +8,11 @@ namespace Demo.Scenes
 {
 	internal class BallsScene : Scene
 	{
+		private Model _ballModel;
+
 		public BallsScene(SimulationDemo demo) : base(demo)
 		{
+			_ballModel = Demo.Content.Load<Model>("Models/Primitives/goldBall");
 		}
 
 		private void AddBall(float restitution, float positionZ, float positionX, Category collisionCategory)
@@ -19,7 +22,7 @@ namespace Demo.Scenes
 			body.SetRestitution(restitution);
 			body.SetCollidesWith(collisionCategory);
 
-			Body3D body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/Balls/gold"), Demo.World3D.World2D, body, new Vector2(positionX, 5f));
+			Body3D body3D = Body3DFactory.CreateBody3D(_ballModel, Demo.World3D.World2D, body, new Vector2(positionX, 5f));
 			body3D.PositionZ = positionZ;
 
 			body3D.Body2D.ApplyLinearImpulse(Vector2.One * 10f);
@@ -50,14 +53,6 @@ namespace Demo.Scenes
 			AddBall(0.90f, 2f, 2f, Category.Cat31);
 			AddBall(0.95f, 4f, 4f, Category.Cat31);
 			AddBall(1.00f, 6f, 6f, Category.Cat31);
-
-			//AddBall(0.70f, 0, -6f, Category.Cat31);
-			//AddBall(0.75f, 0, -4f, Category.Cat31);
-			//AddBall(0.80f, 0, -2f, Category.Cat31);
-			//AddBall(0.85f, 0f, 0f, Category.Cat31);
-			//AddBall(0.90f, 0f, 2f, Category.Cat31);
-			//AddBall(0.95f, 0f, 4f, Category.Cat31);
-			//AddBall(1.00f, 0f, 6f, Category.Cat31);
 		}
 	}
 }

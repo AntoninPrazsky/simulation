@@ -49,7 +49,7 @@ namespace Demo.Scenes
 			body.CreateCircle(1f, 1f);
 			body.SetRestitution(0.7f);
 
-			Body3D body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/Balls/gold"), Demo.World3D.World2D, body, new Vector2(8f, 8f));
+			Body3D body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/Primitives/goldBall"), Demo.World3D.World2D, body, new Vector2(8f, 8f));
 
 			Demo.World3D.AddBody3D(body3D);
 			body.ApplyAngularImpulse(5f);

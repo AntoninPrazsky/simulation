@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="DemoHelper.cs" />
     <Compile Include="Scenes\BusScene.cs" />
+    <Compile Include="Scenes\FrictionScene.cs" />
     <Compile Include="Scenes\TheoJansenWalkerScene.cs" />
     <Compile Include="Scenes\BridgeScene.cs" />
     <Compile Include="Scenes\GroundScene.cs" />
@@ -90,7 +91,10 @@
     <None Include="Content\Fonts\aileron.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Models\Balls\gold.x" />
+    <None Include="Content\Models\Obstacles\rampA.x" />
+    <None Include="Content\Models\Obstacles\rampB.x" />
+    <None Include="Content\Models\Primitives\cube.x" />
+    <None Include="Content\Models\Primitives\goldBall.x" />
     <None Include="Content\Models\bridge.x" />
     <None Include="Content\Models\Bus\backWheels.x" />
     <None Include="Content\Models\Bus\body.3ds" />
