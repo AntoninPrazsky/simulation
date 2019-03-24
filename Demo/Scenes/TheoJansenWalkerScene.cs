@@ -53,13 +53,12 @@ namespace Demo.Scenes
 		private bool _stareAt = true;
 		private Vector3 _positionStart;
 		private double _sinValue = 0;
-		private Vector3 _stareAtShift;
+		private Vector3 _stareAtShift = new Vector3(0f, 1.5f, 0f);
 
 		private Model _backgroundWall;
 
 		public TheoJansenWalkerScene(SimulationDemo demo) : base(demo)
 		{
-			_stareAtShift = new Vector3(0f, 1.5f, 0f);
 		}
 
 		private void CreateChassis(World world, Vector2 pivot)
@@ -327,6 +326,8 @@ namespace Demo.Scenes
 
 		public override void Construct()
 		{
+			Demo.Window.Title = "Theo Jansen's Walker Demo";
+
 			Demo.Camera3D.Position = new Vector3(-3.5f, 17f, 20.6f);
 			Demo.Camera3D.Target = new Vector3(-9.430276f, 7.81207f, 0f);
 			_positionStart = Demo.Camera3D.Target;

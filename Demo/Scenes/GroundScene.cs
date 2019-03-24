@@ -10,6 +10,8 @@ namespace Demo.Scenes
 
 		public override void Construct()
 		{
+			Demo.Window.Title = "Empty Scene Demo";
+
 			//TODO: Na této scéně nic není.
 
 			Demo.Camera3D.Position = new Vector3(-2.411215f, 33.17371f, 3.442724f);

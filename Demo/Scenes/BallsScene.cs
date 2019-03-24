@@ -33,6 +33,8 @@ namespace Demo.Scenes
 
 		public override void Construct()
 		{
+			Demo.Window.Title = "Restitution Demo";
+
 			Demo.Camera3D.Position = new Vector3(22.12281f, 0.4714419f, 5.708819f);
 			Demo.Camera3D.Target = new Vector3(21.21403f, 0.5188365f, 5.294256f);
 

@@ -25,6 +25,8 @@ namespace Demo.Scenes
 
 		public override void Construct()
 		{
+			Demo.Window.Title = "Friction Demo";
+
 			Demo.Camera3D.Position = new Vector3(-46.62277f, 105.9008f, 79.68979f);
 			Demo.Camera3D.Target = new Vector3(-46.25956f, 105.3427f, 78.94375f);
 

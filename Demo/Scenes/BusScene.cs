@@ -195,6 +195,8 @@ namespace Demo.Scenes
 
 		public override void Construct()
 		{
+			Demo.Window.Title = "Game Scene Demo";
+
 			Demo.Camera3D.Position = new Vector3(17f, 9f, 19f);
 			Vector2 defaultPositionShift = new Vector2(-100f, 5f);
 			Demo.Camera3D.Target = new Vector3(defaultPositionShift.X, defaultPositionShift.Y, 18f);

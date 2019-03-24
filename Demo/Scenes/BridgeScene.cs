@@ -20,6 +20,8 @@ namespace Demo.Scenes
 
 		public override void Construct()
 		{
+			Demo.Window.Title = "Path Demo";
+
 			Demo.Camera3D.Position = new Vector3(16.36052f, 7.006462f, 1.119595f);
 			Demo.Camera3D.Target = new Vector3(15.43861f, 6.659885f, 0.9464932f);
 
