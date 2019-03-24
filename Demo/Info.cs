@@ -15,8 +15,9 @@ namespace Demo
 		private int _frameCounter = 0;
 		private TimeSpan _elapsedTime = TimeSpan.Zero;
 
-		private Vector2 _fpsPosition = new Vector2(20, 10);
-		private Vector2 _gpuPosition = new Vector2(200, 10);
+		private Vector2 _fpsPosition = new Vector2(20f, 10f);
+		private Vector2 _gpuPosition = new Vector2(200f, 12f);
+		private Vector2 _controlHelpPosition = new Vector2(20f, 60f);
 		private string _fps;
 		private string _gpu;
 
@@ -59,7 +60,8 @@ namespace Demo
 			_spriteBatch.Begin();
 
 			RenderText(_fps, _fpsPosition);
-			RenderText(_gpu, _gpuPosition);
+			RenderTextScale(_gpu, _gpuPosition, 0.75f);
+			RenderHelp();
 
 			_spriteBatch.End();
 		}
@@ -69,5 +71,31 @@ namespace Demo
 			_spriteBatch.DrawString(_font, text, new Vector2(position.X + 2, position.Y + 2), Color.Black);
 			_spriteBatch.DrawString(_font, text, position, Color.White);
 		}
+
+		private void RenderTextScale(string text, Vector2 position, float scale)
+		{
+			_spriteBatch.DrawString(_font, text, new Vector2(position.X + 1, position.Y + 1), Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+			_spriteBatch.DrawString(_font, text, position, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+		}
+
+		private string _controlHelp = 
+			"Right arrow: Next scene\n" + 
+			"Left arrow: Previous scene\n" +
+			"W: Move forward\n" +
+			"S: Move backward\n" +
+			"A: Move left\n" +
+			"D: Move right\n" +
+			"Q: Move down\n" +
+			"E: Move up\n" +
+			"Left mouse button: Grab an object\n" +
+			"Right mouse button: Free look\n" +
+			"Shift: Fast movement\n"
+			;
+
+		private void RenderHelp()
+		{
+			RenderTextScale(_controlHelp, _controlHelpPosition, 0.5f);
+		}
+
 	}
 }
