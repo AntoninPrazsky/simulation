@@ -26,7 +26,7 @@ namespace Demo
 		/// <param name="preferHiDef">Použití maximálního počtu funkcí a možností grafického hardwaru, je-li to
 		/// podporováno</param>
 		/// <param name="preferMultiSampling">Použití multisample anti-aliasingu (MSAA), je-li podporováno.</param>
-		public SimulationDemo(bool windowed = false, bool preferHiDef = true, bool preferMultiSampling = true)
+		public SimulationDemo(bool windowed = true, bool preferHiDef = true, bool preferMultiSampling = true)
 		{
 			_windowed = windowed;
 			_preferHiDef = preferHiDef;
@@ -37,10 +37,11 @@ namespace Demo
 			Content.RootDirectory = "Content";
 		}
 
+		public World3D World3D { private set; get; }
 		public BasicCamera3D Camera3D { private set; get; }
 		public List<Scene> DemoScenes { private set; get; }
+		
 		public Info Info { private set; get; }
-		public World3D World3D { private set; get; }
 
 		#region Ovládání
 
@@ -64,9 +65,8 @@ namespace Demo
 		#region Grafika
 
 		//Velikost grafické plochy okna, pokud není použito celoobrazovkové zobrazení
-		private const int _windowWidth = 1920;
-
-		private const int _windowHeight = 1080;
+		private const int _windowWidth = 1280;
+		private const int _windowHeight = 720;
 
 		private GraphicsDeviceManager _graphics;
 		private bool _windowed;
@@ -120,6 +120,7 @@ namespace Demo
 		{
 			//Aktuální stav vstupních zařízení
 			_currentKeyboardState = Keyboard.GetState();
+			
 			_currentGamePadState = GamePad.GetState(PlayerIndex.One);
 			_currentMouseState = Mouse.GetState();
 
