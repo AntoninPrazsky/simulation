@@ -99,13 +99,14 @@ namespace Demo.Scenes
 			}
 
 			{
-				_motorJoint = new RevoluteJoint(_wheel, _chassis, _wheel.GetLocalPoint(_chassis.Position), Vector2.Zero)
-				{
-					CollideConnected = false,
-					MotorSpeed = _motorSpeed,
-					MaxMotorTorque = MAX_MOTOR_TORQUE,
-					MotorEnabled = true
-				};
+				_motorJoint =
+					new RevoluteJoint(_wheel, _chassis, _wheel.GetLocalPoint(_chassis.Position), Vector2.Zero)
+					{
+						CollideConnected = false,
+						MotorSpeed = _motorSpeed,
+						MaxMotorTorque = MAX_MOTOR_TORQUE,
+						MotorEnabled = true
+					};
 				world.Add(_motorJoint);
 			}
 		}
@@ -176,32 +177,52 @@ namespace Demo.Scenes
 
 			world.Add(djd);
 
-			DistanceJoint djd2 = new DistanceJoint(leg, shoulder, leg.GetLocalPoint(p3 + _position), shoulder.GetLocalPoint(p4 + _position))
-			{
-				DampingRatio = 0.5f,
-				Frequency = 10f
-			};
+			DistanceJoint djd2 =
+				new DistanceJoint(
+					leg,
+					shoulder,
+					leg.GetLocalPoint(p3 + _position),
+					shoulder.GetLocalPoint(p4 + _position))
+				{
+					DampingRatio = 0.5f,
+					Frequency = 10f
+				};
 
 			world.Add(djd2);
 
-			DistanceJoint djd3 = new DistanceJoint(leg, _wheel, leg.GetLocalPoint(p3 + _position), _wheel.GetLocalPoint(wheelAnchor + _position))
-			{
-				DampingRatio = 0.5f,
-				Frequency = 10f
-			};
+			DistanceJoint djd3 =
+				new DistanceJoint(
+					leg,
+					_wheel,
+					leg.GetLocalPoint(p3 + _position),
+					_wheel.GetLocalPoint(wheelAnchor + _position))
+				{
+					DampingRatio = 0.5f,
+					Frequency = 10f
+				};
 
 			world.Add(djd3);
 
-			DistanceJoint djd4 = new DistanceJoint(shoulder, _wheel, shoulder.GetLocalPoint(p6 + _position), _wheel.GetLocalPoint(wheelAnchor + _position))
-			{
-				DampingRatio = 0.5f,
-				Frequency = 10f
-			};
+			DistanceJoint djd4 =
+				new DistanceJoint(
+					shoulder,
+					_wheel,
+					shoulder.GetLocalPoint(p6 + _position),
+					_wheel.GetLocalPoint(wheelAnchor + _position))
+				{
+					DampingRatio = 0.5f,
+					Frequency = 10f
+				};
 
 			world.Add(djd4);
 
 			Vector2 anchor = p4 - new Vector2(0f, 0.8f);
-			RevoluteJoint rjd = new RevoluteJoint(shoulder, _chassis, shoulder.GetLocalPoint(_chassis.GetWorldPoint(anchor)), anchor);
+			RevoluteJoint rjd =
+				new RevoluteJoint(
+					shoulder,
+					_chassis,
+					shoulder.GetLocalPoint(_chassis.GetWorldPoint(anchor)),
+					anchor);
 			world.Add(rjd);
 		}
 
@@ -268,11 +289,23 @@ namespace Demo.Scenes
 			int groundLength = 51;
 			ConstructGround(groundLength);
 
-			Body3D body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/groundBlockLongLeft"), Demo.World3D.World2D, Demo.GraphicsDevice, new Vector2(-129.15f, 5.9f), BodyType.Static);
-			Demo.World3D.AddBody3D(body3D);
+			Body3D blockLeft =
+				Body3DFactory.CreateBody3D(
+					Demo.Content.Load<Model>("Models/groundBlockLongLeft"),
+					Demo.World3D.World2D,
+					Demo.GraphicsDevice,
+					new Vector2(-129.15f, 5.9f),
+					BodyType.Static);
+			Demo.World3D.AddBody3D(blockLeft);
 
-			body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/groundBlockLongRight"), Demo.World3D.World2D, Demo.GraphicsDevice, new Vector2(129.15f, 5.9f), BodyType.Static);
-			Demo.World3D.AddBody3D(body3D);
+			Body3D blockRight =
+				Body3DFactory.CreateBody3D(
+					Demo.Content.Load<Model>("Models/groundBlockLongRight"),
+					Demo.World3D.World2D,
+					Demo.GraphicsDevice,
+					new Vector2(129.15f, 5.9f),
+					BodyType.Static);
+			Demo.World3D.AddBody3D(blockRight);
 
 			_backgroundWall = Demo.Content.Load<Model>("Models/Decorations/goldWall");
 
@@ -298,12 +331,36 @@ namespace Demo.Scenes
 			_motorJoint.MotorSpeed = _motorSpeed;
 		}
 
-		public override void Update(KeyboardState currentKeyboardState, KeyboardState previousKeyboardState, GamePadState currentGamePadState, GamePadState previousGamePadState)
+		public override void Update(
+			KeyboardState currentKeyboardState,
+			KeyboardState previousKeyboardState,
+			GamePadState currentGamePadState,
+			GamePadState previousGamePadState)
 		{
-			if (DemoHelper.PressedOnce(Keys.Space, Buttons.A, currentKeyboardState, currentGamePadState, previousKeyboardState, previousGamePadState)) Reverse();
-			if (DemoHelper.PressedOnce(Keys.LeftControl, Buttons.X, currentKeyboardState, currentGamePadState, previousKeyboardState, previousGamePadState)) ToggleMotorSpeed();
+			if (DemoHelper.PressedOnce(
+				Keys.Space,
+				Buttons.A,
+				currentKeyboardState,
+				currentGamePadState,
+				previousKeyboardState,
+				previousGamePadState))
+				Reverse();
+			if (DemoHelper.PressedOnce(
+				Keys.LeftControl,
+				Buttons.X,
+				currentKeyboardState,
+				currentGamePadState,
+				previousKeyboardState,
+				previousGamePadState))
+				ToggleMotorSpeed();
 
-			if (DemoHelper.PressedOnce(Keys.Enter, Buttons.B, currentKeyboardState, currentGamePadState, previousKeyboardState, previousGamePadState))
+			if (DemoHelper.PressedOnce(
+				Keys.Enter,
+				Buttons.B,
+				currentKeyboardState,
+				currentGamePadState,
+				previousKeyboardState,
+				previousGamePadState))
 			{
 				_stareAt = !_stareAt;
 				_positionStart = Demo.Camera3D.Target;
@@ -314,7 +371,8 @@ namespace Demo.Scenes
 			{
 				_sinValue += 0.005;
 
-				Demo.Camera3D.Target = Vector3.Lerp(_positionStart, _mainBody3D.Position - _stareAtShift, (float)Math.Sin(_sinValue));
+				Demo.Camera3D.Target =
+					Vector3.Lerp(_positionStart, _mainBody3D.Position - _stareAtShift, (float)Math.Sin(_sinValue));
 			}
 			else if (_stareAt)
 			{

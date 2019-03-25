@@ -38,7 +38,11 @@ namespace Demo.Scenes
 
 		public abstract void Construct();
 
-		public virtual void Update(KeyboardState currentKeyboardState, KeyboardState previousKeyboardState, GamePadState currentGamePadState, GamePadState previousGamePadState)
+		public virtual void Update(
+			KeyboardState currentKeyboardState,
+			KeyboardState previousKeyboardState,
+			GamePadState currentGamePadState,
+			GamePadState previousGamePadState)
 		{
 			DebugView.UpdatePerformanceGraph(Demo.World3D.World2D.UpdateTime);
 

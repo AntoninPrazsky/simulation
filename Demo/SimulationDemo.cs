@@ -153,7 +153,11 @@ namespace Demo
 
 			//Možnost uchopení tělesa myší
 			GrabWorldObject();
-			DemoScenes[_currentDemo].Update(_currentKeyboardState, _previousKeyboardState, _currentGamePadState, _previousGamePadState);
+			DemoScenes[_currentDemo].Update(
+				_currentKeyboardState,
+				_previousKeyboardState,
+				_currentGamePadState,
+				_previousGamePadState);
 
 			//Předchozí stav vstupních zařízení (pro další aktualizaci)
 			_previousKeyboardState = _currentKeyboardState;
@@ -368,7 +372,8 @@ namespace Demo
 			{
 				foreach (BasicEffect effect in mesh.Effects)
 				{
-					Matrix worldMatrix = skyboxTransforms[mesh.ParentBone.Index] * Matrix.CreateTranslation(World3D.Camera3D.Position);
+					Matrix worldMatrix = skyboxTransforms[mesh.ParentBone.Index] *
+						Matrix.CreateTranslation(World3D.Camera3D.Position);
 					effect.World = skyboxTransforms[mesh.ParentBone.Index] * worldMatrix;
 					effect.View = World3D.Camera3D.View;
 					effect.Projection = World3D.Camera3D.Projection;

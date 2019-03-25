@@ -31,11 +31,23 @@ namespace Demo.Scenes
 			Demo.Camera3D.Target = new Vector3(-46.25956f, 105.3427f, 78.94375f);
 
 			ConstructGround(23);
-			Body3D body3D = Body3DFactory.CreateBody3D(_leftBlock, Demo.World3D.World2D, Demo.GraphicsDevice, new Vector2(-59.15f, 5.9f), BodyType.Static);
+			Body3D body3D =
+				Body3DFactory.CreateBody3D(
+					_leftBlock,
+					Demo.World3D.World2D,
+					Demo.GraphicsDevice,
+					new Vector2(-59.15f, 5.9f),
+					BodyType.Static);
 			body3D.Body2D.SetCollisionCategories(Category.Cat31);
 			Demo.World3D.AddBody3D(body3D);
 
-			body3D = Body3DFactory.CreateBody3D(_rightBlock, Demo.World3D.World2D, Demo.GraphicsDevice, new Vector2(59.15f, 5.9f), BodyType.Static);
+			body3D =
+				Body3DFactory.CreateBody3D(
+					_rightBlock,
+					Demo.World3D.World2D,
+					Demo.GraphicsDevice,
+					new Vector2(59.15f, 5.9f),
+					BodyType.Static);
 			body3D.Body2D.SetCollisionCategories(Category.Cat31);
 			Demo.World3D.AddBody3D(body3D);
 
@@ -49,7 +61,12 @@ namespace Demo.Scenes
 			body.SetFriction(friction);
 			body.SetCollidesWith(collisionCategory);
 
-			Body3D body3D = Body3DFactory.CreateBody3D(_cubeModel, Demo.World3D.World2D, body, new Vector2(positionX, 100f));
+			Body3D body3D =
+				Body3DFactory.CreateBody3D(
+					_cubeModel,
+					Demo.World3D.World2D,
+					body,
+					new Vector2(positionX, 100f));
 			body3D.PositionZ = positionZ;
 
 			Demo.World3D.AddBody3D(body3D);

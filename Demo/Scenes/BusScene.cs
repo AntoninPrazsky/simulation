@@ -44,7 +44,9 @@ namespace Demo.Scenes
 		private float _motorSpeed = DEFAULT_MOTOR_SPEED;
 		private float _previousMotorSpeed;
 
-		private Model _roadCenter, _roadInco, _roadStopA, _roadStopA1, _roadStopB, _roadStopB1, _roadStopA1End, _roadStopB1End, _sideA, _sideB;
+		private Model _roadCenter, _roadInco, _roadStopA, _roadStopA1, _roadStopB, _roadStopB1, _roadStopA1End,
+			_roadStopB1End, _sideA, _sideB;
+
 		private Model _roadBlock;
 		private Model _pole;
 
@@ -81,12 +83,36 @@ namespace Demo.Scenes
 			#endregion Roads
 		}
 
-		public override void Update(KeyboardState currentKeyboardState, KeyboardState previousKeyboardState, GamePadState currentGamePadState, GamePadState previousGamePadState)
+		public override void Update(
+			KeyboardState currentKeyboardState,
+			KeyboardState previousKeyboardState,
+			GamePadState currentGamePadState,
+			GamePadState previousGamePadState)
 		{
-			if (DemoHelper.PressedOnce(Keys.Space, Buttons.A, currentKeyboardState, currentGamePadState, previousKeyboardState, previousGamePadState)) Reverse();
-			if (DemoHelper.PressedOnce(Keys.LeftControl, Buttons.X, currentKeyboardState, currentGamePadState, previousKeyboardState, previousGamePadState)) ToggleMotorSpeed();
+			if (DemoHelper.PressedOnce(
+				Keys.Space,
+				Buttons.A,
+				currentKeyboardState,
+				currentGamePadState,
+				previousKeyboardState,
+				previousGamePadState))
+				Reverse();
+			if (DemoHelper.PressedOnce(
+				Keys.LeftControl,
+				Buttons.X,
+				currentKeyboardState,
+				currentGamePadState,
+				previousKeyboardState,
+				previousGamePadState))
+				ToggleMotorSpeed();
 
-			if (DemoHelper.PressedOnce(Keys.Enter, Buttons.B, currentKeyboardState, currentGamePadState, previousKeyboardState, previousGamePadState))
+			if (DemoHelper.PressedOnce(
+				Keys.Enter,
+				Buttons.B,
+				currentKeyboardState,
+				currentGamePadState,
+				previousKeyboardState,
+				previousGamePadState))
 			{
 				_stareAt = !_stareAt;
 				_positionStart = Demo.Camera3D.Target;
@@ -97,7 +123,8 @@ namespace Demo.Scenes
 			{
 				_sinValue += 0.005;
 
-				Demo.Camera3D.Target = Vector3.Lerp(_positionStart, _chassis3D.Position - _stareAtShift, (float)Math.Sin(_sinValue));
+				Demo.Camera3D.Target =
+					Vector3.Lerp(_positionStart, _chassis3D.Position - _stareAtShift, (float)Math.Sin(_sinValue));
 			}
 			else if (_stareAt)
 			{
@@ -131,47 +158,77 @@ namespace Demo.Scenes
 			float roadYShift = 0.19f;
 			int roadCount = 10;
 
-			MultipleBody3DCreator multipleBody3DCreator = new MultipleBody3DCreator(Demo.GraphicsDevice, Demo.World3D.World2D);
+			MultipleBody3DCreator multipleBody3DCreator =
+				new MultipleBody3DCreator(Demo.GraphicsDevice, Demo.World3D.World2D);
 
-			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(-blockSize, 0f), BodyType.Static));
-			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, Vector2.Zero, BodyType.Static));
-			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(blockSize, 0f), BodyType.Static));
+			Demo.World3D.AddBody3D(
+				multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(-blockSize, 0f), BodyType.Static));
+			Demo.World3D.AddBody3D(
+				multipleBody3DCreator.CreateBody3D(_roadCenter, Vector2.Zero, BodyType.Static));
+			Demo.World3D.AddBody3D(
+				multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(blockSize, 0f), BodyType.Static));
 
-			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadInco, new Vector2(2 * blockSize, 0f), BodyType.Static));
-			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadInco, new Vector2(-2 * blockSize, 0f), BodyType.Static));
-
-			for (int i = 3; i < roadCount; i++)
-				Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(blockSize * i, 0f), BodyType.Static));
-
-			for (int i = 3; i < roadCount; i++)
-				Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(blockSize * -i, 0f), BodyType.Static));
-
-			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadBlock, new Vector2(blockSize * -(roadCount - 2), 2.6f), BodyType.Static));
-			Demo.World3D.AddBody3D(multipleBody3DCreator.CreateBody3D(_roadBlock, new Vector2(blockSize * (roadCount - 2), 2.6f), BodyType.Static));
-
-			Demo.World3D.AddBackdrop3D(new Backdrop3D(_roadStopA, new Vector3(-blockSize, roadYShift, -blockSize)));
-			Demo.World3D.AddBackdrop3D(new Backdrop3D(_roadStopA, new Vector3(0f, roadYShift, -blockSize)));
-			Demo.World3D.AddBackdrop3D(new Backdrop3D(_roadStopA, new Vector3(blockSize, roadYShift, -blockSize)));
-
-			Demo.World3D.AddBackdrop3D(new Backdrop3D(_roadStopA1End, new Vector3(-2 * blockSize, roadYShift, -blockSize)));
-			Demo.World3D.AddBackdrop3D(new Backdrop3D(_roadStopA1, new Vector3(2 * blockSize, roadYShift, -blockSize)));
-
-			Demo.World3D.AddBackdrop3D(new Backdrop3D(_roadStopB, new Vector3(-blockSize, roadYShift, blockSize)));
-			Demo.World3D.AddBackdrop3D(new Backdrop3D(_roadStopB, new Vector3(0f, roadYShift, blockSize)));
-			Demo.World3D.AddBackdrop3D(new Backdrop3D(_roadStopB, new Vector3(blockSize, roadYShift, blockSize)));
-
-			Demo.World3D.AddBackdrop3D(new Backdrop3D(_roadStopB1End, new Vector3(-2 * blockSize, roadYShift, blockSize)));
-			Demo.World3D.AddBackdrop3D(new Backdrop3D(_roadStopB1, new Vector3(2 * blockSize, roadYShift, blockSize)));
+			Demo.World3D.AddBody3D(
+				multipleBody3DCreator.CreateBody3D(_roadInco, new Vector2(2 * blockSize, 0f), BodyType.Static));
+			Demo.World3D.AddBody3D(
+				multipleBody3DCreator.CreateBody3D(_roadInco, new Vector2(-2 * blockSize, 0f), BodyType.Static));
 
 			for (int i = 3; i < roadCount; i++)
-				Demo.World3D.AddBackdrop3D(new Backdrop3D(_sideA, new Vector3(blockSize * i, roadYShift, -blockSize)));
-			for (int i = 3; i < roadCount; i++)
-				Demo.World3D.AddBackdrop3D(new Backdrop3D(_sideB, new Vector3(blockSize * i, roadYShift, blockSize)));
+				Demo.World3D.AddBody3D(
+					multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(blockSize * i, 0f), BodyType.Static));
 
 			for (int i = 3; i < roadCount; i++)
-				Demo.World3D.AddBackdrop3D(new Backdrop3D(_sideA, new Vector3(blockSize * -i, roadYShift, -blockSize)));
+				Demo.World3D.AddBody3D(
+					multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(blockSize * -i, 0f), BodyType.Static));
+
+			Demo.World3D.AddBody3D(
+				multipleBody3DCreator.CreateBody3D(
+					_roadBlock,
+					new Vector2(blockSize * -(roadCount - 2), 2.6f),
+					BodyType.Static));
+			Demo.World3D.AddBody3D(
+				multipleBody3DCreator.CreateBody3D(
+					_roadBlock,
+					new Vector2(blockSize * (roadCount - 2), 2.6f),
+					BodyType.Static));
+
+			Demo.World3D.AddBackdrop3D(
+				new Backdrop3D(_roadStopA, new Vector3(-blockSize, roadYShift, -blockSize)));
+			Demo.World3D.AddBackdrop3D(
+				new Backdrop3D(_roadStopA, new Vector3(0f, roadYShift, -blockSize)));
+			Demo.World3D.AddBackdrop3D(
+				new Backdrop3D(_roadStopA, new Vector3(blockSize, roadYShift, -blockSize)));
+
+			Demo.World3D.AddBackdrop3D(
+				new Backdrop3D(_roadStopA1End, new Vector3(-2 * blockSize, roadYShift, -blockSize)));
+			Demo.World3D.AddBackdrop3D(
+				new Backdrop3D(_roadStopA1, new Vector3(2 * blockSize, roadYShift, -blockSize)));
+
+			Demo.World3D.AddBackdrop3D(
+				new Backdrop3D(_roadStopB, new Vector3(-blockSize, roadYShift, blockSize)));
+			Demo.World3D.AddBackdrop3D(
+				new Backdrop3D(_roadStopB, new Vector3(0f, roadYShift, blockSize)));
+			Demo.World3D.AddBackdrop3D(
+				new Backdrop3D(_roadStopB, new Vector3(blockSize, roadYShift, blockSize)));
+
+			Demo.World3D.AddBackdrop3D(
+				new Backdrop3D(_roadStopB1End, new Vector3(-2 * blockSize, roadYShift, blockSize)));
+			Demo.World3D.AddBackdrop3D(
+				new Backdrop3D(_roadStopB1, new Vector3(2 * blockSize, roadYShift, blockSize)));
+
 			for (int i = 3; i < roadCount; i++)
-				Demo.World3D.AddBackdrop3D(new Backdrop3D(_sideB, new Vector3(blockSize * -i, roadYShift, blockSize)));
+				Demo.World3D.AddBackdrop3D(
+					new Backdrop3D(_sideA, new Vector3(blockSize * i, roadYShift, -blockSize)));
+			for (int i = 3; i < roadCount; i++)
+				Demo.World3D.AddBackdrop3D(
+					new Backdrop3D(_sideB, new Vector3(blockSize * i, roadYShift, blockSize)));
+
+			for (int i = 3; i < roadCount; i++)
+				Demo.World3D.AddBackdrop3D(
+					new Backdrop3D(_sideA, new Vector3(blockSize * -i, roadYShift, -blockSize)));
+			for (int i = 3; i < roadCount; i++)
+				Demo.World3D.AddBackdrop3D(
+					new Backdrop3D(_sideB, new Vector3(blockSize * -i, roadYShift, blockSize)));
 		}
 
 		private void ConstructBackground()
@@ -183,9 +240,12 @@ namespace Demo.Scenes
 			int count = (decorationCount / 2) + 4;
 			for (int i = -count; i < count; i++)
 			{
-				Demo.World3D.AddBackdrop3D(new Backdrop3D(_grass, new Vector3(i * 5, 0f, -15f - 22f)));
-				Demo.World3D.AddBackdrop3D(new Backdrop3D(_grassBend, new Vector3(i * 5, 3.6f, -26.5f - 22f)));
-				Demo.World3D.AddBackdrop3D(new Backdrop3D(_grassBendNegative, new Vector3(i * 5, 12.1f, -34.93f - 22f)));
+				Demo.World3D.AddBackdrop3D(
+					new Backdrop3D(_grass, new Vector3(i * 5, 0f, -15f - 22f)));
+				Demo.World3D.AddBackdrop3D(
+					new Backdrop3D(_grassBend, new Vector3(i * 5, 3.6f, -26.5f - 22f)));
+				Demo.World3D.AddBackdrop3D(
+					new Backdrop3D(_grassBendNegative, new Vector3(i * 5, 12.1f, -34.93f - 22f)));
 			}
 
 			Demo.World3D.AddBackdrop3D(new Backdrop3D(_pole, new Vector3(-55f, 12f, -35f)));
@@ -205,7 +265,14 @@ namespace Demo.Scenes
 			ConstructBusStop();
 			ConstructBackground();
 
-			_chassis3D = Body3DFactory.CreateBody3D(_bodyModel, Demo.World3D.World2D, Demo.GraphicsDevice, defaultPositionShift, BodyType.Dynamic, new Vector2(25f, 6.45566f));
+			_chassis3D =
+				Body3DFactory.CreateBody3D(
+					_bodyModel,
+					Demo.World3D.World2D,
+					Demo.GraphicsDevice,
+					defaultPositionShift,
+					BodyType.Dynamic,
+					new Vector2(25f, 6.45566f));
 			Demo.World3D.AddBody3D(_chassis3D);
 
 			#region Přední náprava
@@ -216,7 +283,12 @@ namespace Demo.Scenes
 			_frontWheels = new Body();
 			_frontWheels.CreateCircle(1.3163165f, 1f);
 
-			_frontWheels3D = Body3DFactory.CreateBody3D(_frontWheelsModel, Demo.World3D.World2D, _frontWheels, frontPosition);
+			_frontWheels3D =
+				Body3DFactory.CreateBody3D(
+					_frontWheelsModel,
+					Demo.World3D.World2D,
+					_frontWheels,
+					frontPosition);
 
 			_springFront = new WheelJoint(_chassis3D.Body2D, _frontWheels, frontPosition, axis, true)
 			{
@@ -239,7 +311,12 @@ namespace Demo.Scenes
 			_backWheels = new Body();
 			_backWheels.CreateCircle(1.364622f, 1f);
 
-			_backWheels3D = Body3DFactory.CreateBody3D(_backWheelsModel, Demo.World3D.World2D, _backWheels, backPosition);
+			_backWheels3D =
+				Body3DFactory.CreateBody3D(
+					_backWheelsModel,
+					Demo.World3D.World2D,
+					_backWheels,
+					backPosition);
 
 			_springBack = new WheelJoint(_chassis3D.Body2D, _backWheels, backPosition, axis, true)
 			{
@@ -257,7 +334,11 @@ namespace Demo.Scenes
 
 			#region Rampa
 
-			_ramp3D = Body3DFactory.CreateBody3D(_rampModel, Demo.World3D.World2D, Demo.GraphicsDevice, new Vector2(0f, 5f));
+			_ramp3D = Body3DFactory.CreateBody3D(
+				_rampModel,
+				Demo.World3D.World2D,
+				Demo.GraphicsDevice,
+				new Vector2(0f, 5f));
 			Demo.World3D.AddBody3D(_ramp3D);
 
 			#endregion Rampa

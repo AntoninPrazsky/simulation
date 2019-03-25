@@ -38,12 +38,30 @@ namespace Demo.Scenes
 
 			PolygonShape shape = new PolygonShape(PolygonTools.CreateRectangle(0.125f, 0.5f), 20f);
 
-			List<Body> bodies = PathManager.EvenlyDistributeShapesAlongPath(Demo.World3D.World2D, bridgePath, shape, BodyType.Dynamic, 34);
+			List<Body> bodies =
+				PathManager.EvenlyDistributeShapesAlongPath(Demo.World3D.World2D,
+				bridgePath, shape,
+				BodyType.Dynamic,
+				34);
 
-			JointFactory.CreateRevoluteJoint(Demo.World3D.World2D, HiddenBody, bodies[0], new Vector2(0f, 0.5f));
-			JointFactory.CreateRevoluteJoint(Demo.World3D.World2D, HiddenBody, bodies[bodies.Count - 1], new Vector2(0f, -0.5f));
+			JointFactory.CreateRevoluteJoint(
+				Demo.World3D.World2D,
+				HiddenBody,
+				bodies[0],
+				new Vector2(0f, 0.5f));
+			JointFactory.CreateRevoluteJoint(
+				Demo.World3D.World2D,
+				HiddenBody,
+				bodies[bodies.Count - 1],
+				new Vector2(0f, -0.5f));
 
-			PathManager.AttachBodiesWithRevoluteJoint(Demo.World3D.World2D, bodies, new Vector2(0f, 0.5f), new Vector2(0f, -0.5f), false, true);
+			PathManager.AttachBodiesWithRevoluteJoint(
+				Demo.World3D.World2D,
+				bodies,
+				new Vector2(0f, 0.5f),
+				new Vector2(0f, -0.5f),
+				false,
+				true);
 
 			foreach (Body b in bodies) Demo.World3D.AddBody3D(new Body3D(plankModel, b));
 
@@ -51,7 +69,12 @@ namespace Demo.Scenes
 			body.CreateCircle(1f, 1f);
 			body.SetRestitution(0.7f);
 
-			Body3D body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/Primitives/goldBall"), Demo.World3D.World2D, body, new Vector2(8f, 8f));
+			Body3D body3D =
+				Body3DFactory.CreateBody3D(
+					Demo.Content.Load<Model>("Models/Primitives/goldBall"),
+					Demo.World3D.World2D,
+					body,
+					new Vector2(8f, 8f));
 
 			Demo.World3D.AddBody3D(body3D);
 			body.ApplyAngularImpulse(5f);

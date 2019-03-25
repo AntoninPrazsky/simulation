@@ -22,7 +22,8 @@ namespace Demo.Scenes
 			body.SetRestitution(restitution);
 			body.SetCollidesWith(collisionCategory);
 
-			Body3D body3D = Body3DFactory.CreateBody3D(_ballModel, Demo.World3D.World2D, body, new Vector2(positionX, 5f));
+			Body3D body3D =
+				Body3DFactory.CreateBody3D(_ballModel, Demo.World3D.World2D, body, new Vector2(positionX, 5f));
 			body3D.PositionZ = positionZ;
 
 			body3D.Body2D.ApplyLinearImpulse(Vector2.One * 10f);
@@ -40,13 +41,25 @@ namespace Demo.Scenes
 
 			ConstructGround();
 
-			Body3D body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/groundBlockLongLeft"), Demo.World3D.World2D, Demo.GraphicsDevice, new Vector2(-24.15f, 5.9f), BodyType.Static);
-			body3D.Body2D.SetCollisionCategories(Category.Cat31);
-			Demo.World3D.AddBody3D(body3D);
+			Body3D leftBlock =
+				Body3DFactory.CreateBody3D(
+					Demo.Content.Load<Model>("Models/groundBlockLongLeft"),
+					Demo.World3D.World2D,
+					Demo.GraphicsDevice,
+					new Vector2(-24.15f, 5.9f),
+					BodyType.Static);
+			leftBlock.Body2D.SetCollisionCategories(Category.Cat31);
+			Demo.World3D.AddBody3D(leftBlock);
 
-			body3D = Body3DFactory.CreateBody3D(Demo.Content.Load<Model>("Models/groundBlockLongRight"), Demo.World3D.World2D, Demo.GraphicsDevice, new Vector2(24.15f, 5.9f), BodyType.Static);
-			body3D.Body2D.SetCollisionCategories(Category.Cat31);
-			Demo.World3D.AddBody3D(body3D);
+			Body3D rightBlock =
+				Body3DFactory.CreateBody3D(
+					Demo.Content.Load<Model>("Models/groundBlockLongRight"),
+					Demo.World3D.World2D,
+					Demo.GraphicsDevice,
+					new Vector2(24.15f, 5.9f),
+					BodyType.Static);
+			leftBlock.Body2D.SetCollisionCategories(Category.Cat31);
+			Demo.World3D.AddBody3D(rightBlock);
 
 			AddBall(0.70f, -6f, -6f, Category.Cat31);
 			AddBall(0.75f, -4f, -4f, Category.Cat31);

@@ -74,12 +74,31 @@ namespace Demo
 
 		private void RenderTextScale(string text, Vector2 position, float scale)
 		{
-			_spriteBatch.DrawString(_font, text, new Vector2(position.X + 1, position.Y + 1), Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-			_spriteBatch.DrawString(_font, text, position, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+			_spriteBatch.DrawString(
+				_font,
+				text,
+				new Vector2(position.X + 1, position.Y + 1),
+				Color.Black,
+				0f,
+				Vector2.Zero,
+				scale,
+				SpriteEffects.None,
+				0f);
+
+			_spriteBatch.DrawString(
+				_font,
+				text,
+				position,
+				Color.White,
+				0f,
+				Vector2.Zero,
+				scale,
+				SpriteEffects.None,
+				0f);
 		}
 
-		private string _controlHelp = 
-			"Right arrow: Next scene\n" + 
+		private string _controlHelp =
+			"Right arrow: Next scene\n" +
 			"Left arrow: Previous scene\n" +
 			"W: Move forward\n" +
 			"S: Move backward\n" +
@@ -96,6 +115,5 @@ namespace Demo
 		{
 			RenderTextScale(_controlHelp, _controlHelpPosition, 0.5f);
 		}
-
 	}
 }
