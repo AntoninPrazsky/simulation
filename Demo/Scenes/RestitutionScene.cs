@@ -6,11 +6,11 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Demo.Scenes
 {
-	internal class BallsScene : Scene
+	internal class RestitutionScene : Scene
 	{
 		private Model _ballModel;
 
-		public BallsScene(SimulationDemo demo) : base(demo)
+		public RestitutionScene(SimulationDemo demo) : base(demo)
 		{
 			_ballModel = Demo.Content.Load<Model>("Models/Primitives/goldBall");
 		}

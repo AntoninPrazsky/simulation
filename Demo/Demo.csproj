@@ -54,7 +54,7 @@
     <Compile Include="Scenes\BridgeScene.cs" />
     <Compile Include="Scenes\GroundScene.cs" />
     <Compile Include="Scenes\Scene.cs" />
-    <Compile Include="Scenes\BallsScene.cs" />
+    <Compile Include="Scenes\RestitutionScene.cs" />
     <Compile Include="Scenes\SimpleScene.cs" />
     <Compile Include="SimulationDemo.cs" />
     <Compile Include="Info.cs" />
@@ -83,7 +83,9 @@
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
-    <None Include="app.manifest" />
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Content\DiagnosticsFont.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
