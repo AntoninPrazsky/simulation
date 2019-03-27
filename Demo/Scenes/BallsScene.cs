@@ -58,7 +58,7 @@ namespace Demo.Scenes
 					Demo.GraphicsDevice,
 					new Vector2(24.15f, 5.9f),
 					BodyType.Static);
-			leftBlock.Body2D.SetCollisionCategories(Category.Cat31);
+			rightBlock.Body2D.SetCollisionCategories(Category.Cat31);
 			Demo.World3D.AddBody3D(rightBlock);
 
 			AddBall(0.70f, -6f, -6f, Category.Cat31);
