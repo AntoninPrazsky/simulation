@@ -4,7 +4,7 @@ Game library for performing two-dimensional physical simulations in games with t
 ![Screenshot](Documentation//screenshot4.png)
 
 ## Version
-Current version: 0.3
+Current version: 1.0
 
 ## Dependencies
 This library is dependent on the following resources:
