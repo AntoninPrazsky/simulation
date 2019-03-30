@@ -197,6 +197,9 @@ namespace Demo
 				_currentGamePadState,
 				_previousGamePadState);
 
+			//Skrytí nebo zobrazení překryvného informačního textu
+			if (PressedOnce(Keys.F12, Buttons.Start)) Info.Visible = !Info.Visible;
+
 			//Předchozí stav vstupních zařízení (pro další aktualizaci)
 			_previousKeyboardState = _currentKeyboardState;
 			_previousGamePadState = _currentGamePadState;

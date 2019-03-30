@@ -24,6 +24,11 @@ namespace Demo
 		private string _fps;
 		private string _gpu;
 
+		/// <summary>
+		/// Zobrazení nebo skrytí vykreslování textu.
+		/// </summary>
+		public bool Visible { get; set; } = true;
+
 		private string _controlHelp =
 			"Right arrow: Next scene\n" +
 			"Left arrow: Previous scene\n" +
@@ -35,7 +40,8 @@ namespace Demo
 			"E: Move up\n" +
 			"Left mouse button: Grab an object\n" +
 			"Right mouse button: Free look\n" +
-			"Shift: Fast movement\n";
+			"Shift: Fast movement\n" +
+			"F12: Show/hide this text";
 
 		/// <summary>
 		/// Konstruktor třídy Info pro vykreslování snímkové frekvence zobrazení a dalších informací.
@@ -83,7 +89,9 @@ namespace Demo
 		/// <param name="gameTime"></param>
 		public override void Draw(GameTime gameTime)
 		{
-			_frameCounter++;
+			_frameCounter++; //Snímková frekvence se počítá, i pokud se text nezobrazuje
+
+			if (!Visible) return;
 
 			_spriteBatch.Begin();
 
