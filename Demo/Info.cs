@@ -19,29 +19,39 @@ namespace Demo
 		private TimeSpan _elapsedTime = TimeSpan.Zero;
 
 		private Vector2 _fpsPosition = new Vector2(20f, 10f);
-		private Vector2 _gpuPosition = new Vector2(200f, 12f);
-		private Vector2 _controlHelpPosition = new Vector2(20f, 60f);
+		private Vector2 _gpuPosition = new Vector2(180f, 12f);
+		private Vector2 _controlHelpPositionKeys = new Vector2(20f, 60f);
+		private Vector2 _controlHelpPositionText = new Vector2(180f, 60f);
 		private string _fps;
 		private string _gpu;
 
-		/// <summary>
-		/// Zobrazení nebo skrytí vykreslování textu.
-		/// </summary>
-		public bool Visible { get; set; } = true;
+		private string _controlHelpKeys =
+			"Right arrow:\n" +
+			"Left arrow:\n" +
+			"W:\n" +
+			"S:\n" +
+			"A:\n" +
+			"D:\n" +
+			"Q:\n" +
+			"E:\n" +
+			"Left mouse button:\n" +
+			"Right mouse button:\n" +
+			"Shift:\n" +
+			"F12:";
 
-		private string _controlHelp =
-			"Right arrow: Next scene\n" +
-			"Left arrow: Previous scene\n" +
-			"W: Move forward\n" +
-			"S: Move backward\n" +
-			"A: Move left\n" +
-			"D: Move right\n" +
-			"Q: Move down\n" +
-			"E: Move up\n" +
-			"Left mouse button: Grab an object\n" +
-			"Right mouse button: Free look\n" +
-			"Shift: Fast movement\n" +
-			"F12: Show/hide this text";
+		private string _controlHelpText =
+			"Next scene\n" +
+			"Previous scene\n" +
+			"Move forward\n" +
+			"Move backward\n" +
+			"Move left\n" +
+			"Move right\n" +
+			"Move down\n" +
+			"Move up\n" +
+			"Grab an object\n" +
+			"Free look\n" +
+			"Fast movement\n" +
+			"Show/hide this text";
 
 		/// <summary>
 		/// Konstruktor třídy Info pro vykreslování snímkové frekvence zobrazení a dalších informací.
@@ -57,7 +67,7 @@ namespace Demo
 			_spriteBatch = new SpriteBatch(GraphicsDevice);
 			_font = _content.Load<SpriteFont>("Content/Fonts/Aileron");
 
-			_gpu = Game.GraphicsDevice.Adapter.Description;
+			_gpu = "GPU: " + Game.GraphicsDevice.Adapter.Description;
 		}
 
 		protected override void UnloadContent()
@@ -89,9 +99,7 @@ namespace Demo
 		/// <param name="gameTime"></param>
 		public override void Draw(GameTime gameTime)
 		{
-			_frameCounter++; //Snímková frekvence se počítá, i pokud se text nezobrazuje
-
-			if (!Visible) return;
+			_frameCounter++;
 
 			_spriteBatch.Begin();
 
@@ -135,7 +143,8 @@ namespace Demo
 
 		private void RenderHelp()
 		{
-			RenderTextScale(_controlHelp, _controlHelpPosition, 0.5f);
+			RenderTextScale(_controlHelpKeys, _controlHelpPositionKeys, 0.5f);
+			RenderTextScale(_controlHelpText, _controlHelpPositionText, 0.5f);
 		}
 	}
 }
