@@ -10,6 +10,18 @@ using tainicom.Aether.Physics2D.Dynamics.Joints;
 
 namespace Demo.Scenes
 {
+	/// <summary>
+	/// Scéna zobrazující most tvořený 33 příčkami, jejichž tvar pro fyzikální simulaci je obdélník, avšak
+	/// trojrozměrný model je komplexnější, což vytváří vizuálně atraktivní kompozici. Jednotlivé příčky mostu jsou
+	/// spojeny ohybnými klouby a na scéně se dále vyskytuje sféra (její dvojrozměrný fyzikální tvar je kruh). Most se
+	/// v závislosti na pohybu tohoto tělesa dynamicky pohybuje, jako by jeho jednotlivé části byly spojeny provazem.
+	/// Podklad zde tedy není statický jako u ostatních scén.
+	///
+	/// Na těleso ve tvaru kruhu je při sestavování scény aplikován úhlový impuls o velikosti 5f, čímž dojde k jeho
+	/// roztočení okolo osy Z. Při dopadu na povrch mostu se proto kruh začne kutálet ve směru od pozorovatele scény,
+	/// což respektuje i trojrozměrný model ve tvaru sféry a společně s navázaným pohybem jednotlivých příček mostu
+	/// působí scéna plynule dynamickým dojmem.
+	/// </summary>
 	internal class BridgeScene : Scene
 	{
 		public BridgeScene(SimulationDemo demo) : base(demo)

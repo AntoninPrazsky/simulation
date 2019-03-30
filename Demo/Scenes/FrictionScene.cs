@@ -6,6 +6,16 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Demo.Scenes
 {
+	/// <summary>
+	/// Třída FrictionScene demonstruje na pěti objektech tvaru kvádru (s dvojrozměrnou reprezentací ve tvaru čtverce)
+	/// a pěti rampách simulaci kinematického tření. Všechny simulované objekty mají stejnou velikost, hustotu a
+	/// výchozí pozici (vzájemně spolu ovšem nemohou kolidovat a vykreslují se na odlišných pozicích na ose Z).
+	/// Postupně od nejvzdálenějšího (po ose Z) se snižuje jejich koeficient tření od hodnoty 0.75f až na hodnotu 0f.
+	///
+	/// Po spuštění simulace lze pozorovat, že těleso s nejvyšší hodnotou koeficientu tření se zastavilo už na druhé
+	/// rampě, kdežto těleso s nulovým koeficientem pokračuje v pohybu i po sklouznutí ze všech ramp. Nulový koeficient
+	/// tření je ve skutečném světě prakticky nereálný a zde je přítomen pouze pro srovnání.
+	/// </summary>
 	internal class FrictionScene : Scene
 	{
 		private Model _rampAModel, _rampBModel, _cubeModel;

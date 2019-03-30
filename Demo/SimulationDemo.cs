@@ -26,6 +26,8 @@ namespace Demo
 		/// <param name="preferHiDef">Použití maximálního počtu funkcí a možností grafického hardwaru, je-li to
 		/// podporováno</param>
 		/// <param name="preferMultiSampling">Použití multisample anti-aliasingu (MSAA), je-li podporováno.</param>
+		/// <param name="windowWidth">Šířka okna, pokud je aktivní režim v okně.</param>
+		/// <param name="windowHeight">Výška okna, pokud je aktivní režim v okně.</param>
 		public SimulationDemo(
 			bool windowed = true, 
 			bool preferHiDef = true, 
@@ -45,10 +47,24 @@ namespace Demo
 			_windowHeight = windowHeight;
 		}
 
+		/// <summary>
+		/// Trojrozměrný svět, ve kterém se odehrává dvojrozměrná fyzikální simulace.
+		/// </summary>
 		public World3D World3D { private set; get; }
+
+		/// <summary>
+		/// Základní perspektivní kamera, která pozoruje trojrozměrný svět.
+		/// </summary>
 		public BasicCamera3D Camera3D { private set; get; }
+
+		/// <summary>
+		/// Kolekce všech scén demonstrujících možnosti knihovny.
+		/// </summary>
 		public List<Scene> DemoScenes { private set; get; }
 		
+		/// <summary>
+		/// Informační text vykreslovaný přes scénu.
+		/// </summary>
 		public Info Info { private set; get; }
 
 		#region Ovládání
@@ -71,8 +87,7 @@ namespace Demo
 		#endregion Ovládání
 
 		#region Grafika
-
-		//Velikost grafické plochy okna, pokud není použito celoobrazovkové zobrazení
+		
 		private int _windowWidth;
 		private int _windowHeight;
 
@@ -83,6 +98,10 @@ namespace Demo
 
 		#endregion Grafika
 
+		/// <summary>
+		/// Vykreslí aktuální scénu a nebe na pozadí.
+		/// </summary>
+		/// <param name="gameTime">Herní čas.</param>
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(Color.Bisque);
@@ -97,6 +116,9 @@ namespace Demo
 			base.Draw(gameTime);
 		}
 
+		/// <summary>
+		/// Výchozí inicializace všech objektů nutných pro vykreslování scén.
+		/// </summary>
 		protected override void Initialize()
 		{
 			SetGraphics(_windowed);
@@ -115,6 +137,9 @@ namespace Demo
 			base.Initialize();
 		}
 
+		/// <summary>
+		/// Načtení globálních podkladů.
+		/// </summary>
 		protected override void LoadContent()
 		{
 			_skyModel = Content.Load<Model>("Models/Skyes/skyGeoDome");
@@ -124,6 +149,10 @@ namespace Demo
 		{
 		}
 
+		/// <summary>
+		/// Aktualizace herního světa a všech aktivních objektů před vykreslením.
+		/// </summary>
+		/// <param name="gameTime">Herní čas.</param>
 		protected override void Update(GameTime gameTime)
 		{
 			//Aktuální stav vstupních zařízení
@@ -176,6 +205,11 @@ namespace Demo
 			base.Update(gameTime);
 		}
 
+		/// <summary>
+		/// Nastavení obnovovací frekvence vykreslování grafiky a podporované kvality zobrazení.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void _graphics_PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
 		{
 			//Obnovovací frekvence vykreslování
@@ -371,8 +405,8 @@ namespace Demo
 			};
 			GraphicsDevice.SamplerStates[0] = ss;
 
-			DepthStencilState dss = new DepthStencilState { DepthBufferEnable = false };
-			GraphicsDevice.DepthStencilState = dss;
+			DepthStencilState depthStencilState = new DepthStencilState { DepthBufferEnable = false };
+			GraphicsDevice.DepthStencilState = depthStencilState;
 
 			Matrix[] skyboxTransforms = new Matrix[_skyModel.Bones.Count];
 			_skyModel.CopyAbsoluteBoneTransformsTo(skyboxTransforms);
@@ -390,8 +424,8 @@ namespace Demo
 				mesh.Draw();
 			}
 
-			dss = new DepthStencilState { DepthBufferEnable = true };
-			GraphicsDevice.DepthStencilState = dss;
+			depthStencilState = new DepthStencilState { DepthBufferEnable = true };
+			GraphicsDevice.DepthStencilState = depthStencilState;
 		}
 	}
 }

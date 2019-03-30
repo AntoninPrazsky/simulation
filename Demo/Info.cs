@@ -5,6 +5,9 @@ using System;
 
 namespace Demo
 {
+	/// <summary>
+	/// Vykresluje snímkovou frekvenci grafiky a další informace v podobě textu.
+	/// </summary>
 	public class Info : DrawableGameComponent
 	{
 		private ContentManager _content;
@@ -21,6 +24,23 @@ namespace Demo
 		private string _fps;
 		private string _gpu;
 
+		private string _controlHelp =
+			"Right arrow: Next scene\n" +
+			"Left arrow: Previous scene\n" +
+			"W: Move forward\n" +
+			"S: Move backward\n" +
+			"A: Move left\n" +
+			"D: Move right\n" +
+			"Q: Move down\n" +
+			"E: Move up\n" +
+			"Left mouse button: Grab an object\n" +
+			"Right mouse button: Free look\n" +
+			"Shift: Fast movement\n";
+
+		/// <summary>
+		/// Konstruktor třídy Info pro vykreslování snímkové frekvence zobrazení a dalších informací.
+		/// </summary>
+		/// <param name="game">Hra, ve které se mají informace vykreslovat.</param>
 		public Info(Game game) : base(game)
 		{
 			_content = new ContentManager(game.Services);
@@ -39,6 +59,10 @@ namespace Demo
 			_content.Unload();
 		}
 
+		/// <summary>
+		/// Aktualizace snímkové frekvence vykreslování grafiky.
+		/// </summary>
+		/// <param name="gameTime">Herní čas.</param>
 		public override void Update(GameTime gameTime)
 		{
 			_elapsedTime += gameTime.ElapsedGameTime;
@@ -53,6 +77,10 @@ namespace Demo
 			_fps = "FPS: " + _frameRate.ToString();
 		}
 
+		/// <summary>
+		/// Vykreslení snímkové frekvence a dalších informací.
+		/// </summary>
+		/// <param name="gameTime"></param>
 		public override void Draw(GameTime gameTime)
 		{
 			_frameCounter++;
@@ -96,20 +124,6 @@ namespace Demo
 				SpriteEffects.None,
 				0f);
 		}
-
-		private string _controlHelp =
-			"Right arrow: Next scene\n" +
-			"Left arrow: Previous scene\n" +
-			"W: Move forward\n" +
-			"S: Move backward\n" +
-			"A: Move left\n" +
-			"D: Move right\n" +
-			"Q: Move down\n" +
-			"E: Move up\n" +
-			"Left mouse button: Grab an object\n" +
-			"Right mouse button: Free look\n" +
-			"Shift: Fast movement\n"
-			;
 
 		private void RenderHelp()
 		{

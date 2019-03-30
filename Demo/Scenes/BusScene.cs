@@ -9,6 +9,18 @@ using tainicom.Aether.Physics2D.Dynamics.Joints;
 
 namespace Demo.Scenes
 {
+	/// <summary>
+	/// Třída BusScene představuje funkční simulaci jedoucího autobusu a množství okolních dekoračních prvků
+	/// představujících zastávku, sloup elektrického vedení nebo zelené pozadí. Na silnici před autobusem se zároveň
+	/// nachází překážka (rampa) pro demonstraci odpružených kloubů držících nápravy autobusu, z nichž pouze zadní je
+	/// hnaná.
+	///
+	/// Podobně jako scéna TheoJansenWalkerScene poskytuje i scéna BusScene rozšířené ovládání. Ve výchozím stavu
+	/// kamera sleduje jedoucí autobus tak, aby se nikdy nevyskytl mimo záběr. Toto uchycení kamery lze zrušit nebo
+	/// znovu aktivovat klávesou ENTER. Změnit směr otáčení zadních kol autobusu lze klávesou MEZERNÍK a zcela zabrzdit
+	/// je možné klávesou levý CTRL. Ostatní ovládání (pohybu kamery) je identické jako u ostatních scén za
+	/// předpokladu, že kamera není uchycena pro sledování autobusu (potom není možné měnit její směr pohledu).
+	/// </summary>
 	internal class BusScene : Scene
 	{
 		private static readonly float DEFAULT_MOTOR_SPEED = -20f;

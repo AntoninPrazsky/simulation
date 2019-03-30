@@ -6,6 +6,18 @@ using tainicom.Aether.Physics2D.Dynamics;
 
 namespace Demo.Scenes
 {
+	/// <summary>
+	/// Třída RestitutionDemo demonstruje využití koeficientu restituce (odrazivosti). Na scéně se vyskytuje celkem
+	/// sedm objektů ve tvaru sféry s dvojrozměrnou reprezentací ve tvaru kruhu o stejné velikosti a se stejnou
+	/// hustotou. Tato tělesa jsou spuštěna z dané výšky kolmo k vodorovné ploše a pro zvýšení dynamiky scény je na ně
+	/// též jednorázově po spuštění aplikován lineární impuls o velikosti 10f a úhlový impuls o velikosti -40f. Hodnoty
+	/// odrazivosti jsou zadány od nejvzdálenějšího tělesa s hodnotou 0.70f až po nejbližší těleso s hodnotou 1.00f.
+	/// 
+	/// Po spuštění simulace lze pozorovat, že těleso s nejnižší hodnotou koeficientu restituce se od vodorovného
+	/// podkladu odrazí pouze několikrát a poté se ustálí. Na druhou stranu těleso s hodnotou koeficientu 1.00f se
+	/// odráží prakticky donekonečna, což je ve skutečném světě nereálná situace (těleso nikdy neztratí svou
+	/// kinematickou energii).
+	/// </summary>
 	internal class RestitutionScene : Scene
 	{
 		private Model _ballModel;

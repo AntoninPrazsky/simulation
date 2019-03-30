@@ -17,6 +17,31 @@ namespace Demo.Scenes
 	 * Microsoft Permissive License (Ms-PL) v1.1
 	 */
 
+	/// <summary>
+	/// Třída TheoJansenWalkerScene obsahující simulaci chodícího robota tvořeného šesti rameny, šesti nohami, tělem a
+	/// jedním motorem. Kráčivý pohyb robota je inspirován kinetickými sochami, které vytváří nizozemský umělec Theo
+	/// Jansen. Kód třídy vychází z ukázkového projektu knihovny Farseer Physics Engine, jehož autorem je Ian Qvist, a
+	/// rozšiřuje ho do třetí dimenze pro možnost použití s knihovnou Prazsky.Simulation. Je významný rozdíl mezi
+	/// dvojrozměrnými tvary určenými pro simulaci a jejich trojrozměrnými reprezentacemi pro vykreslování.
+	/// Dvojrozměrný tvar nohou a ramen je například pouze trojúhelník, tělo robota je potom obdélník a motor kruh.
+	/// Trojrozměrné tvary odpovídající těmto částem jsou výrazně komplexnější a působí celkově složitým dojmem, avšak
+	/// jejich pozice a rotace je vykreslována na základě fyzikální simulace relativně jednoduchých základních tvarů.
+	/// Tento princip (kdy je mechanika scény výrazně jednodušší než její grafická reprezentace), je ve hrách využíván
+	/// často. Smyslem je snížení výpočetní náročnosti hry, a tím například umožnění použití většího množství
+	/// simulovaných objektů (robotů) na scéně.
+	///
+	/// Tato scéna též rozšiřuje možnosti ovládání. Protože robot kráčí směrem doprava, kamera se automaticky otáčí
+	/// tak, aby robot nikdy neodešel ze záběru. Toto sledování lze deaktivovat nebo opět aktivovat stiskem klávesy
+	/// ENTER. Směr kráčení robota lze změnit klávesou MEZERNÍK a zcela vypnout nebo opět zapnout motor robota klávesou
+	/// levý CTRL.
+	///
+	/// Ačkoli se fyzikální simulace chůze robota odehrává pouze ve dvojrozměrném prostoru a robot má šest nohou
+	/// (celkem ve třech vrstvách), nohy spolu nikdy nekolidují, protože jsou při vytváření zařazeny do kolizní
+	/// kategorie -1. Ve trojrozměrné reprezentaci jsou potom nohy vykreslovány na odlišnou pozici v ose Z, čímž celá
+	/// simulace působí ve trojrozměrném prostoru důvěryhodně. Na pozadí scény jsou též umístěny dekorační objekty typu
+	/// BackDrop3D, které se fyzikální simulace neúčastní, ale jsou pouze vykreslovány na statické pozici ve
+	/// trojrozměrném světě.
+	/// </summary>
 	internal class TheoJansenWalkerScene : Scene
 	{
 		private static readonly float MOTOR_SPEED = 2f;
