@@ -77,7 +77,6 @@ namespace HelloSimulation
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
-
 			world3D.Draw();
 
 			base.Draw(gameTime);
