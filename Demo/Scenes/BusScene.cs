@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using Prazsky.Simulation;
 using Prazsky.Simulation.Factories;
 using System;
+using tainicom.Aether.Physics2D.Collision.Shapes;
+using tainicom.Aether.Physics2D.Common;
 using tainicom.Aether.Physics2D.Dynamics;
 using tainicom.Aether.Physics2D.Dynamics.Joints;
 
@@ -277,14 +279,19 @@ namespace Demo.Scenes
 			ConstructBusStop();
 			ConstructBackground();
 
-			_chassis3D =
-				Body3DFactory.CreateBody3D(
-					_bodyModel,
-					Demo.World3D.World2D,
-					Demo.GraphicsDevice,
-					defaultPositionShift,
-					BodyType.Dynamic,
-					new Vector2(25f, 6.45566f));
+			PolygonShape shape = new PolygonShape(1f)
+			{
+				Vertices = PolygonTools.CreateRoundedRectangle(25f, 6.45566f, 1.5f, 1.5f, 4)
+			};
+
+			Body chassis = Demo.World3D.World2D.CreateBody();
+			chassis.BodyType = BodyType.Dynamic;
+			chassis.Position = defaultPositionShift;
+
+			Fixture fixture = chassis.CreateFixture(shape);
+
+			_chassis3D = new Body3D(_bodyModel, chassis);
+
 			Demo.World3D.AddBody3D(_chassis3D);
 
 			#region Přední náprava
