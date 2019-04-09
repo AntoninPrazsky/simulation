@@ -27,6 +27,7 @@ namespace Demo.Scenes
 	{
 		private static readonly float DEFAULT_MOTOR_SPEED = -20f;
 		private static readonly float MAX_MOTOR_TORQUE = 1000f;
+		private static float BLOCK_SIZE = 20f;
 
 		private Model _bodyModel;
 		private Body3D _chassis3D;
@@ -166,9 +167,23 @@ namespace Demo.Scenes
 			_springBack.MotorSpeed = _motorSpeed;
 		}
 
+		private void BuildRoadBlock(Vector2 position, bool center)
+		{
+			PolygonShape roadShape = new PolygonShape(1f)
+			{
+				Vertices = PolygonTools.CreateRectangle(10f, 0.15f)
+			};
+
+			Body roadCenter = Demo.World3D.World2D.CreateBody();
+			roadCenter.BodyType = BodyType.Static;
+			roadCenter.Position = position;
+
+			Fixture fixture = roadCenter.CreateFixture(roadShape);
+			Demo.World3D.AddBody3D(new Body3D(center ? _roadCenter : _roadInco, roadCenter));
+		}
+
 		private void ConstructBusStop()
 		{
-			float blockSize = 20f;
 			float roadYShift = 0.19f;
 			int roadCount = 10;
 
@@ -176,73 +191,67 @@ namespace Demo.Scenes
 				new MultipleBody3DCreator(Demo.GraphicsDevice, Demo.World3D.World2D);
 
 			Demo.World3D.AddBody3D(
-				multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(-blockSize, 0f), BodyType.Static));
-			Demo.World3D.AddBody3D(
-				multipleBody3DCreator.CreateBody3D(_roadCenter, Vector2.Zero, BodyType.Static));
-			Demo.World3D.AddBody3D(
-				multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(blockSize, 0f), BodyType.Static));
-
-			Demo.World3D.AddBody3D(
-				multipleBody3DCreator.CreateBody3D(_roadInco, new Vector2(2 * blockSize, 0f), BodyType.Static));
-			Demo.World3D.AddBody3D(
-				multipleBody3DCreator.CreateBody3D(_roadInco, new Vector2(-2 * blockSize, 0f), BodyType.Static));
-
-			for (int i = 3; i < roadCount; i++)
-				Demo.World3D.AddBody3D(
-					multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(blockSize * i, 0f), BodyType.Static));
-
-			for (int i = 3; i < roadCount; i++)
-				Demo.World3D.AddBody3D(
-					multipleBody3DCreator.CreateBody3D(_roadCenter, new Vector2(blockSize * -i, 0f), BodyType.Static));
-
-			Demo.World3D.AddBody3D(
 				multipleBody3DCreator.CreateBody3D(
 					_roadBlock,
-					new Vector2(blockSize * -(roadCount - 2), 2.6f),
+					new Vector2(BLOCK_SIZE * -(roadCount - 2), 2.6f),
 					BodyType.Static));
 			Demo.World3D.AddBody3D(
 				multipleBody3DCreator.CreateBody3D(
 					_roadBlock,
-					new Vector2(blockSize * (roadCount - 2), 2.6f),
+					new Vector2(BLOCK_SIZE * (roadCount - 2), 2.6f),
 					BodyType.Static));
 
-			Demo.World3D.AddBackdrop3D(
-				new Backdrop3D(_roadStopA, new Vector3(-blockSize, roadYShift, -blockSize)));
-			Demo.World3D.AddBackdrop3D(
-				new Backdrop3D(_roadStopA, new Vector3(0f, roadYShift, -blockSize)));
-			Demo.World3D.AddBackdrop3D(
-				new Backdrop3D(_roadStopA, new Vector3(blockSize, roadYShift, -blockSize)));
+			BuildRoadBlock(new Vector2(-BLOCK_SIZE, 0f), true);
+			BuildRoadBlock(Vector2.Zero, true);
+			BuildRoadBlock(new Vector2(BLOCK_SIZE, 0f), true);
+
+			BuildRoadBlock(new Vector2(2 * BLOCK_SIZE, 0f), false);
+			BuildRoadBlock(new Vector2(-2 * BLOCK_SIZE, 0f), false);
+
+			for (int i = 3; i < roadCount; i++) BuildRoadBlock(new Vector2(BLOCK_SIZE * i, 0f), true);
+			for (int i = 3; i < roadCount; i++) BuildRoadBlock(new Vector2(BLOCK_SIZE * -i, 0f), true);
+
+			#region Dekorační bloky
 
 			Demo.World3D.AddBackdrop3D(
-				new Backdrop3D(_roadStopA1End, new Vector3(-2 * blockSize, roadYShift, -blockSize)));
+				new Backdrop3D(_roadStopA, new Vector3(-BLOCK_SIZE, roadYShift, -BLOCK_SIZE)));
 			Demo.World3D.AddBackdrop3D(
-				new Backdrop3D(_roadStopA1, new Vector3(2 * blockSize, roadYShift, -blockSize)));
+				new Backdrop3D(_roadStopA, new Vector3(0f, roadYShift, -BLOCK_SIZE)));
+			Demo.World3D.AddBackdrop3D(
+				new Backdrop3D(_roadStopA, new Vector3(BLOCK_SIZE, roadYShift, -BLOCK_SIZE)));
 
 			Demo.World3D.AddBackdrop3D(
-				new Backdrop3D(_roadStopB, new Vector3(-blockSize, roadYShift, blockSize)));
+				new Backdrop3D(_roadStopA1End, new Vector3(-2 * BLOCK_SIZE, roadYShift, -BLOCK_SIZE)));
 			Demo.World3D.AddBackdrop3D(
-				new Backdrop3D(_roadStopB, new Vector3(0f, roadYShift, blockSize)));
-			Demo.World3D.AddBackdrop3D(
-				new Backdrop3D(_roadStopB, new Vector3(blockSize, roadYShift, blockSize)));
+				new Backdrop3D(_roadStopA1, new Vector3(2 * BLOCK_SIZE, roadYShift, -BLOCK_SIZE)));
 
 			Demo.World3D.AddBackdrop3D(
-				new Backdrop3D(_roadStopB1End, new Vector3(-2 * blockSize, roadYShift, blockSize)));
+				new Backdrop3D(_roadStopB, new Vector3(-BLOCK_SIZE, roadYShift, BLOCK_SIZE)));
 			Demo.World3D.AddBackdrop3D(
-				new Backdrop3D(_roadStopB1, new Vector3(2 * blockSize, roadYShift, blockSize)));
+				new Backdrop3D(_roadStopB, new Vector3(0f, roadYShift, BLOCK_SIZE)));
+			Demo.World3D.AddBackdrop3D(
+				new Backdrop3D(_roadStopB, new Vector3(BLOCK_SIZE, roadYShift, BLOCK_SIZE)));
+
+			Demo.World3D.AddBackdrop3D(
+				new Backdrop3D(_roadStopB1End, new Vector3(-2 * BLOCK_SIZE, roadYShift, BLOCK_SIZE)));
+			Demo.World3D.AddBackdrop3D(
+				new Backdrop3D(_roadStopB1, new Vector3(2 * BLOCK_SIZE, roadYShift, BLOCK_SIZE)));
 
 			for (int i = 3; i < roadCount; i++)
 				Demo.World3D.AddBackdrop3D(
-					new Backdrop3D(_sideA, new Vector3(blockSize * i, roadYShift, -blockSize)));
+					new Backdrop3D(_sideA, new Vector3(BLOCK_SIZE * i, roadYShift, -BLOCK_SIZE)));
 			for (int i = 3; i < roadCount; i++)
 				Demo.World3D.AddBackdrop3D(
-					new Backdrop3D(_sideB, new Vector3(blockSize * i, roadYShift, blockSize)));
+					new Backdrop3D(_sideB, new Vector3(BLOCK_SIZE * i, roadYShift, BLOCK_SIZE)));
 
 			for (int i = 3; i < roadCount; i++)
 				Demo.World3D.AddBackdrop3D(
-					new Backdrop3D(_sideA, new Vector3(blockSize * -i, roadYShift, -blockSize)));
+					new Backdrop3D(_sideA, new Vector3(BLOCK_SIZE * -i, roadYShift, -BLOCK_SIZE)));
 			for (int i = 3; i < roadCount; i++)
 				Demo.World3D.AddBackdrop3D(
-					new Backdrop3D(_sideB, new Vector3(blockSize * -i, roadYShift, blockSize)));
+					new Backdrop3D(_sideB, new Vector3(BLOCK_SIZE * -i, roadYShift, BLOCK_SIZE)));
+
+			#endregion Dekorační bloky
 		}
 
 		private void ConstructBackground()
@@ -284,13 +293,14 @@ namespace Demo.Scenes
 				Vertices = PolygonTools.CreateRoundedRectangle(25f, 6.45566f, 1.5f, 1.5f, 4)
 			};
 
-			Body chassis = Demo.World3D.World2D.CreateBody();
-			chassis.BodyType = BodyType.Dynamic;
-			chassis.Position = defaultPositionShift;
-
-			Fixture fixture = chassis.CreateFixture(shape);
-
-			_chassis3D = new Body3D(_bodyModel, chassis);
+			_chassis3D =
+				Body3DFactory.CreateBody3D(
+					_bodyModel,
+					Demo.World3D.World2D,
+					Demo.GraphicsDevice,
+					defaultPositionShift,
+					BodyType.Dynamic,
+					new Vector2(25f, 6.45566f));
 
 			Demo.World3D.AddBody3D(_chassis3D);
 
